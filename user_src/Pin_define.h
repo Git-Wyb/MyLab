@@ -60,15 +60,15 @@ extern u8 LED_Cache;
 #define ADF7030CLK ADF7030_GPIO4
 #define ADF7030DATA ADF7030_GPIO5
 /********************天线切换 CG2214M6控制引脚寄存器*****************************************/
-#define CG2214M6_VC1 PC_ODR_ODR1     //VC1
-#define CG2214M6_VC1_DDR PC_DDR_DDR1 //方向
-#define CG2214M6_VC1_CR1 PC_CR1_C11  //模式MODE
-#define CG2214M6_VC1_CR2 PC_CR2_C21  //输出频率或者中断控制
+#define CG2214M6_VC1 PA_ODR_ODR5//PC_ODR_ODR1     //VC1
+#define CG2214M6_VC1_DDR PA_DDR_DDR5//PC_DDR_DDR1 //方向
+#define CG2214M6_VC1_CR1 PA_CR1_C15//PC_CR1_C11  //模式MODE
+#define CG2214M6_VC1_CR2 PA_CR2_C25//PC_CR2_C21  //输出频率或者中断控制
 
-#define CG2214M6_VC2 PC_ODR_ODR0     //VC2
-#define CG2214M6_VC2_DDR PC_DDR_DDR0 //方向
-#define CG2214M6_VC2_CR1 PC_CR1_C10  //模式MODE
-#define CG2214M6_VC2_CR2 PC_CR2_C20  //输出频率或者中断控制
+#define CG2214M6_VC2 PB_ODR_ODR0//PC_ODR_ODR0     //VC2
+#define CG2214M6_VC2_DDR PB_DDR_DDR0//PC_DDR_DDR0 //方向
+#define CG2214M6_VC2_CR1 PB_CR1_C10//PC_CR1_C10  //模式MODE
+#define CG2214M6_VC2_CR2 PB_CR2_C20//PC_CR2_C20  //输出频率或者中断控制
 
 #define CG2214M6_RF1_USE  \
     {                     \
@@ -129,24 +129,24 @@ extern u8 LED_Cache;
 // #define HA_Sensor_signal_CR2 PA_CR2_C23
 
 /**WORK/TEST切换引脚寄存器*****/
-#define WORK_TEST PB_IDR_IDR0     // Input 受信机测试脚  高电平有效
-#define WORK_TEST_DDR PB_DDR_DDR0 // Input 受信机测试脚  高电平有效
-#define WORK_TEST_CR1 PB_CR1_C10  // Input 受信机测试脚  高电平有效
-#define WORK_TEST_CR2 PB_CR2_C20  // Input 受信机测试脚  高电平有效
+#define WORK_TEST PC_IDR_IDR0//PB_IDR_IDR0     // Input 受信机测试脚  高电平有效
+#define WORK_TEST_DDR PC_DDR_DDR0//PB_DDR_DDR0 // Input 受信机测试脚  高电平有效
+#define WORK_TEST_CR1 PC_CR1_C10//PB_CR1_C10  // Input 受信机测试脚  高电平有效
+#define WORK_TEST_CR2 PC_CR2_C20//PB_CR2_C20  // Input 受信机测试脚  高电平有效
 
-#define Receiver_test PB_IDR_IDR0       // Input 受信机测试脚  高电平有效
-#define Receiver_test_direc PB_DDR_DDR0 // Input 受信机测试脚  高电平有效
-#define Receiver_test_CR1 PB_CR1_C10    // Input 受信机测试脚  高电平有效
+#define Receiver_test PC_IDR_IDR0//PB_IDR_IDR0       // Input 受信机测试脚  高电平有效
+#define Receiver_test_direc PC_DDR_DDR0//PB_DDR_DDR0 // Input 受信机测试脚  高电平有效
+#define Receiver_test_CR1 PC_CR1_C10 //PB_CR1_C10    // Input 受信机测试脚  高电平有效
 
 #define TP3 PA_IDR_IDR4
 #define TP3_DDR PA_DDR_DDR4
 #define TP3_CR1 PA_CR1_C14
 #define TP3_CR2 PA_CR2_C24
 
-#define TP4 PA_IDR_IDR5
-#define TP4_DDR PA_DDR_DDR5
-#define TP4_CR1 PA_CR1_C15
-#define TP4_CR2 PA_CR2_C25
+#define TP4 PC_IDR_IDR1//PA_IDR_IDR5
+#define TP4_DDR PC_DDR_DDR1//PA_DDR_DDR5
+#define TP4_CR1 PC_CR1_C11//PA_CR1_C15
+#define TP4_CR2 PC_CR2_C21//PA_CR2_C25
 
 /******************以下是data寄存器************************************/
 #define Receiver_vent Receiver_vent_Cache       // Input   受信机换气联动ON/OFF
