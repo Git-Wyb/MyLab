@@ -1223,7 +1223,7 @@ void Select_TX_frequency(void)
 	 char rssi;
 	 u8 i=2,j=0;
 
-	 if((TP3==0)&&(FLAG_Key_TP3==0))FLAG_Key_TP3=1;
+	 //if((TP3==0)&&(FLAG_Key_TP3==0))FLAG_Key_TP3=1;
 	 
       if((Time_error_read_timeout==0)&&(Flag_ERROR_Read==1))
       {

@@ -149,7 +149,7 @@ extern u8 LED_Cache;
 #define TP4_CR2 PC_CR2_C21//PA_CR2_C25
 
 /******************以下是data寄存器************************************/
-#define Receiver_vent Receiver_vent_Cache       // Input   受信机换气联动ON/OFF
+#define Receiver_vent   1 //Receiver_vent_Cache       // Input   受信机换气联动ON/OFF
 #define Receiver_vent_direc Receiver_vent_Cache // Input   受信机换气联动ON/OFF
 #define Receiver_vent_CR1 Receiver_vent_Cache   // Input   受信机换气联动ON/OFF
 
@@ -169,14 +169,14 @@ extern u8 LED_Cache;
 #define Receiver_OUT_STOP_direc PD_DDR_DDR1 // Output   受信机继电器stop  高电平有效
 #define Receiver_OUT_STOP_CR1 PD_CR1_C11    // Output   受信机继电器stop  高电平有效
 
-#define Receiver_OUT_VENT ADF7030_REST_Cache//PD_ODR_ODR0       // Output   受信机继电器VENT  高电平有效
-#define Receiver_OUT_VENT_direc ADF7030_REST_Cache//PD_DDR_DDR0 // Output 受信机继电器VENT  高电平有效
-#define Receiver_OUT_VENT_CR1 ADF7030_REST_Cache//PD_CR1_C10    // Output 受信机继电器VENT  高电平有效
+#define Receiver_OUT_VENT PA_ODR_ODR4       // Output   受信机继电器VENT  高电平有效
+#define Receiver_OUT_VENT_direc PA_DDR_DDR4 // Output 受信机继电器VENT  高电平有效
+#define Receiver_OUT_VENT_CR1 PA_CR1_C14    // Output 受信机继电器VENT  高电平有效
 
 
-#define Inverters_OUT PA_IDR_IDR2       // 输入   继电器输出信号反向   低电平有效
-#define Inverters_OUT_direc PA_DDR_DDR2 // 输入   继电器输出信号反向   低电平有效
-#define Inverters_OUT_CR1 PA_CR1_C12    // 输入   继电器输出信号反向   低电平有效
+// #define Inverters_OUT PA_IDR_IDR2       // 输入   继电器输出信号反向   低电平有效
+// #define Inverters_OUT_direc PA_DDR_DDR2 // 输入   继电器输出信号反向   低电平有效
+// #define Inverters_OUT_CR1 PA_CR1_C12    // 输入   继电器输出信号反向   低电平有效
 
 /*********************************************************************************/
 

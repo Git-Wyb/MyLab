@@ -312,15 +312,23 @@ void KEY_GPIO_Init(void)
     WORK_TEST_CR1 = Pull_up;          //1: Input with pull-up 0: Floating input
     WORK_TEST_CR2 = InterruptDisable; //禁止中断
 
-    TP3_DDR = Input;            // 输入     test�?
-    TP3_CR1 = Pull_up;          //1: Input with pull-up 0: Floating input
-    TP3_CR2 = InterruptDisable; //禁止中断
-
     TP4_DDR = Input;            // 输入     test�?
     TP4_CR1 = Pull_up;          //1: Input with pull-up 0: Floating input
     TP4_CR2 = InterruptDisable; //禁止中断
 }
 
+void KEY_TP3_Init(void)
+{
+    TP3_DDR = Input;            // 输入     test�?
+    TP3_CR1 = Pull_up;          //1: Input with pull-up 0: Floating input
+    TP3_CR2 = InterruptDisable; //禁止中断
+}
+void OUT_VENT_Init(void)    //????????????????TP3????
+{
+    Receiver_OUT_VENT_direc = Output;
+    Receiver_OUT_VENT_CR1 = 1;
+    Receiver_OUT_VENT = FG_NOT_allow_out;    
+}
 /**
  ****************************************************************************
  * @Function : void RF_BRE_Check(void)
@@ -383,7 +391,7 @@ void RF_test_mode(void)
 		 Receiver_LED_OUT = !Receiver_LED_OUT;
 	 } 
     Receiver_LED_OUT = 0; */
-
+    if(Receiver_test == 0)KEY_TP3_Init();
     while (Receiver_test == 0)
     {
         Receiver_LED_OUT = 0;
@@ -475,6 +483,7 @@ void RF_test_mode(void)
         //        }
         //       if(ADF7021_DATA_CLK==0)FG_test1=0;
     }
+    OUT_VENT_Init();
     BerExtiUnInit();
     FG_test_rx = 0;
     TIMER1s = 0;
