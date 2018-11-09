@@ -124,6 +124,7 @@ extern u16 PAYLOAD_SIZE;
 #define RX_PayLoadSizeLogin 24
 #define RX_PayLoadSize_4dot8k 28
 
+#define	Receiver_426MHz_mode   1              //????  1=RX      0=TX and RX
 /***************************************************/
 /***************************************************/
 /**ADF7030_REST**/ extern u8 ADF7030_REST_Cache;

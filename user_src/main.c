@@ -84,7 +84,7 @@ void main(void)
         if (time_Login_exit_256 == 0)
             ID_Decode_OUT();
         ID_learn();
-		if(ID_SCX1801_DATA!=0)APP_TX_PACKET();
+		if((ID_SCX1801_DATA!=0)&&(Receiver_426MHz_mode==0))APP_TX_PACKET();
         if(FLAG_APP_RX==1)
         {
     		  Freq_Scanning();
