@@ -451,8 +451,8 @@ void ID_learn(void)
             if ((COUNT_Receiver_Login >= 2) && (FLAG_ID_Erase_Login == 0) && (FLAG_ID_Login == 0) && (ID_DATA_PCS < 256))
             {
                 FLAG_ID_Login = 1;
-				BEEP_Module(1800,900);
-				BEEP_Module(300,1);
+				/*BEEP_Module(1800,900);
+				BEEP_Module(300,1);*/
 				COUNT_Receiver_Login++; //为什么要加这个？？因为加入了BEEP_Module后，beep时间较长，这时采不到按键的时间TIME_Receiver_Login
                 TIME_Login_EXIT_rest = 5380;
                 TIME_Login_EXIT_Button = 500;
@@ -479,7 +479,7 @@ void ID_learn(void)
 	            }
 	            TIME_Receiver_Login = 0;
         }
-        if(TIME_Receiver_Login >= 450)  //590
+        if(0)//(TIME_Receiver_Login >= 450)  //590
         {
         	FLAG_ID_SCX1801_Login=1;
 			FLAG_ID_Erase_Login = 0;
@@ -496,9 +496,9 @@ void ID_learn(void)
 	            //TIME_Receiver_Login = 0;
 	            FLAG_ID_Erase_Login = 1;
 	            FLAG_ID_Erase_Login_PCS = 1; //杩藉姞澶氭ID鐧诲綍
-	            BEEP_Module(1800,900);
+	            /*BEEP_Module(1800,900);
 				BEEP_Module(300,900);
-				BEEP_Module(300,1);
+				BEEP_Module(300,1);*/
 				COUNT_Receiver_Login++; //为什么要加这个？？因为加入了BEEP_Module后，beep时间较长，这时采不到按键的时间TIME_Receiver_Login
 	            TIME_Login_EXIT_rest = 5380;
 	            TIME_Login_EXIT_Button = 500;
@@ -584,14 +584,14 @@ void ID_Login_EXIT_Initial(void)
     // #if defined(__Product_PIC32MX2_Receiver__)
 	if(FLAG_ID_Erase_Login == 1)
 		{
+		/*BEEP_Module(300,900);
 		BEEP_Module(300,900);
-		BEEP_Module(300,900);
-		BEEP_Module(1800,1);
+		BEEP_Module(1800,1);*/
 		}	
 	else if(FLAG_ID_Login==1)
 		{
-		BEEP_Module(300,900);
-		BEEP_Module(1800,1);		
+		/*BEEP_Module(300,900);
+		BEEP_Module(1800,1);*/		
 		}   
 	BEEP_CSR2_BEEPEN = 0;
     FLAG_ID_Login_EXIT = 1;
