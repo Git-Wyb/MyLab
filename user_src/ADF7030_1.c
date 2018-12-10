@@ -1077,7 +1077,9 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 		//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x80041018;//0x0000100C; 	
 		Radio_Date_Type=1;
 		Channels=1;
-		ADF7030Cfg_pointer=ADF7030Cfg;
+		if(Flag_TX_ID_load==0)
+		    ADF7030Cfg_pointer=ADF7030Cfg;
+		else ADF7030Cfg_pointer=ADF7030Cfg_load;
 		}
 		else {
 			
