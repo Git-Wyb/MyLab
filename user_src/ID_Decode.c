@@ -307,6 +307,26 @@ void eeprom_IDcheck(void)
 
 
 }
+void TIM3_init(void)
+{ // 2015.3.11????
+    TIM3_CCMR1 = TIM3_CCMR1 | 0x70;
+    TIM3_CCER1 = TIM3_CCER1 | 0x03;  //TIME3_CH1
+    TIM3_ARRH = 0x07;                //0x01;  //0x02;		//PWM??= ?????/ARR
+    TIM3_ARRL = 0xD0;                //0xF8;  //0x00;		
+                                     //TIM2_IER = 0x01;						// ??????????
+    TIM3_CCR1H = 0x03;               //0x00; //0x01;  //??????50%???CCR?ARR???
+    TIM3_CCR1L = 0xE8;               //0xFC; //0x00;  
+    TIM3_PSCR = 0x02;                // ?????=Fsystem/(2(PSC[2:0])????4MHz=16MHz/2/2
+    //TIM3_EGR_bit.UG=1;
+    //TIM2_CR1 = 0x01;					// ?????????????????
+    TIM3_CR1 = TIM3_CR1 | 0x01;
+    TIM3_BKR = 0x80;
+}
+void Tone_OFF(void)
+{                     // ???Tone   2015.3.11????
+    TIM3_CR1_CEN = 0; // Timer 3 Disable
+    PIN_BEEP = 0;
+}
 /*
    time_beepON、time_beepOFF单位时间�?0.4333333ms
 */
@@ -321,8 +341,9 @@ void BEEP_Module(UINT16 time_beepON, UINT16 time_beepOFF)
 		{
 			FG_beep_on = 1;
 			FG_beep_off = 0;
-			BEEP_CSR2_BEEPEN = 1;
-		}
+			//BEEP_CSR2_BEEPEN = 1;
+            TIM3_init();
+        }
 		Delayus(250); //80us
 		Delayus(250); //80us
 		Delayus(250); //80us
@@ -335,8 +356,9 @@ void BEEP_Module(UINT16 time_beepON, UINT16 time_beepOFF)
 		{
 			FG_beep_off = 1;
 			FG_beep_on = 0;
-			BEEP_CSR2_BEEPEN = 0;
-		}
+			//BEEP_CSR2_BEEPEN = 0;
+            Tone_OFF();
+        }
 		//Delayus(240);
 		Delayus(250); //80us
 		Delayus(250); //80us
@@ -349,9 +371,9 @@ void BEEP_Module(UINT16 time_beepON, UINT16 time_beepOFF)
 void BEEP_and_LED(void)
 {
     Receiver_LED_OUT = 1;
-    BEEP_Module(2300,0);
+    BEEP_Module(2300,1);
     FG_beep_on = 0;
-    BEEP_CSR2_BEEPEN = 0;
+    //BEEP_CSR2_BEEPEN = 0;
     TIME_Receiver_LED_OUT = 185;
 }
 

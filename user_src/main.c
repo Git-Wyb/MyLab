@@ -57,7 +57,7 @@ void main(void)
     InitialFlashReg(); //flash EEPROM
     eeprom_sys_load(); //ID载入
     TIM4_Init();       // 定时�?
-    beep_init();       // 蜂鸣�?
+    //beep_init();       // 蜂鸣�?
     ClearWDT();        // Service the WDT
 	
     PROFILE_CH_FREQ_32bit_200002EC = 426075000;

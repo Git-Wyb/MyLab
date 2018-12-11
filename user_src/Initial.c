@@ -103,7 +103,7 @@ void SysClock_Init(void)
     CLK_CKDIVR = 0x00; // 设置时钟分频  f HSI= f HSI RC输出/1    f CPU= f MASTER
     //---------------------------------------- 外设
     //CLK_PCKENR1 = 0x84;						// T1,UART1
-    CLK_PCKENR1 = 0x64; // T4,UART1,beep
+    CLK_PCKENR1 = 0x66; //0x64; // T3?T4,UART1,beep
     CLK_PCKENR2 = 0x03; // ADC,T1
 
     CLK_ICKCR_LSION = 1; // 使能内部LSI OSC�?8KHz�?

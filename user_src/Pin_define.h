@@ -25,10 +25,10 @@ extern u8 LED_Cache;
 #define Receiver_LED_RX_CR1 PB_CR1_C13    // Output   受信机受信指示  高电平有效
 #define Receiver_LED_RX_CR2 PB_CR2_C23    //输出频率
 
-#define Receiver_LED_OUT PB_ODR_ODR1       //PC_ODR_ODR4       // Output   受信机继电器动作输出  高电平有效
-#define Receiver_LED_OUT_direc PB_DDR_DDR1 // Output   受信机继电器动作输出  高电平有效
-#define Receiver_LED_OUT_CR1 PB_CR1_C11    // Output   受信机继电器动作输出  高电平有效
-#define Receiver_LED_OUT_CR2 PB_CR2_C21    //输出频率
+#define Receiver_LED_OUT PA_ODR_ODR3        //PB_ODR_ODR1              // Output   受信机继电器动作输出  高电平有效
+#define Receiver_LED_OUT_direc PA_DDR_DDR3 // Output   受信机继电器动作输出  高电平有效
+#define Receiver_LED_OUT_CR1 PA_CR1_C13    // Output   受信机继电器动作输出  高电平有效
+#define Receiver_LED_OUT_CR2 PA_CR2_C23    //输出频率
 
 /******************以下是ADF7030-1寄存器************************************/
 /* ADF7030-1 register interface */
@@ -153,9 +153,9 @@ extern u8 LED_Cache;
 #define Receiver_vent_direc Receiver_vent_Cache // Input   受信机换气联动ON/OFF
 #define Receiver_vent_CR1 Receiver_vent_Cache   // Input   受信机换气联动ON/OFF
 
-#define PIN_BEEP PA_ODR_ODR0       // Output   蜂鸣器
-#define PIN_BEEP_direc PA_DDR_DDR0 // Output   蜂鸣器
-#define PIN_BEEP_CR1 PA_CR1_C10    // Output   蜂鸣器
+#define PIN_BEEP PB_ODR_ODR1       //PA_ODR_ODR0       // Output   蜂鸣器
+#define PIN_BEEP_direc PB_DDR_DDR1 // Output   蜂鸣器
+#define PIN_BEEP_CR1 PB_CR1_C11    // Output   蜂鸣器
 
 #define Receiver_OUT_OPEN PD_ODR_ODR3       // Output   受信机继电器OPEN  高电平有效
 #define Receiver_OUT_OPEN_direc PD_DDR_DDR3 // Output   受信机继电器OPEN  高电平有效
