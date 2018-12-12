@@ -10,7 +10,7 @@
 #include <iostm8l151g4.h> // CPU鍨嬪彿
 //#include "stm8l15x.h"
 #include "Pin_define.h" // 绠¤剼瀹氫箟
-#include "initial.h"    // 鍒濆鍖? 棰勫畾涔?
+#include "initial.h"    // 鍒濆?嬪?? 棰勫畾涔?
 #include "ram.h"        // RAM瀹氫箟
 #include "eeprom.h"     // eeprom
 #include "ID_Decode.h"
@@ -24,20 +24,20 @@
 #define ADD_EEPROM_S8 0x1000
 
 ///* FLASH_CR2 */
-//#define OPT               7   /* 瀵归?夐」瀛楄妭杩涜鍐欐搷浣?*/
+//#define OPT               7   /* 瀵归?夐」瀛楄妭杩涜?屽啓鎿嶄??*/
 //#define WPRG              6   /* 瀛楃紪绋?*/
 //#define ERASE             5   /* 鍧楁摝闄?*/
-//#define FPRG              4   /* 蹇?熷潡缂栫▼ */
+//#define FPRG              4   /* 蹇???熷潡缂栫▼ */
 ////#define NC              3
 ////#define NC              2
 ////#define NC              1
 //#define PRG               0   /* 鏍囧噯鍧楃紪绋?*/
 //
 ///* FLASH_NCR2 */
-//#define NOPT              7   /* 瀵归?夐」瀛楄妭杩涜鍐欐搷浣?*/
+//#define NOPT              7   /* 瀵归?夐」瀛楄妭杩涜?屽啓鎿嶄??*/
 //#define NWPRG             6   /* 瀛楃紪绋?*/
 //#define NERASE            5   /* 鍧楁摝闄?*/
-//#define NFPRG             4   /* 蹇?熷潡缂栫▼ */
+//#define NFPRG             4   /* 蹇???熷潡缂栫▼ */
 ////#define NC              3
 ////#define NC              2
 ////#define NC              1
@@ -46,7 +46,7 @@
 ///* FLASH_FPR */
 ////#define NC              7
 ////#define NC              6
-//#define WPB5              5   /* 鐢ㄦ埛鍚姩浠ｇ爜淇濇姢浣?*/
+//#define WPB5              5   /* 鐢ㄦ埛鍚?鍔ㄤ唬鐮佷繚鎶や??*/
 //#define WPB4              4
 //#define WPB3              3
 //#define WPB2              2
@@ -56,7 +56,7 @@
 ///* FLASH_NFPR */
 ////#define NC              7
 ////#define NC              6
-//#define NWPB5             5   /* 鐢ㄦ埛鍚姩浠ｇ爜淇濇姢浣?*/
+//#define NWPB5             5   /* 鐢ㄦ埛鍚?鍔ㄤ唬鐮佷繚鎶や??*/
 //#define NWPB4             4
 //#define NWPB3             3
 //#define NWPB2             2
@@ -90,8 +90,8 @@
 //#define NC              4
 #define DUL 3       /* DATA EEPROM鍖哄煙瑙ｉ攣鏍囧織 */
 #define EOP 2       /* 缂栫▼缁撴潫(鍐欐垨鎿﹂櫎鎿嶄綔)鏍囧織 */
-#define PUL 1       /* 蹇?熺▼搴忓瓨鍌ㄥ櫒缁撴潫鏍囧織 */
-#define WR_PG_DIS 0 /* 璇曞浘鍚戣淇濇姢椤佃繘琛屽啓鎿嶄綔鐨勬爣蹇?*/
+#define PUL 1       /* 蹇???熺▼搴忓瓨鍌ㄥ櫒缁撴潫鏍囧織 */
+#define WR_PG_DIS 0 /* 璇曞浘鍚戣??淇濇姢椤佃繘琛屽啓鎿嶄綔鐨勬爣蹇?*/
 
 #define FLASH_CR1_RESET_VALUE ((uchar)0x00)
 #define FLASH_CR2_RESET_VALUE ((uchar)0x00)
@@ -108,15 +108,15 @@
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 void InitialFlashReg(void)
-{ // 鍒濆鍖栭棯瀛樺瘎瀛樺櫒缁?
+{ // 鍒濆?嬪寲闂?瀛樺瘎瀛樺櫒缁?
     FLASH_CR1 = FLASH_CR1_RESET_VALUE;
     FLASH_CR2 = FLASH_CR2_RESET_VALUE;
     //FLASH_NCR2 = FLASH_NCR2_RESET_VALUE;
-    FLASH_IAPSR &= (uchar)(~(1 << DUL)); // 娓呴櫎鍙DATA鍖鸿В閿?
+    FLASH_IAPSR &= (uchar)(~(1 << DUL)); // 娓呴櫎鍙?璇籇ATA鍖鸿В閿?
     FLASH_IAPSR &= (uchar)(~(1 << PUL)); // 娓呴櫎绋嬪簭鍖鸿В閿?
 }
 //------------------------------------------------
-//  娉? 2涓瘑閽ョ殑鎿嶄綔搴忓垪姝ｅソ鐩稿弽
+//  娉? 2涓?瀵嗛挜鐨勬搷浣滃簭鍒楁?ｅソ鐩稿弽
 void UnlockFlash(unsigned char Type)
 { // 瑙ｉ攣flash
     if (Type == UNLOCK_FLASH_TYPE)
@@ -144,7 +144,7 @@ void LockFlash(unsigned char Type)
 }
 //------------------------------------------------
 uchar ReadByteEEPROM(ulong Addr)
-{                                    // 浠巈eprom涓鍙?瀛楄妭
+{                                    // 浠巈eprom涓?璇诲??瀛楄妭
     return (*((__far uchar *)Addr)); // Read byte
 }
 //------------------------------------------------
@@ -154,7 +154,7 @@ void WriteByteToFLASH(ulong Addr, uchar Dat)
 }
 //------------------------------------------------
 void EraseByteFLASH(uint Addr)
-{ // 鎿﹂櫎eeprom涓唴瀹?
+{ // 鎿﹂櫎eeprom涓?鍐呭??
     *((__near uchar *)Addr) = 0x00;
 }
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -453,7 +453,7 @@ void ID_learn(void)
                 FLAG_ID_Login = 1;
 				/*BEEP_Module(1800,900);
 				BEEP_Module(300,1);*/
-				COUNT_Receiver_Login++; //为什么要加这个？？因为加入了BEEP_Module后，beep时间较长，这时采不到按键的时间TIME_Receiver_Login
+				//COUNT_Receiver_Login++; //为什么要加这个？？因为加入了BEEP_Module后，beep时间较长，这时采不到按键的时间TIME_Receiver_Login
                 TIME_Login_EXIT_rest = 5380;
                 TIME_Login_EXIT_Button = 500;
             } //6000
@@ -493,13 +493,13 @@ void ID_learn(void)
         }		
 	    else if ((TIME_Receiver_Login >= 250)&&(FLAG_ID_Erase_Login==0)&&(FLAG_ID_SCX1801_Login==0))
 	      {
-	            //TIME_Receiver_Login = 0;
+	            TIME_Receiver_Login = 0;
 	            FLAG_ID_Erase_Login = 1;
-	            FLAG_ID_Erase_Login_PCS = 1; //杩藉姞澶氭ID鐧诲綍
+	            FLAG_ID_Erase_Login_PCS = 1; //杩藉姞澶氭??ID鐧诲綍
 	            /*BEEP_Module(1800,900);
 				BEEP_Module(300,900);
 				BEEP_Module(300,1);*/
-				COUNT_Receiver_Login++; //为什么要加这个？？因为加入了BEEP_Module后，beep时间较长，这时采不到按键的时间TIME_Receiver_Login
+				//COUNT_Receiver_Login++; //为什么要加这个？？因为加入了BEEP_Module后，beep时间较长，这时采不到按键的时间TIME_Receiver_Login
 	            TIME_Login_EXIT_rest = 5380;
 	            TIME_Login_EXIT_Button = 500;
 	       }		
@@ -531,8 +531,8 @@ void ID_learn(void)
             }
             if ((FLAG_ID_Login_OK == 1) && (FLAG_ID_Login_OK_bank == 0))
             {
-                if ((ID_Receiver_Login == 0xFFFFFE)&&(FLAG_ID_Erase_Login==1))FLAG_ID_Login_OK_bank=1;             //杩藉姞澶氭ID鐧诲綍
-                FLAG_ID_Login_OK = 0; //杩藉姞澶氭ID鐧诲綍
+                if ((ID_Receiver_Login == 0xFFFFFE)&&(FLAG_ID_Erase_Login==1))FLAG_ID_Login_OK_bank=1;             //杩藉姞澶氭??ID鐧诲綍
+                FLAG_ID_Login_OK = 0; //杩藉姞澶氭??ID鐧诲綍
                 if(FLAG_ID_SCX1801_Login==1)
                 {
                     FLAG_ID_SCX1801_Login=0;
@@ -552,7 +552,7 @@ void ID_learn(void)
 		                else
 		                {
 		                    BEEP_and_LED();
-		                    TIME_Login_EXIT_rest = 5380; //杩藉姞澶氭ID鐧诲綍
+		                    TIME_Login_EXIT_rest = 5380; //杩藉姞澶氭??ID鐧诲綍
 		                    if ((FLAG_ID_Login == 1) && (ID_Receiver_Login != 0xFFFFFE))
 		                        ID_EEPROM_write();
 		                    else if (FLAG_ID_Erase_Login == 1)
@@ -563,7 +563,7 @@ void ID_learn(void)
 		                            ID_DATA_PCS = 0;
 		                            ALL_ID_EEPROM_Erase();
 									ID_SCX1801_EEPROM_write(0x00);
-		                        } //杩藉姞澶氭ID鐧诲綍
+		                        } //杩藉姞澶氭??ID鐧诲綍
 		                        if (ID_Receiver_Login != 0xFFFFFE)
 		                            ID_EEPROM_write();
 		                    }

@@ -374,7 +374,7 @@ void BEEP_and_LED(void)
     BEEP_Module(2300,1);
     FG_beep_on = 0;
     //BEEP_CSR2_BEEPEN = 0;
-    TIME_Receiver_LED_OUT = 185;
+    TIME_Receiver_LED_OUT = 60; //185;
 }
 
 void Receiver_BEEP(void)
