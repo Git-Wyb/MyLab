@@ -9,7 +9,7 @@
 #include <iostm8l151g4.h>
 //#include        "stm8l15x.h"
 #include "Pin_define.h" // 管脚定义
-#include "initial.h"    // 初始�? 预定�?
+#include "initial.h"    // 初始�? 预定�?
 #include "ram.h"        // RAM定义
 #include "ADF7030_1.h"
 #include "uart.h" // uart
@@ -48,19 +48,19 @@ void ClearWDT(void)
 //  GPIO_Mode_Out_PP_High_Fast = (uint8_t)0xF0,   /*!< Output push-pull, high level, 10MHz */
 //  GPIO_Mode_Out_OD_HiZ_Slow  = (uint8_t)0x90,   /*!< Output open-drain, high-impedance level, 2MHz */
 //  GPIO_Mode_Out_PP_High_Slow = (uint8_t)0xD0    /*!< Output push-pull, high level, 2MHz */
-//===降低功�?�说明：①I/O没用，必须置Input pull-up    ②I/O外围有IC，但没用，必须置Input floating=====
+//===降低功�?�说明：①I/O没用，必须置Input pull-up    ②I/O外围有IC，但没用，必须置Input floating=====
 
 void VHF_GPIO_INIT(void) // CPU端口设置
 {
     /****************端口设置说明***************************
-    *CR1寄存�? 输出 Output�?=推挽�?=OC�?
-    *           输入 Input�?=上拉�?=浮动�?
+    *CR1寄存�? 输出 Output�?=推挽�?=OC�?
+    *           输入 Input�?=上拉�?=浮动�?
     ***************end************************************/
-    KEY_GPIO_Init();             // 输入 test�?登录�?
+    KEY_GPIO_Init();             // 输入 test�?登录�?
     Receiver_vent_direc = Input; // Input   受信机换气联动ON/OFF
     Receiver_vent_CR1 = 1;
 
-    PIN_BEEP_direc = Output; // Output   蜂鸣�?
+    PIN_BEEP_direc = Output; // Output   蜂鸣�?
     PIN_BEEP_CR1 = 1;
     PIN_BEEP = 0;
 
@@ -91,12 +91,12 @@ void SysClock_Init(void)
     ////    CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
     ////    CLK_SYSCLKSourceSwitchCmd(DISABLE);
     //
-    //    //CLK_LSICmd(ENABLE);   //使能LSI时钟给看门狗�?
+    //    //CLK_LSICmd(ENABLE);   //使能LSI时钟给看门狗�?
     //    //while(CLK_GetFlagStatus(CLK_FLAG_LSIRDY)==RESET);//等待直到LSI稳定
 
-    CLK_ICKCR_HSION = 1; // 使能内部RC OSC�?6.00MHz�?
+    CLK_ICKCR_HSION = 1; // 使能内部RC OSC�?6.00MHz�?
     while ((CLK_ICKCR & 0x02) == 0)
-        ;              // �?查内部晶�?
+        ;              // �?查内部晶�?
     CLK_SWR = 0x01;    // 指定HSI为主时钟
                        //	while(( CLK_SWCR & 0x08 ) == 0 );		// 等待HSI切换
     CLK_SWCR_SWEN = 1; // 执行切换
@@ -106,9 +106,9 @@ void SysClock_Init(void)
     CLK_PCKENR1 = 0x66; //0x64; // T3?T4,UART1,beep
     CLK_PCKENR2 = 0x03; // ADC,T1
 
-    CLK_ICKCR_LSION = 1; // 使能内部LSI OSC�?8KHz�?
+    CLK_ICKCR_LSION = 1; // 使能内部LSI OSC�?8KHz�?
     while (CLK_ICKCR_LSIRDY == 0)
-        ; // �?查内部LSI OSC
+        ; // �?查内部LSI OSC
 }
 
 void beep_init(void)
@@ -138,7 +138,7 @@ void Delayus(unsigned char timer)
 void Receiver_OUT_GPIO_Init(void)
 {
 /*
-    Inverters_OUT_direc = Input; // 输入   继电器输出信号反�?  低电平有�?
+    Inverters_OUT_direc = Input; // 输入   继电器输出信号反�?  低电平有�?
     Inverters_OUT_CR1 = 1;
     if (Inverters_OUT == 1)
     {
@@ -155,15 +155,15 @@ void Receiver_OUT_GPIO_Init(void)
 	FG_NOT_allow_out = 0;
 
 
-    Receiver_OUT_OPEN_direc = Output; // Output   受信机继电器OPEN  高电平有�?
+    Receiver_OUT_OPEN_direc = Output; // Output   受信机继电器OPEN  高电平有�?
     Receiver_OUT_OPEN_CR1 = 1;
     Receiver_OUT_OPEN = FG_NOT_allow_out;
 
-    Receiver_OUT_CLOSE_direc = Output; // Output   受信机继电器CLOSE  高电平有�?
+    Receiver_OUT_CLOSE_direc = Output; // Output   受信机继电器CLOSE  高电平有�?
     Receiver_OUT_CLOSE_CR1 = 1;
     Receiver_OUT_CLOSE = FG_NOT_allow_out;
 
-    Receiver_OUT_STOP_direc = Output; // Output   受信机继电器STOP  高电平有�?
+    Receiver_OUT_STOP_direc = Output; // Output   受信机继电器STOP  高电平有�?
     Receiver_OUT_STOP_CR1 = 1;
     Receiver_OUT_STOP = FG_NOT_allow_out;
 
@@ -182,15 +182,15 @@ void Receiver_OUT_GPIO_Init(void)
 **/
 void LED_GPIO_Init(void)
 {
-    Receiver_LED_OUT_direc = Output; // Output   受信机继电器动作输出  高电平有�?
+    Receiver_LED_OUT_direc = Output; // Output   受信机继电器动作输出  高电平有�?
     Receiver_LED_OUT_CR1 = 1;
     Receiver_LED_OUT = 0;
 
-    Receiver_LED_TX_direc = Output; // Output   受信机�?�信指示  高电平有�?
+    Receiver_LED_TX_direc = Output; // Output   受信机�?�信指示  高电平有�?
     Receiver_LED_TX_CR1 = 1;
     Receiver_LED_TX = 0;
 
-    Receiver_LED_RX_direc = Output; // Output   受信机受信指�? 高电平有�?
+    Receiver_LED_RX_direc = Output; // Output   受信机受信指�? 高电平有�?
     Receiver_LED_RX_CR1 = 1;
     Receiver_LED_RX = 0;
 }
@@ -205,13 +205,13 @@ void LED_GPIO_Init(void)
 **/
 void CG2214M6_GPIO_Init(void)
 {
-    CG2214M6_VC1_DDR = Output; /* 设置数据方向寄存�?1为输出，0为输�?-查看STM8寄存器RM0031.pdf 10.9 */
+    CG2214M6_VC1_DDR = Output; /* 设置数据方向寄存�?1为输出，0为输�?-查看STM8寄存器RM0031.pdf 10.9 */
     CG2214M6_VC1_CR1 = 1;      /* 设置推挽输出--查看STM8寄存器RM0031.pdf 10.9*/
-    CG2214M6_VC1_CR2 = 1;      /* 设置输出频率 1�?0M�?�?M--查看STM8寄存�?pdf P89 */
+    CG2214M6_VC1_CR2 = 1;      /* 设置输出频率 1�?0M�?�?M--查看STM8寄存�?pdf P89 */
 
-    CG2214M6_VC2_DDR = Output; /* 设置数据方向寄存�?1为输出，0为输�?-查看STM8寄存�?RM0031.pdf 10.9 */
+    CG2214M6_VC2_DDR = Output; /* 设置数据方向寄存�?1为输出，0为输�?-查看STM8寄存�?RM0031.pdf 10.9 */
     CG2214M6_VC2_CR1 = 1;      /* 设置推挽输出--查看STM8寄存器RM0031.pdf 10.9*/
-    CG2214M6_VC2_CR2 = 1;      /* 设置输出频率 1�?0M�?�?M--查看STM8寄存�?pdf P89 */
+    CG2214M6_VC2_CR2 = 1;      /* 设置输出频率 1�?0M�?�?M--查看STM8寄存�?pdf P89 */
 }
 /**
 ****************************************************************************
@@ -219,14 +219,14 @@ void CG2214M6_GPIO_Init(void)
 * @File     : Initial.c
 * @Program  :
 * @Created  : 2017/4/12 by Xiaowine
-* @Brief    : 芯片外围控制IO初始�?
+* @Brief    : 芯片外围控制IO初始�?
 * @Version  : V1.0
 **/
 void ADF7030_GPIO_INIT(void)
 {
-    ADF7030_REST_DDR = Output; //* 设置数据方向寄存�?1为输出，0为输�?-查看STM8寄存器RM0031.pdf 10.9 */
+    ADF7030_REST_DDR = Output; //* 设置数据方向寄存�?1为输出，0为输�?-查看STM8寄存器RM0031.pdf 10.9 */
     ADF7030_REST_CR1 = 1;      //* 设置推挽输出--查看STM8寄存器RM0031.pdf 10.9*/
-    ADF7030_REST_CR2 = 1;      //* 设置输出频率 1�?0M�?�?M--查看STM8寄存�?pdf P89 */
+    ADF7030_REST_CR2 = 1;      //* 设置输出频率 1�?0M�?�?M--查看STM8寄存�?pdf P89 */
 
     ADF7030_GPIO2_DDR = Input;            //输入
     ADF7030_GPIO2_CR1 = Floating;         //1: Input with pull-up 0: Floating input
@@ -302,24 +302,24 @@ void KEY_GPIO_Init(void)
     // KEY_SW4_CR1 = 1;     //1: Input with pull-up 0: Floating input
     // KEY_SW4_CR2 = 0;     //禁止中断
 
-    Receiver_Login_direc = Input;          // Input   受信机登录键   低电平有�?
+    Receiver_Login_direc = Input;          // Input   受信机登录键   低电平有�?
     Receiver_Login_CR1 = Floating;         //1: Input with pull-up 0: Floating input
     Receiver_Login_CR2 = InterruptDisable; //禁止中断
     //   Receiver_test_direc = Input;
     // Receiver_test_CR1 = 1;
 
-    WORK_TEST_DDR = Input;            // 输入     test�?
+    WORK_TEST_DDR = Input;            // 输入     test�?
     WORK_TEST_CR1 = Pull_up;          //1: Input with pull-up 0: Floating input
     WORK_TEST_CR2 = InterruptDisable; //禁止中断
 
-    TP4_DDR = Input;            // 输入     test�?
+    TP4_DDR = Input;            // 输入     test�?
     TP4_CR1 = Pull_up;          //1: Input with pull-up 0: Floating input
     TP4_CR2 = InterruptDisable; //禁止中断
 }
 
 void KEY_TP3_Init(void)
 {
-    TP3_DDR = Input;            // 输入     test�?
+    TP3_DDR = Input;            // 输入     test�?
     TP3_CR1 = Pull_up;          //1: Input with pull-up 0: Floating input
     TP3_CR2 = InterruptDisable; //禁止中断
 }
@@ -344,17 +344,17 @@ void RF_BRE_Check(void)
     ClearWDT(); // Service the WDT
     if (ADF7030_GPIO3 == 1)
     {
-        WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�??
+        WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�??
         DELAY_30U();
         ADF7030_Clear_IRQ();
-        WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�??
+        WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�??
         DELAY_30U();
         while (ADF7030_GPIO3 == 1)
             ;
-        WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�??
+        WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�??
         DELAY_30U();
         ADF7030_CHANGE_STATE(STATE_PHY_ON);
-        WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�??
+        WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�??
         ADF7030_RECEIVING_FROM_POWEROFF();
     }
 
@@ -378,6 +378,7 @@ void RF_BRE_Check(void)
 }
 void RF_test_mode(void)
 {
+    u8 Flag_TP4 = 0;
     //UINT8 Boot_i;
 	 Receiver_LED_OUT = 1;
 	 /*for (Boot_i = 0; Boot_i < 4; Boot_i++)
@@ -391,32 +392,31 @@ void RF_test_mode(void)
 		 Receiver_LED_OUT = !Receiver_LED_OUT;
 	 } 
     Receiver_LED_OUT = 0; */
-    if(Receiver_test == 0)KEY_TP3_Init();
     while (Receiver_test == 0)
     {
         Receiver_LED_OUT = 0;
         ClearWDT();   // Service the WDT
-        if (TP4 == 0) //test ADF7030 TX
+        if((TP4 == 0)&&(Flag_TP4==0))   //不使用TP3，因为测试模式TP3与工作模式换气输出有冲突，冲突为三极管导致TP3的高电平只有0.8V
         {
-            if (TP3 == 0)
+            Flag_TP4 = 1;
+            Tx_Rx_mode++;
+            if (Tx_Rx_mode == 2)
+                Tx_Rx_mode = 3;  //屏蔽mode 2，mode 2暂时不使用
+            if (Tx_Rx_mode > 3)
                 Tx_Rx_mode = 0;
-            else
-                Tx_Rx_mode = 1;
         }
-        else //test ADF7030 RX
+        else if(TP4 == 1)
         {
-            if (TP3 == 0)
-                Tx_Rx_mode = 2;
-            else
-                Tx_Rx_mode = 3;
+            Flag_TP4 = 0;
         }
+
         if ((Tx_Rx_mode == 0) || (Tx_Rx_mode == 1))
         {
             CG2214M6_USE_T;
             FG_test_rx = 0;
             Receiver_LED_RX = 0;
             FG_test_tx_off = 0;
-            if (Tx_Rx_mode == 0) //发载波，无调制信�?
+            if (Tx_Rx_mode == 0) //发载波，无调制信�?
             {
                 Receiver_LED_TX = 1;
                 FG_test_mode = 0;
@@ -429,7 +429,7 @@ void RF_test_mode(void)
                     //ttset dd_set_TX_mode_carrier();
                 }
             }
-            else //发载波，有调制信�?
+            else //发载波，有调制信�?
             {
                 if (TIMER1s == 0)
                 {
