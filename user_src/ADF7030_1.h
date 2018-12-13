@@ -155,6 +155,7 @@ void ADF7030_CHANGE_STATE(u8 x_state);
 u8 RadioChangeState(u8 STATE_CMD);
 u32 ADF7030_READ_REGISTER_NOPOINTER_LONGADDR(u32 x_ADDR, u8 x_fnum);
 void WaitForADF7030_FIXED_DATA(void);
+void ADF7030_Wait_GPIO3(void);
 void TX_DataLoad(u32 IDCache, u8 CtrCmd, u8 *Packet);
 void TX_DataLoad_HighSpeed(u32 IDCache, Wireless_Body CtrCmd, u8 *Packet);
 
