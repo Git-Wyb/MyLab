@@ -576,6 +576,7 @@ void ADF7030_RECEIVING_FROM_POWEROFF(void)
 }
 void ADF7030_RECEIVING_FROM_POWEROFF_testMode(void)
 {
+    u16 while_count = 0;
     CG2214M6_USE_R;
     while (GET_STATUE_BYTE().CMD_READY == 0)
         ;
@@ -595,8 +596,11 @@ void ADF7030_RECEIVING_FROM_POWEROFF_testMode(void)
     ADF7030_CHANGE_STATE(STATE_PHY_RX);
     while (GET_STATUE_BYTE().FW_STATUS == 0)
         ;
-    while (GET_STATUE_BYTE().FW_STATUS != 1)
-        ;
+    while ((GET_STATUE_BYTE().FW_STATUS != 1)&&(while_count<5000))
+        {
+            while_count++;
+            ClearWDT();
+        }
     DELAY_30U();
 }
 
@@ -1025,6 +1029,7 @@ void TestFunV2(u8 KeyVel)
 **/
 void ADF7030_TX(u8 mode)
 {
+    u16 while_count = 0;
     GENERIC_PKT_TEST_MODES0_32bit_20000548 &= 0xfff8ffff;
     GENERIC_PKT_TEST_MODES0_32bit_20000548 |= ((u32)mode << 16);
     ADF7030_WRITING_PROFILE_FROM_POWERON();
@@ -1046,8 +1051,11 @@ void ADF7030_TX(u8 mode)
     ADF7030_CHANGE_STATE(STATE_PHY_TX);
     while (GET_STATUE_BYTE().FW_STATUS == 0)
         ;
-    while (GET_STATUE_BYTE().FW_STATUS != 1)
-        ;
+    while ((GET_STATUE_BYTE().FW_STATUS != 1)&&(while_count<5000))
+        {
+            while_count++;
+            ClearWDT();
+        }
 }
 /**
  ****************************************************************************

@@ -349,8 +349,7 @@ void RF_BRE_Check(void)
         ADF7030_Clear_IRQ();
         WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�??
         DELAY_30U();
-        while (ADF7030_GPIO3 == 1)
-            ;
+        ADF7030_Wait_GPIO3();
         WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�??
         DELAY_30U();
         ADF7030_CHANGE_STATE(STATE_PHY_ON);
@@ -379,6 +378,7 @@ void RF_BRE_Check(void)
 void RF_test_mode(void)
 {
     u8 Flag_TP4 = 0;
+    u8 test_time_Base10ms = 0;
     //UINT8 Boot_i;
 	 Receiver_LED_OUT = 1;
 	 /*for (Boot_i = 0; Boot_i < 4; Boot_i++)
@@ -394,20 +394,31 @@ void RF_test_mode(void)
     Receiver_LED_OUT = 0; */
     while (Receiver_test == 0)
     {
-        Receiver_LED_OUT = 0;
         ClearWDT();   // Service the WDT
         if((TP4 == 0)&&(Flag_TP4==0))   //不使用TP3，因为测试模式TP3与工作模式换气输出有冲突，冲突为三极管导致TP3的高电平只有0.8V
         {
-            Flag_TP4 = 1;
-            Tx_Rx_mode++;
-            if (Tx_Rx_mode == 2)
-                Tx_Rx_mode = 3;  //屏蔽mode 2，mode 2暂时不使用
-            if (Tx_Rx_mode > 3)
-                Tx_Rx_mode = 0;
+            if (FG_10ms==1)
+            {
+                FG_10ms = 0;
+                test_time_Base10ms++;
+                if (test_time_Base10ms>5)
+                {
+                    test_time_Base10ms = 5;
+                    Flag_TP4 = 1;
+                    Tx_Rx_mode++;
+                    if (Tx_Rx_mode == 2)
+                        Tx_Rx_mode = 3; //屏蔽mode 2，mode 2暂时不使用
+                    if (Tx_Rx_mode == 3)
+                        X_COUNT = 0;   //切换成mode3时，RX误码率有时会亮
+                    if (Tx_Rx_mode > 3)
+                        Tx_Rx_mode = 0;
+                }
+            }
         }
         else if(TP4 == 1)
         {
             Flag_TP4 = 0;
+            test_time_Base10ms = 0;
         }
 
         if ((Tx_Rx_mode == 0) || (Tx_Rx_mode == 1))
@@ -418,7 +429,7 @@ void RF_test_mode(void)
             FG_test_tx_off = 0;
             if (Tx_Rx_mode == 0) //发载波，无调制信�?
             {
-                Receiver_LED_TX = 1;
+                Receiver_LED_OUT = 1;
                 FG_test_mode = 0;
                 FG_test_tx_1010 = 0;
                 if (FG_test_tx_on == 0)
@@ -434,7 +445,7 @@ void RF_test_mode(void)
                 if (TIMER1s == 0)
                 {
                     TIMER1s = 500;
-                    Receiver_LED_TX = !Receiver_LED_TX;
+                    Receiver_LED_OUT = !Receiver_LED_OUT;
                 }
                 FG_test_mode = 1;
                 FG_test_tx_on = 0;
@@ -453,7 +464,7 @@ void RF_test_mode(void)
         {
             CG2214M6_USE_R;
             FG_test_rx = 1;
-            Receiver_LED_TX = 0;
+            Receiver_LED_OUT = 0;
             FG_test_mode = 0;
             FG_test_tx_on = 0;
             FG_test_tx_1010 = 0;
