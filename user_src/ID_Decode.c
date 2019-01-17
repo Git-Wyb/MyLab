@@ -311,11 +311,11 @@ void TIM3_init(void)
 { // 2015.3.11????
     TIM3_CCMR1 = TIM3_CCMR1 | 0x70;
     TIM3_CCER1 = TIM3_CCER1 | 0x03;  //TIME3_CH1
-    TIM3_ARRH = 0x07;                //0x01;  //0x02;		//PWM??= ?????/ARR
-    TIM3_ARRL = 0xD0;                //0xF8;  //0x00;		
+    TIM3_ARRH = 0x08;                //0x07D0 -->PWM=2K        0x0880 -->PWM=1.83K
+    TIM3_ARRL = 0x84;                	
                                      //TIM2_IER = 0x01;						// ??????????
-    TIM3_CCR1H = 0x03;               //0x00; //0x01;  //??????50%???CCR?ARR???
-    TIM3_CCR1L = 0xE8;               //0xFC; //0x00;  
+    TIM3_CCR1H = 0x04;               //50%
+    TIM3_CCR1L = 0x42;                 
     TIM3_PSCR = 0x02;                // ?????=Fsystem/(2(PSC[2:0])????4MHz=16MHz/2/2
     //TIM3_EGR_bit.UG=1;
     //TIM2_CR1 = 0x01;					// ?????????????????
