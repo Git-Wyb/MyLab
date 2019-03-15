@@ -178,6 +178,41 @@ extern u8 LED_Cache;
 // #define Inverters_OUT_direc PA_DDR_DDR2 // 输入   继电器输出信号反向   低电平有效
 // #define Inverters_OUT_CR1 PA_CR1_C12    // 输入   继电器输出信号反向   低电平有效
 
+
+//拨码开关
+#define SW_1_DDR PA_DDR_DDR2
+#define SW_1_CR1 PA_CR1_C12
+#define SW_1_CR2 PA_CR2_C22
+
+#define SW_2_DDR PA_DDR_DDR3
+#define SW_2_CR1 PA_CR1_C13
+#define SW_2_CR2 PA_CR2_C23
+
+#define SW_3_DDR PA_DDR_DDR4
+#define SW_3_CR1 PA_CR1_C14
+#define SW_3_CR2 PA_CR2_C24
+
+#define SW_4_DDR PA_DDR_DDR5
+#define SW_4_CR1 PA_CR1_C15
+#define SW_4_CR2 PA_CR2_C25
+
+#define SW_1   PE_IDR_IDR2
+#define SW_2   PE_IDR_IDR3
+#define SW_3   PE_IDR_IDR4
+#define SW_4   PE_IDR_IDR5
+#define SW_CODE   (SW2_4 <<3 | SW2_3 << 2 | SW2_2 << 1 | SW2_1)
+
+#define Abnormal_Signal_DDR     PE_DDR_DDR0
+#define Abnormal_Signal_CR1     PE_CR1_C10
+#define Abnormal_Signal_CR2     PE_CR2_C20
+#define Abnormal_Signal         PE_IDR_IDR0     //异常信号，为0表示有异常信号
+
+#define Lower_Limit_Signal_DDR  PE_DDR_DDR1
+#define Lower_Limit_Signal_CR1  PE_CR1_C11
+#define Lower_Limit_Signal_CR2  PE_CR2_C21
+#define Lower_Limit_Signal      PE_IDR_IDR1     //下限信号，为0表示有下限信号
+
+
 /*********************************************************************************/
 
 #endif

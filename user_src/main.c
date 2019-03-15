@@ -65,9 +65,8 @@ void main(void)
   PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
   //PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
   ADF7030Init(); //射频初始�?
-
-  UART1_INIT(); // UART1 for PC Software
-  _EI();        // 允许中断
+  UART1_INIT();  // UART1 for PC Software
+  _EI();         // 允许中断
   TIME_power_led = 500;
   ClearWDT(); // Service the WDT
   RF_test_mode();

@@ -57,6 +57,8 @@ void VHF_GPIO_INIT(void) // CPU端口设置
     *           输入 Input�?=上拉�?=浮动�?
     ***************end************************************/
     KEY_GPIO_Init();             // 输入 test�?登录�?
+    DIP_SW_Init();            //拨码开关初始化
+
     Receiver_vent_direc = Input; // Input   受信机换气联动ON/OFF
     Receiver_vent_CR1 = 1;
 
@@ -327,8 +329,41 @@ void OUT_VENT_Init(void)    //????????????????TP3????
 {
     Receiver_OUT_VENT_direc = Output;
     Receiver_OUT_VENT_CR1 = 1;
-    Receiver_OUT_VENT = FG_NOT_allow_out;    
+    Receiver_OUT_VENT = FG_NOT_allow_out;
 }
+
+
+/*拨码开关管脚初始化*/
+void DIP_SW_Init(void)
+{
+     SW_1_DDR = Input;
+     SW_1_CR1 = Pull_up;
+     SW_1_CR2 = InterruptDisable;
+
+     SW_2_DDR = Input;
+     SW_2_CR1 = Pull_up;
+     SW_2_CR2 = InterruptDisable;
+
+     SW_3_DDR = Input;
+     SW_3_CR1 = Pull_up;
+     SW_3_CR2 = InterruptDisable;
+
+     SW_4_DDR = Input;
+     SW_4_CR1 = Pull_up;
+     SW_4_CR2 = InterruptDisable;
+
+     //异常
+     Abnormal_Signal_DDR = Input;
+     Abnormal_Signal_CR1 = Pull_up;
+     Abnormal_Signal_CR2 = InterruptDisable;
+
+     //下限
+     Lower_Limit_Signal_DDR = Input;
+     Lower_Limit_Signal_CR1 = Pull_up;
+     Lower_Limit_Signal_CR2 = InterruptDisable;
+}
+
+
 /**
  ****************************************************************************
  * @Function : void RF_BRE_Check(void)
@@ -390,7 +425,7 @@ void RF_test_mode(void)
 						   // Send_char(0x05);
 		 }
 		 Receiver_LED_OUT = !Receiver_LED_OUT;
-	 } 
+	 }
     Receiver_LED_OUT = 0; */
     while (Receiver_test == 0)
     {

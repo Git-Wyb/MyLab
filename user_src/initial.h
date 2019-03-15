@@ -58,4 +58,5 @@ void ClearWDT(void);
 void RF_BRE_Check(void);
 void BerExtiInit(void);
 void BerExtiUnInit(void);
+void DIP_SW_Init(void);
 #endif
