@@ -1,6 +1,6 @@
 "-p" 
 
-"D:\工作软件\IAR for STM8 Install\stm8\config\ddf\iostm8l151g6.ddf" 
+"D:\工作软件\IAR for STM8 Install\stm8\config\ddf\iostm8l151c6.ddf" 
 
 "-d" 
 
@@ -8,7 +8,7 @@
 
 "--mcuname" 
 
-"STM8L151G6" 
+"STM8L151C6" 
 
 
 

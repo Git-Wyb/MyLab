@@ -17,4 +17,5 @@
         "eeprom.h": "c",
         "uart.h": "c"
     },
+    "C_Cpp.dimInactiveRegions": false,
 }

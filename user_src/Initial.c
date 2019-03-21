@@ -319,12 +319,15 @@ void KEY_GPIO_Init(void)
     TP4_CR2 = InterruptDisable; //禁止中断
 }
 
+/*
 void KEY_TP3_Init(void)
 {
     TP3_DDR = Input;            // 输入     test�?
     TP3_CR1 = Pull_up;          //1: Input with pull-up 0: Floating input
     TP3_CR2 = InterruptDisable; //禁止中断
 }
+*/
+
 void OUT_VENT_Init(void)    //????????????????TP3????
 {
     Receiver_OUT_VENT_direc = Output;

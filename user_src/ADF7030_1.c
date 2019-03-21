@@ -112,7 +112,7 @@ void ADF7030ParameterInit(void)
 		//PAYLOAD_SIZE = RX_PayLoadSizeLogin;//RX_PayLoadSizeNOLogin; //number of payload bytes in the Tx packet(Tx) or incoming packet payload(Rx).
 		if(Flag_TX_ID_load==0)
 			PAYLOAD_SIZE = RX_PayLoadSizeNOLogin;
-		else PAYLOAD_SIZE = RX_PayLoadSizeLogin;		
+		else PAYLOAD_SIZE = RX_PayLoadSizeLogin;
     }
 	else if(Radio_Date_Type==2)
 		PAYLOAD_SIZE = RX_PayLoadSize_4dot8k;
@@ -498,7 +498,7 @@ void ADF7030_WRITING_PROFILE_FROM_POWERON(void)
         DELAY_30U();
     }
     ADF7030_WRITE_REGISTER_NOPOINTER_LONGADDR_MSB(ADDR_CHANNEL_FERQUENCY, PROFILE_CH_FREQ_32bit_200002EC); //
-    //ADF7030_WRITE_REGISTER_NOPOINTER_LONGADDR_MSB(ADDR_RADIO_DATA_RATE, PROFILE_RADIO_DATA_RATE_32bit_200002FC); 
+    //ADF7030_WRITE_REGISTER_NOPOINTER_LONGADDR_MSB(ADDR_RADIO_DATA_RATE, PROFILE_RADIO_DATA_RATE_32bit_200002FC);
     ADF7030_WRITE_REGISTER_NOPOINTER_LONGADDR_MSB(ADDR_PROFILE_RADIO_AFC_CFG1, PROFILE_RADIO_AFC_CFG1_32bit_2000031C);
       //ADF7030_WRITE_REGISTER_NOPOINTER_LONGADDR_MSB(ADDR_GENERIC_PKT_FRAME_CFG1, PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500);
     WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�??
@@ -624,7 +624,7 @@ void ADF7030_ACC_FROM_POWEROFF(void)
     while (GET_STATUE_BYTE().FW_STATUS == 0)
         ;
     DELAY_30U();
-    
+
     ADF7030_WRITE_REGISTER_NOPOINTER_LONGADDR_OFFSET_MSB(ADF7030Cfg_pointer, CFG_SIZE(), ADDR_GENERIC_FIELDS, 8, 24);
     WaitForADF7030_FIXED_DATA(); //ç­‰å¾�?�èŠ¯ç�?��?�ç©ºé�?��?/å¯æŽ¥å—CMDçŠ¶æ�??
     DELAY_30U();
@@ -645,9 +645,9 @@ void ADF7030_ACC_FROM_POWEROFF(void)
         ;
     ADF7030_CHANGE_STATE(STATE_CMD_CCA);
     while (GET_STATUE_BYTE().FW_STATUS == 0)
-        ;       
-    ClearWDT(); // Service the WDT   
-    
+        ;
+    ClearWDT(); // Service the WDT
+
 }
 
 
@@ -699,7 +699,7 @@ void SCAN_RECEIVE_PACKET(void)
 			if(Radio_Date_Type==1)
 			  TIMER18ms = PAYLOAD_SIZE *7;
 			else if(Radio_Date_Type==2)
-			  TIMER18ms = 50; 
+			  TIMER18ms = 50;
         }
         if ((Flag_RSSI_Read_Timer == 0) && (RSSI_Read_Counter < 5))
         {
@@ -786,11 +786,11 @@ void TX_DataLoad_HighSpeed(u32 IDCache, Wireless_Body CtrCmd, u8 *Packet)
 {
     u8 i;
     u16 CRCTemp = 0;
-    
+
     CRCTemp = (IDCache & 0xffff) + (((IDCache >> 16) & 0xff) + ((u16)CtrCmd.Fno_Type.byte << 8));
 	for(i=0;i<4;i++)
 		CRCTemp+=CtrCmd.data[i].ui;
-	
+
     for (i = 0; i < 24; i++)
     {
         *(Packet + (i / 4)) <<= 2;
@@ -800,8 +800,8 @@ void TX_DataLoad_HighSpeed(u32 IDCache, Wireless_Body CtrCmd, u8 *Packet)
     {
         *(Packet + (i / 4)) <<= 2;
         *(Packet + (i / 4)) |= ((CtrCmd.Fno_Type.byte & ((u8)1 << (i - 24))) ? 2 : 1);
-    }	
-	ClearWDT();	
+    }
+	ClearWDT();
     for (i = 32; i < 48; i++)
     {
         *(Packet + (i / 4)) <<= 2;
@@ -811,24 +811,24 @@ void TX_DataLoad_HighSpeed(u32 IDCache, Wireless_Body CtrCmd, u8 *Packet)
     {
         *(Packet + (i / 4)) <<= 2;
         *(Packet + (i / 4)) |= ((CtrCmd.data[1].ui & ((u16)1 << (i - 48))) ? 2 : 1);
-    }	
-	ClearWDT();	
+    }
+	ClearWDT();
     for (i = 64; i < 80; i++)
     {
         *(Packet + (i / 4)) <<= 2;
         *(Packet + (i / 4)) |= ((CtrCmd.data[2].ui & ((u16)1 << (i - 64))) ? 2 : 1);
-    }	
+    }
     for (i = 80; i < 96; i++)
     {
         *(Packet + (i / 4)) <<= 2;
         *(Packet + (i / 4)) |= ((CtrCmd.data[3].ui & ((u16)1 << (i - 80))) ? 2 : 1);
-    }	
+    }
     ClearWDT();
     for (i = 96; i < 112; i++)
     {
         *(Packet + (i / 4)) <<= 2;
         *(Packet + (i / 4)) |= ((CRCTemp & ((u16)1 << (i - 96))) ? 2 : 1);
-    }	
+    }
 }
 
 /**
@@ -1092,7 +1092,7 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 				PROFILE_CH_FREQ_32bit_200002EC = 426075000;
 			PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005A;
 		PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
-		//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x80041018;//0x0000100C; 	
+		//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x80041018;//0x0000100C;
 		Radio_Date_Type=1;
 		Channels=1;
 		if(Flag_TX_ID_load==0)
@@ -1100,7 +1100,7 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 		else ADF7030Cfg_pointer=ADF7030Cfg_load;
 		}
 		else {
-			
+
 			switch (Channels)
 			{
 /*
@@ -1108,7 +1108,7 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 				   PROFILE_CH_FREQ_32bit_200002EC = 429175000;
 				   PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005B;
 					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
-					PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C; 	
+					PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
 					Radio_Date_Type=1;
 					Channels=2;
 					ADF7030Cfg_pointer=ADF7030Cfg;
@@ -1117,7 +1117,7 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 				   PROFILE_CH_FREQ_32bit_200002EC = 429200000;
 				   PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005B;
 					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
-					PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C; 
+					PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
 					Radio_Date_Type=1;
 					Channels=3;
 					ADF7030Cfg_pointer=ADF7030Cfg;
@@ -1127,7 +1127,7 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 				  PROFILE_CH_FREQ_32bit_200002EC = 426075000;
 				  PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005A;
 					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
-					//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x80041018;//0x0000100C;	
+					//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x80041018;//0x0000100C;
 					Radio_Date_Type=1;
 					if(ID_SCX1801_DATA==0) Channels=1;
 					else Channels=3; //2;
@@ -1146,28 +1146,46 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 					   ADF7030Cfg_pointer=ADF7030Cfg;
 					else ADF7030Cfg_pointer=ADF7030Cfg_load;
 
-				   break;				   
-			  case 3:
-				   PROFILE_CH_FREQ_32bit_200002EC = PROFILE_CH1_FREQ_32bit_429HighSpeed;	
+				   break;
+			 /* case 3:
+				   PROFILE_CH_FREQ_32bit_200002EC = PROFILE_CH1_FREQ_32bit_429HighSpeed;
 				   PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005B;
 					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x64000030;
-					//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100E; 
+					//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100E;
 					Radio_Date_Type=2;
 					Channels=4;
 					ADF7030Cfg_pointer=ADF7030Cfg_4dot8k;
 				   break;
 			  case 4:
-				   PROFILE_CH_FREQ_32bit_200002EC = PROFILE_CH2_FREQ_32bit_429HighSpeed;	
+				   PROFILE_CH_FREQ_32bit_200002EC = PROFILE_CH2_FREQ_32bit_429HighSpeed;
 				   PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005B;
 					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x64000030;
 					//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100E;
 					Radio_Date_Type=2;
 					Channels=5;
 					ADF7030Cfg_pointer=ADF7030Cfg_4dot8k;
-				   break;			   
+				   break;*/
+             case 3:
+				   PROFILE_CH_FREQ_32bit_200002EC = PROFILE_CH1_FREQ_32bit_429LowSpeed;
+				   PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005B;
+					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
+					//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
+					Radio_Date_Type=1;
+					Channels=4;
+					ADF7030Cfg_pointer=ADF7030Cfg;
+				   break;
+			  case 4:
+				   PROFILE_CH_FREQ_32bit_200002EC = PROFILE_CH2_FREQ_32bit_429LowSpeed;
+				   PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005B;
+					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
+					//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
+					Radio_Date_Type=1;
+					Channels=5;
+					ADF7030Cfg_pointer=ADF7030Cfg;
+				   break;
 			  case 5:
 				   PROFILE_CH_FREQ_32bit_200002EC = 426075000;
-				   PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005A;	 
+				   PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005A;
 					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
 					//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x80041018;//0x0000100C;
 					Radio_Date_Type=1;
@@ -1175,7 +1193,7 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 					if(Flag_TX_ID_load==0)
 					   ADF7030Cfg_pointer=ADF7030Cfg;
 					else ADF7030Cfg_pointer=ADF7030Cfg_load;
-				   break;				   
+				   break;
 			  default:
 				   break;
 		   }
@@ -1187,7 +1205,7 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 	 * @Function : void Select_TX_frequency(void)
 	 * @File	 : ADF7030_1.c
 	 * @Program  :
-	 * @Created  : 
+	 * @Created  :
 	 * @Brief	 :
 	 * @Version  : V1.0
 	**/
@@ -1201,26 +1219,26 @@ void Select_TX_frequency(void)
    			{
    			    Channels=3;
 				ADF7030_Change_Channel();
-				ADF7030Init();	   				
+				ADF7030Init();
 				ADF7030_ACC_FROM_POWEROFF();
-				TIME_TX_RSSI_Scan=6;  
+				TIME_TX_RSSI_Scan=6;
 				First_TX_Scan=1;
 				TX_Scan_count=0;
    			}
-			else 
+			else
 			{
 		        DELAY_30U();
 		        while(GET_STATUE_BYTE().CMD_READY != 1);
 		        DELAY_30U();
 		        ADF7030_READ_REGISTER_NOPOINTER_LONGADDR(ADDR_PROFILE_CCA_READBACK,6);
-		        rssi_value = (short)((ADF7030_RESIGER_VALUE_READ & 0x07ff)<<5);//>>16;    
+		        rssi_value = (short)((ADF7030_RESIGER_VALUE_READ & 0x07ff)<<5);//>>16;
 		        rssi_value =rssi_value/128;
-				if((rssi_value<-90)||(TX_Scan_count>=3)) 
+				if((rssi_value<-90)||(TX_Scan_count>=3))
 					TX_Scan_step	=2;
-				else 
+				else
 					{   if(Channels==5)Channels=3;
 						ADF7030_Change_Channel();
-						ADF7030Init();	   				
+						ADF7030Init();
 						ADF7030_ACC_FROM_POWEROFF();
 						TIME_TX_RSSI_Scan=6;
 						TX_Scan_count++;
@@ -1234,7 +1252,7 @@ void Select_TX_frequency(void)
 	 * @Function : void APP_TX_PACKET(void)
 	 * @File	 : ADF7030_1.c
 	 * @Program  :
-	 * @Created  : 
+	 * @Created  :
 	 * @Brief	 :
 	 * @Version  : V1.0
 	**/
@@ -1244,18 +1262,18 @@ void Select_TX_frequency(void)
 	 u8 i=2,j=0;
 
 	 //if((TP3==0)&&(FLAG_Key_TP3==0))FLAG_Key_TP3=1;
-	 
+
       if((Time_error_read_timeout==0)&&(Flag_ERROR_Read==1))
       {
 	  	Flag_ERROR_Read=0;
 		FLAG_APP_TX_fromUART_err_read=0;
       }
-      if((Flag_FREQ_Scan==0)&&((PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH1_FREQ_32bit_429HighSpeed)||(PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH2_FREQ_32bit_429HighSpeed))&&
+      if((Flag_FREQ_Scan==0)&&((PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH1_FREQ_32bit_429LowSpeed)||(PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH2_FREQ_32bit_429LowSpeed))&&
 	  	   ((FLAG_APP_TX_fromUART_err_read==1)&&(Flag_ERROR_Read==1)&&(Time_error_read_gap==0)&&((FLAG_APP_RX==1)||(FLAG_APP_RXstart==1))&&(Radio_Date_Type_bak==2))
 	  	   )
       {
          for(j=0;j<8;j++)Last_Uart_Struct_DATA_Packet_Contro.data[j/2].uc[j%2]=0x00;
-		 
+
          Last_Uart_Struct_DATA_Packet_Contro.Fno_Type.UN.type=0x1f;
 		 Last_Uart_Struct_DATA_Packet_Contro.data[0].uc[0]=0x98;
 		 ERROR_Read_sendTX_packet++;
@@ -1263,7 +1281,7 @@ void Select_TX_frequency(void)
 		 while(ERROR_Read_sendTX_count<UART_DATA_ID98[1]-4)
 		 {
 		     Last_Uart_Struct_DATA_Packet_Contro.data[i/2].uc[i%2]=UART_DATA_ID98[ERROR_Read_sendTX_count+4];
-			 ERROR_Read_sendTX_count++;	
+			 ERROR_Read_sendTX_count++;
 			 i++;
 			 if(i==8)break;
 		 }
@@ -1279,11 +1297,11 @@ void Select_TX_frequency(void)
 		 FLAG_APP_RX=0;
 		 //FLAG_APP_RXstart=0;
 		 APP_TX_freq=0;
-		 TX_Scan_step=1; 
+		 TX_Scan_step=1;
 		 First_TX_Scan=0;
-		 		 
+
 	  }
-	  else if((Flag_FREQ_Scan==0)&&((PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH1_FREQ_32bit_429HighSpeed)||(PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH2_FREQ_32bit_429HighSpeed))&&
+	  else if((Flag_FREQ_Scan==0)&&((PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH1_FREQ_32bit_429LowSpeed)||(PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH2_FREQ_32bit_429LowSpeed))&&
 	  	  (((FLAG_APP_TX_fromOUT==1)&&(TIME_APP_TX_fromOUT==0))||(FLAG_Key_TP3==1)||
 	  	   //((FLAG_APP_TX_fromUART==1)&&(((TIME_APP_TX_fromOUT==0)&&(Radio_Date_Type_bak==2))||((TIMER300ms==0)&&(Radio_Date_Type_bak==1)))&&(Uart_Struct_DATA_Packet_Contro.data[0].ui!=Last_Uart_Struct_DATA_Packet_Contro.data[0].ui))
 	  	   ((FLAG_APP_TX_fromUART==1)&&(((TIME_APP_TX_fromOUT==0)&&(Radio_Date_Type_bak==2))||((TIMER300ms==0)&&(Radio_Date_Type_bak==1))))
@@ -1312,7 +1330,11 @@ void Select_TX_frequency(void)
 	  }
 	  if(FLAG_APP_TX==1)
 	  {
-	       if(TX_Scan_step==1)TX_Scan_step=2;//Select_TX_frequency();
+	       if(TX_Scan_step==1)
+           {
+               TX_Scan_step=2;
+               Select_TX_frequency();
+           }
 		   if(TX_Scan_step==2)
 		   {
 				if(APP_TX_freq==0)
@@ -1326,17 +1348,17 @@ void Select_TX_frequency(void)
 				else if((APP_TX_freq < DEF_APP_TX_freq)&&(ADF7030_GPIO3 == 0)&&(Time_APP_blank_TX==0))
 				{
 					 ADF7030_TRANSMITTING_FROM_POWEROFF();
-					 Time_APP_blank_TX=2;		
+					 Time_APP_blank_TX=2;
 					APP_TX_freq++;
 				}
 				else if((APP_TX_freq==DEF_APP_TX_freq)&&(ADF7030_GPIO3 == 0)&&(Time_APP_blank_TX==0))
-				{	   
-					APP_TX_freq++;
-				   FLAG_APP_RXstart=1;
-				   FLAG_APP_TX=0;
-				   Time_APP_RXstart=1;	
-				   Receiver_LED_TX = 0;
-				   FLAG_APP_TX_once=0;
+				{
+                    APP_TX_freq++;
+                    FLAG_APP_RXstart=1;
+                    FLAG_APP_TX=0;
+                    Time_APP_RXstart=1;
+                    Receiver_LED_TX = 0;
+                    FLAG_APP_TX_once=0;
 				}
 		   }
 	  }
@@ -1344,13 +1366,13 @@ void Select_TX_frequency(void)
 	  {
 		  FLAG_APP_RXstart=0;
 		TIMER18ms=0;
-		FLAG_APP_RX=1;	
-		
-		ADF7030Init();	   //��Ƶ��ʼ�� 	 
+		FLAG_APP_RX=1;
+
+		ADF7030Init();	   //��Ƶ��ʼ��
 	  }
 
-	  
+
 	}
 
-	
+
 

@@ -100,7 +100,7 @@ void ID_Decode_IDCheck(void)
 			    {
 		                if (DATA_Packet_ID == 0xFFFFFE)
 		                    DATA_Packet_Control = DATA_Packet_Contro_buf; //2015.3.24淇 Control缂撳瓨璧?ID鍒ゆ柇鏄惁瀛︿範杩囧悗鎵嶈兘浣跨敤
-		                                                                 
+
 		                if ((SPI_Receive_DataForC[1] & 0x0000FFFF) == 0x5556)
 		                {
 		                    PAYLOAD_SIZE = RX_PayLoadSizeLogin;
@@ -187,7 +187,7 @@ void ID_Decode_IDCheck(void)
 				}
             }
 
-			
+
         }
     }
 }
@@ -246,7 +246,7 @@ void Signal_DATA_Decode(UINT8 NUM_Type)
 				Struct_DATA_Packet_Contro_buf.data[i].ui=data_NRZ[i+2];
 	    }
 	    else
-	        FLAG_Signal_DATA_OK = 0;	
+	        FLAG_Signal_DATA_OK = 0;
 	}
 }
 
@@ -256,7 +256,7 @@ void eeprom_IDcheck(void)
 	if(FLAG_testNo91==1)
 		{
             FLAG_IDCheck_OK = 1;
-            DATA_Packet_Control = DATA_Packet_Contro_buf;		
+            DATA_Packet_Control = DATA_Packet_Contro_buf;
 		}
 #ifndef DEF_test_MAX_32pcs
 		if(Radio_Date_Type_bak==1)
@@ -302,8 +302,8 @@ void eeprom_IDcheck(void)
 					DATA_Packet_Control = DATA_Packet_Contro_buf;
 				} //è¿½åŠ å¤šæ¬¡IDç™»å½•
 			}
-	
-#endif	
+
+#endif
 
 
 }
@@ -312,10 +312,10 @@ void TIM3_init(void)
     TIM3_CCMR1 = TIM3_CCMR1 | 0x70;
     TIM3_CCER1 = TIM3_CCER1 | 0x03;  //TIME3_CH1
     TIM3_ARRH = 0x08;                //0x07D0 -->PWM=2K        0x0880 -->PWM=1.83K
-    TIM3_ARRL = 0x84;                	
+    TIM3_ARRL = 0x84;
                                      //TIM2_IER = 0x01;						// ??????????
     TIM3_CCR1H = 0x04;               //50%
-    TIM3_CCR1L = 0x42;                 
+    TIM3_CCR1L = 0x42;
     TIM3_PSCR = 0x02;                // ?????=Fsystem/(2(PSC[2:0])????4MHz=16MHz/2/2
     //TIM3_EGR_bit.UG=1;
     //TIM2_CR1 = 0x01;					// ?????????????????
@@ -405,234 +405,237 @@ void TEST_beep(void)
 
 void ID_Decode_OUT(void)
 {
-    u8 Control_i;	
+    u8 Control_i;
 
     Control_i = DATA_Packet_Control &  0xFF;
     if (TIMER1s)
     {
-      if((FLAG_testNo91==1)||(FLAG_testNo91==2))
-      {
-			if((FLAG_testNo91SendUart==0)&&(FLAG_testNo91==1))
-				{
-				       switch (Control_i)
-                       {
-				        case 0x08: //open
+        if((FLAG_testNo91==1)||(FLAG_testNo91==2))
+        {
+            if((FLAG_testNo91SendUart==0)&&(FLAG_testNo91==1))
+            {
+                switch (Control_i)
+                {
+                    case 0x08: //open
 //				            if(FLAG_testNo91_step==1)
 //				            	{
-					            Receiver_LED_OUT = 1;
-								ACKBack[2]=0xA1;
-								Send_Data(ACKBack, 3);
-								FLAG_testNo91SendUart=1;	
+                        Receiver_LED_OUT = 1;
+                        ACKBack[2]=0xA1;
+                        Send_Data(ACKBack, 3);
+                        FLAG_testNo91SendUart=1;
 //				            	}
-				            break;   
-				        case 0x04: //stop
+                    break;
+                    case 0x04: //stop
 //				            if(FLAG_testNo91_step==2)
 //				            	{
-					            Receiver_LED_OUT = 1;
-								ACKBack[2]=0xA2;
-								Send_Data(ACKBack, 3);
-								FLAG_testNo91SendUart=1;	
-//				            	}						
-				            break; 							
-				        case 0x02: //close
+                        Receiver_LED_OUT = 1;
+                        ACKBack[2]=0xA2;
+                        Send_Data(ACKBack, 3);
+                        FLAG_testNo91SendUart=1;
+//				            	}
+                    break;
+                    case 0x02: //close
 //				            if(FLAG_testNo91_step==3)
 //				            	{
-					            Receiver_LED_OUT = 1;
-								ACKBack[2]=0xA4;
-								Send_Data(ACKBack, 3);
-								FLAG_testNo91SendUart=1;	
-//				            	}						
-				            break;
-						default:
-                            break;	
-                       }
-				
-				}        	
-      }
-	  else
-	  {
-        switch (Control_i)
-        {
-        case 0x14: //stop+login
-            Receiver_LED_OUT = 1;
-            TIMER250ms_STOP = 250;
-            Receiver_OUT_VENT = FG_NOT_allow_out;
-            Receiver_OUT_STOP = FG_allow_out;
-            if (TIMER1s < 3550)
-            {
-                Receiver_OUT_OPEN = FG_allow_out;
-                Receiver_OUT_CLOSE = FG_allow_out;
-                Receiver_BEEP();
+                        Receiver_LED_OUT = 1;
+                        ACKBack[2]=0xA4;
+                        Send_Data(ACKBack, 3);
+                        FLAG_testNo91SendUart=1;
+//				            	}
+                    break;
+                    default:
+                        break;
+                }
+
             }
-            break;
-        case 0x40: //鑷姩閫佷俊
-            if ((FG_auto_out == 0) && (Manual_override_TIMER == 0)&&(Radio_Date_Type_bak==1))
+        }
+        else
+        {
+            switch (Control_i)
             {
-                Receiver_LED_OUT = 1;
-                TIMER250ms_STOP = 0;
-                Receiver_OUT_VENT = FG_NOT_allow_out;
-                Receiver_OUT_CLOSE = FG_NOT_allow_out;
-                if (TIMER1s > 2000)
-                {
+                case 0x14: //stop+login
+                    Receiver_LED_OUT = 1;
+                    TIMER250ms_STOP = 250;
+                    Receiver_OUT_VENT = FG_NOT_allow_out;
                     Receiver_OUT_STOP = FG_allow_out;
+                    if (TIMER1s < 3550)
+                    {
+                        Receiver_OUT_OPEN = FG_allow_out;
+                        Receiver_OUT_CLOSE = FG_allow_out;
+                        Receiver_BEEP();
+                    }
+                break;
+                case 0x40: //鑷姩閫佷俊
+                    if ((FG_auto_out == 0) && (Manual_override_TIMER == 0)&&(Radio_Date_Type_bak==1))
+                    {
+                        Receiver_LED_OUT = 1;
+                        TIMER250ms_STOP = 0;
+                        Receiver_OUT_VENT = FG_NOT_allow_out;
+                        Receiver_OUT_CLOSE = FG_NOT_allow_out;
+                        if (TIMER1s > 2000)
+                        {
+                            Receiver_OUT_STOP = FG_allow_out;
+                            Receiver_OUT_OPEN = FG_NOT_allow_out;
+                        } //1830
+                        else if (TIMER1s > 1000)
+                        {
+                            Receiver_OUT_STOP = FG_NOT_allow_out;
+                            Receiver_OUT_OPEN = FG_NOT_allow_out;
+                        } //810
+                        else
+                        {
+                            FG_auto_open_time = 1;
+                            Receiver_OUT_STOP = FG_NOT_allow_out;
+                            Receiver_OUT_OPEN = FG_allow_out;
+                        }
+                    }
+                break;
+                case 0x01: //VENT
+                    Receiver_LED_OUT = 1;
+                    if (Receiver_vent == 0)
+                    { //鍙椾俊鏈烘崲姘旇仈鍔∣FF
+                        Receiver_OUT_STOP = FG_NOT_allow_out;
+                        Receiver_OUT_VENT = FG_NOT_allow_out;
+                        Receiver_OUT_OPEN = FG_allow_out;
+                        Receiver_OUT_CLOSE = FG_allow_out;
+                    }
+                    else
+                    { //鍙椾俊鏈烘崲姘旇仈鍔∣N
+                        Receiver_OUT_STOP = FG_NOT_allow_out;
+                        Receiver_OUT_OPEN = FG_NOT_allow_out;
+                        Receiver_OUT_CLOSE = FG_NOT_allow_out;
+                        Receiver_OUT_VENT = FG_allow_out;
+                    }
+                break;
+                case 0x02: //close
+                    Receiver_LED_OUT = 1;
                     Receiver_OUT_OPEN = FG_NOT_allow_out;
-                } //1830
-                else if (TIMER1s > 1000)
-                {
                     Receiver_OUT_STOP = FG_NOT_allow_out;
+                    Receiver_OUT_VENT = FG_NOT_allow_out;
+                    Receiver_OUT_CLOSE = FG_allow_out;
+                break;
+                case 0x04: //stop
+                    Receiver_LED_OUT = 1;
                     Receiver_OUT_OPEN = FG_NOT_allow_out;
-                } //810
-                else
-                {
-                    FG_auto_open_time = 1;
+                    Receiver_OUT_CLOSE = FG_NOT_allow_out;
+                    Receiver_OUT_VENT = FG_NOT_allow_out;
+                    Receiver_OUT_STOP = FG_allow_out;
+                break;
+                case 0x08: //open
+                    Receiver_LED_OUT = 1;
                     Receiver_OUT_STOP = FG_NOT_allow_out;
+                    Receiver_OUT_CLOSE = FG_NOT_allow_out;
+                    Receiver_OUT_VENT = FG_NOT_allow_out;
                     Receiver_OUT_OPEN = FG_allow_out;
+                break;
+                case 0x0C: //open+stop
+                    Receiver_LED_OUT = 1;
+                    TIMER250ms_STOP = 250;
+                    Receiver_OUT_CLOSE = FG_NOT_allow_out;
+                    Receiver_OUT_VENT = FG_NOT_allow_out;
+                    Receiver_OUT_STOP = FG_allow_out;
+                    if (FG_OUT_OPEN_CLOSE == 0)
+                    {
+                        FG_OUT_OPEN_CLOSE = 1;
+                        TIME_OUT_OPEN_CLOSE = 25;
+                    }
+                    if (TIME_OUT_OPEN_CLOSE == 0)
+                        Receiver_OUT_OPEN = FG_allow_out;
+                break;
+                case 0x06: //close+stop
+                    Receiver_LED_OUT = 1;
+                    TIMER250ms_STOP = 250;
+                    Receiver_OUT_OPEN = FG_NOT_allow_out;
+                    Receiver_OUT_VENT = FG_NOT_allow_out;
+                    Receiver_OUT_STOP = FG_allow_out;
+                    if (FG_OUT_OPEN_CLOSE == 0)
+                    {
+                        FG_OUT_OPEN_CLOSE = 1;
+                        TIME_OUT_OPEN_CLOSE = 25;
+                    }
+                    if (TIME_OUT_OPEN_CLOSE == 0)
+                        Receiver_OUT_CLOSE = FG_allow_out;
+                break;
+                case 0x0A: //close+OPEN
+                    Receiver_LED_OUT = 1;
+                    Receiver_OUT_STOP = FG_NOT_allow_out;
+                    Receiver_OUT_VENT = FG_NOT_allow_out;
+                    Receiver_OUT_OPEN = FG_allow_out;
+                    Receiver_OUT_CLOSE = FG_allow_out;
+                break;
+                case 0x09: //vent+OPEN
+                    Receiver_LED_OUT = 1;
+                    Receiver_OUT_STOP = FG_NOT_allow_out;
+                    Receiver_OUT_CLOSE = FG_NOT_allow_out;
+                    Receiver_OUT_OPEN = FG_allow_out;
+                    Receiver_OUT_VENT = FG_allow_out;
+                break;
+                case 0x03: //vent+close
+                    Receiver_LED_OUT = 1;
+                    Receiver_OUT_STOP = FG_NOT_allow_out;
+                    Receiver_OUT_OPEN = FG_NOT_allow_out;
+                    Receiver_OUT_CLOSE = FG_allow_out;
+                    Receiver_OUT_VENT = FG_allow_out;
+                break;
+                default:
+                    break;
+            }
+            if(Radio_Date_Type_bak==2)
+            {             //429M   鍗婂紑淇″彿/鍗婇棴
+                if(((DATA_Packet_Control&0xDF)>0x80)&&((DATA_Packet_Control&0x20)==0x00))
+                {
+                    if((DATA_Packet_Control&0xDF)<0xC0){
+                        FLAG__Semi_open_T=1;
+                        FLAG__Semi_close_T=0;
+                        Receiver_LED_OUT=1;
+                        Receiver_OUT_STOP=FG_NOT_allow_out;
+                        Receiver_OUT_CLOSE=FG_NOT_allow_out;
+                        Receiver_OUT_OPEN=FG_allow_out;
+                        TIMER250ms_STOP=((TIMER_Semi_open+1)*1000/107)*100;
+                    }
+                    else
+                    {
+                        FLAG__Semi_open_T=0;
+                        FLAG__Semi_close_T=1;
+                        Receiver_LED_OUT=1;
+                        Receiver_OUT_STOP=FG_NOT_allow_out;
+                        Receiver_OUT_CLOSE=FG_allow_out;
+                        Receiver_OUT_OPEN=FG_NOT_allow_out;
+                        TIMER250ms_STOP=((TIMER_Semi_close+1)*1000/107)*100;
+                    }
+                }
+                if((DATA_Packet_Control==0x7F)&&(Flag_ERROR_Read==0)&&(Flag_shutter_stopping==0))
+                {
+                    Flag_ERROR_Read=1;
+                    FLAG_APP_TX_fromUART_err_read=0;
+                    Send_Data(Send_err_com, 7);
+                    Flag_ERROR_Read_once_again=1;
+                    TIME_ERROR_Read_once_again=17;
+                    Time_error_read_timeout=100;
                 }
             }
-            break;
-        case 0x01: //VENT
-            Receiver_LED_OUT = 1;
-            if (Receiver_vent == 0)
-            { //鍙椾俊鏈烘崲姘旇仈鍔∣FF
-                Receiver_OUT_STOP = FG_NOT_allow_out;
-                Receiver_OUT_VENT = FG_NOT_allow_out;
-                Receiver_OUT_OPEN = FG_allow_out;
-                Receiver_OUT_CLOSE = FG_allow_out;
-            }
-            else
-            { //鍙椾俊鏈烘崲姘旇仈鍔∣N
-                Receiver_OUT_STOP = FG_NOT_allow_out;
-                Receiver_OUT_OPEN = FG_NOT_allow_out;
-                Receiver_OUT_CLOSE = FG_NOT_allow_out;
-                Receiver_OUT_VENT = FG_allow_out;
-            }
-            break;
-        case 0x02: //close
-            Receiver_LED_OUT = 1;
-            Receiver_OUT_OPEN = FG_NOT_allow_out;
-            Receiver_OUT_STOP = FG_NOT_allow_out;
-            Receiver_OUT_VENT = FG_NOT_allow_out;
-            Receiver_OUT_CLOSE = FG_allow_out;
-            break;
-        case 0x04: //stop
-            Receiver_LED_OUT = 1;
-            Receiver_OUT_OPEN = FG_NOT_allow_out;
-            Receiver_OUT_CLOSE = FG_NOT_allow_out;
-            Receiver_OUT_VENT = FG_NOT_allow_out;
-            Receiver_OUT_STOP = FG_allow_out;
-            break;
-        case 0x08: //open
-            Receiver_LED_OUT = 1;
-            Receiver_OUT_STOP = FG_NOT_allow_out;
-            Receiver_OUT_CLOSE = FG_NOT_allow_out;
-            Receiver_OUT_VENT = FG_NOT_allow_out;
-            Receiver_OUT_OPEN = FG_allow_out;
-            break;
-        case 0x0C: //open+stop
-            Receiver_LED_OUT = 1;
-            TIMER250ms_STOP = 250;
-            Receiver_OUT_CLOSE = FG_NOT_allow_out;
-            Receiver_OUT_VENT = FG_NOT_allow_out;
-            Receiver_OUT_STOP = FG_allow_out;
-            if (FG_OUT_OPEN_CLOSE == 0)
+            if((FLAG__Semi_open_T==1)||(FLAG__Semi_close_T==1))
             {
-                FG_OUT_OPEN_CLOSE = 1;
-                TIME_OUT_OPEN_CLOSE = 25;
+                if((DATA_Packet_Control==0x02)||(DATA_Packet_Control==0x04)||(DATA_Packet_Control==0x08)||(DATA_Packet_Control==0x01)||(DATA_Packet_Control==0x20)||(DATA_Packet_Control==0x40)
+                    ||(DATA_Packet_Control==0x9)||(DATA_Packet_Control==0x03)||(DATA_Packet_Control==0x0C)||(DATA_Packet_Control==0x06)||(DATA_Packet_Control==0x0A))
+                {
+                    //2015.12.29杩藉姞锛屽湪鍗婂紑銆佸崐闂姩浣滀腑锛岄?佷俊鏈猴紙寮?+闂級淇″彿锛岃鍋滄缁х數鍣ㄤ笉鍔ㄤ綔
+                    FLAG__Semi_open_T=0;FLAG__Semi_close_T=0;TIMER250ms_STOP=0;
+                }
             }
-            if (TIME_OUT_OPEN_CLOSE == 0)
-                Receiver_OUT_OPEN = FG_allow_out;
-            break;
-        case 0x06: //close+stop
-            Receiver_LED_OUT = 1;
-            TIMER250ms_STOP = 250;
-            Receiver_OUT_OPEN = FG_NOT_allow_out;
-            Receiver_OUT_VENT = FG_NOT_allow_out;
-            Receiver_OUT_STOP = FG_allow_out;
-            if (FG_OUT_OPEN_CLOSE == 0)
-            {
-                FG_OUT_OPEN_CLOSE = 1;
-                TIME_OUT_OPEN_CLOSE = 25;
-            }
-            if (TIME_OUT_OPEN_CLOSE == 0)
-                Receiver_OUT_CLOSE = FG_allow_out;
-            break;
-        case 0x0A: //close+OPEN
-            Receiver_LED_OUT = 1;
-            Receiver_OUT_STOP = FG_NOT_allow_out;
-            Receiver_OUT_VENT = FG_NOT_allow_out;
-            Receiver_OUT_OPEN = FG_allow_out;
-            Receiver_OUT_CLOSE = FG_allow_out;
-            break;
-        case 0x09: //vent+OPEN
-            Receiver_LED_OUT = 1;
-            Receiver_OUT_STOP = FG_NOT_allow_out;
-            Receiver_OUT_CLOSE = FG_NOT_allow_out;
-            Receiver_OUT_OPEN = FG_allow_out;
-            Receiver_OUT_VENT = FG_allow_out;
-            break;
-        case 0x03: //vent+close
-            Receiver_LED_OUT = 1;
-            Receiver_OUT_STOP = FG_NOT_allow_out;
-            Receiver_OUT_OPEN = FG_NOT_allow_out;
-            Receiver_OUT_CLOSE = FG_allow_out;
-            Receiver_OUT_VENT = FG_allow_out;
-            break;
-        default:
-            break;
-        }
-        if(Radio_Date_Type_bak==2)
-		{             //429M   鍗婂紑淇″彿/鍗婇棴
-                    if(((DATA_Packet_Control&0xDF)>0x80)&&((DATA_Packet_Control&0x20)==0x00))
-						{
-                                if((DATA_Packet_Control&0xDF)<0xC0){
-                                    FLAG__Semi_open_T=1;
-                                    FLAG__Semi_close_T=0;
-                                    Receiver_LED_OUT=1;
-                                    Receiver_OUT_STOP=FG_NOT_allow_out;
-                                    Receiver_OUT_CLOSE=FG_NOT_allow_out;
-                                    Receiver_OUT_OPEN=FG_allow_out;
-                                    TIMER250ms_STOP=((TIMER_Semi_open+1)*1000/107)*100;
-                                }
-                                else {
-                                    FLAG__Semi_open_T=0;
-                                    FLAG__Semi_close_T=1;
-                                    Receiver_LED_OUT=1;
-                                    Receiver_OUT_STOP=FG_NOT_allow_out;
-                                    Receiver_OUT_CLOSE=FG_allow_out;
-                                    Receiver_OUT_OPEN=FG_NOT_allow_out;
-                                    TIMER250ms_STOP=((TIMER_Semi_close+1)*1000/107)*100;
-                                }
-                      }
-					if((DATA_Packet_Control==0x7F)&&(Flag_ERROR_Read==0)&&(Flag_shutter_stopping==0))
-					{
-					   Flag_ERROR_Read=1;
-					   FLAG_APP_TX_fromUART_err_read=0;
-					  Send_Data(Send_err_com, 7);
-					  Flag_ERROR_Read_once_again=1;
-					  TIME_ERROR_Read_once_again=17;
-					  Time_error_read_timeout=100;
-					}
-         }	
-		if((FLAG__Semi_open_T==1)||(FLAG__Semi_close_T==1)){
-					 if((DATA_Packet_Control==0x02)||(DATA_Packet_Control==0x04)||(DATA_Packet_Control==0x08)||(DATA_Packet_Control==0x01)||(DATA_Packet_Control==0x20)||(DATA_Packet_Control==0x40)
-					  ||(DATA_Packet_Control==0x9)||(DATA_Packet_Control==0x03)||(DATA_Packet_Control==0x0C)||(DATA_Packet_Control==0x06)||(DATA_Packet_Control==0x0A)){
-						 //2015.12.29杩藉姞锛屽湪鍗婂紑銆佸崐闂姩浣滀腑锛岄?佷俊鏈猴紙寮?+闂級淇″彿锛岃鍋滄缁х數鍣ㄤ笉鍔ㄤ綔
-						 FLAG__Semi_open_T=0;FLAG__Semi_close_T=0;TIMER250ms_STOP=0;
-					 }
-		 }
 
-         if(((DATA_Packet_Control==0x00)||(DATA_Packet_Control==0x02)||(DATA_Packet_Control==0x04)||(DATA_Packet_Control==0x08)||(DATA_Packet_Control==0x01)
+            if(((DATA_Packet_Control==0x00)||(DATA_Packet_Control==0x02)||(DATA_Packet_Control==0x04)||(DATA_Packet_Control==0x08)||(DATA_Packet_Control==0x01)
                ||(DATA_Packet_Control==0x20)||(DATA_Packet_Control==0x40)||((FLAG__Semi_open_T==1)||(FLAG__Semi_close_T==1)))&&(FLAG_APP_TX_fromOUT==0)&&(Radio_Date_Type_bak==2)&&(FLAG_APP_TX==0)&&(FLAG_APP_TX_once==1))
-         {
-             FLAG_APP_TX_fromOUT=1;		
-			 if(DATA_Packet_Control==0x00)TIME_APP_TX_fromOUT=35;//15+DEF_APP_TX_freq*8;  //350ms
-			 else TIME_APP_TX_fromOUT=35;//15+DEF_APP_TX_freq*8;  //350ms		 
-         }
+            {
+                FLAG_APP_TX_fromOUT=1;
+                if(DATA_Packet_Control==0x00)
+                        TIME_APP_TX_fromOUT=35;//15+DEF_APP_TX_freq*8;  //350ms
+                else    TIME_APP_TX_fromOUT=35;//15+DEF_APP_TX_freq*8;  //350ms
+            }
+        }
 
-		
-	 }
-	  	  
     }
+
     else
     {
         //           if(FLAG_APP_Reply==1){FLAG_APP_Reply=0;ID_data.IDL=DATA_Packet_ID;Control_code=HA_Status;FLAG_HA_START=1;}
@@ -677,13 +680,27 @@ void ID_Decode_OUT(void)
         else if(TIME_power_led==0)
             Receiver_LED_OUT = 0;
 
-               if((FLAG__Semi_open_T==1)||(FLAG__Semi_close_T==1)){
+        if((FLAG__Semi_open_T==1)||(FLAG__Semi_close_T==1))
+        {
 //                   if(HA_Status==0x83)TIMER250ms_STOP=0;     //2015.12.29杩藉姞锛屽湪鍗婂紑銆佸崐闂姩浣滀腑锛屽彈淇℃満鐨勭姸鎬佸彉鎴愬紓甯?1鐨勬椂鍊欙紝璁╁仠姝㈢户鐢靛櫒涓嶅姩浣?
-                   if((TIMER250ms_STOP<1000)&&(TIMER250ms_STOP>0)){Receiver_OUT_STOP=FG_allow_out;Receiver_LED_OUT=1;}
-                   else if(TIMER250ms_STOP==0){Receiver_OUT_STOP=FG_NOT_allow_out;FLAG__Semi_open_T=0;FLAG__Semi_close_T=0;}
-               }
-               else if((TIMER250ms_STOP==0)&&(TIME_auto_close==0)){Receiver_OUT_STOP=FG_NOT_allow_out;FG_OUT_OPEN_CLOSE=0;}    //2015.3.23淇敼		
-        
+            if((TIMER250ms_STOP<1000)&&(TIMER250ms_STOP>0))
+            {
+                Receiver_OUT_STOP=FG_allow_out;
+                Receiver_LED_OUT=1;
+            }
+            else if(TIMER250ms_STOP==0)
+            {
+                Receiver_OUT_STOP=FG_NOT_allow_out;
+                FLAG__Semi_open_T=0;
+                FLAG__Semi_close_T=0;
+            }
+        }
+        else if((TIMER250ms_STOP==0)&&(TIME_auto_close==0))
+        {
+            Receiver_OUT_STOP=FG_NOT_allow_out;
+            FG_OUT_OPEN_CLOSE=0;
+        }    //2015.3.23淇敼
+
         if (FG_auto_open_time == 1)
         {
             FG_First_auto = 0;
@@ -695,7 +712,7 @@ void ID_Decode_OUT(void)
             Receiver_OUT_STOP = FG_NOT_allow_out;
             FG_OUT_OPEN_CLOSE = 0;
         }
-		FLAG_testNo91SendUart=0;
+        FLAG_testNo91SendUart=0;
     }
     if (TIMER300ms == 0)
         FG_Receiver_LED_RX = 0; //Receiver_LED_RX=0;
@@ -715,20 +732,20 @@ void Freq_Scanning(void)
 				if (ADF7030_Read_RESIGER(0x4000380C, 1, 0) != 0)
 				{
 		             FG_Receiver_LED_RX = 1;
-					 
+
 					Flag_FREQ_Scan = 1;
 					if(Radio_Date_Type==1)
 					  {TIMER18ms = 82;TIMER300ms = 600; }
 					else if(Radio_Date_Type==2)
 					  {TIMER18ms = 130; TIMER300ms = 100;  }
-	
+
 					return;
 				}
 			}
-	
+
 			ADF7030_Change_Channel();
-			ADF7030Init();	   //锟斤拷频锟斤拷始锟斤拷 
-	
+			ADF7030Init();	   //锟斤拷频锟斤拷始锟斤拷
+
 			if(Radio_Date_Type==1)
 			  TIMER18ms = 18;
 			else if(Radio_Date_Type==2)

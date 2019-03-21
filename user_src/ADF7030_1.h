@@ -22,7 +22,8 @@
 #define ADF703x_SPI_MEM_SHORT (0 << 3)
 #define ADF703x_SPI_MEM_LONG (1 << 3)
 
-typedef enum {
+typedef enum
+{
     PNTR_SETUP_ADDR = 0,
     PNTR_SRAM_ADDR = 1,
     PNTR_MCR_LOW = 2,
@@ -124,9 +125,9 @@ extern u16 PAYLOAD_SIZE;
 #define RX_PayLoadSizeLogin 24
 #define RX_PayLoadSize_4dot8k 28
 
-#define	Receiver_426MHz_mode   1              //????  1=RX      0=TX and RX
-/***************************************************/
-/***************************************************/
+#define Receiver_426MHz_mode 0 //????  1=RX      0=TX and RX
+                               /***************************************************/
+                               /***************************************************/
 /**ADF7030_REST**/ extern u8 ADF7030_REST_Cache;
 /**Receiver_vent**/ extern u8 Receiver_vent_Cache;
 extern u8 RX_COUNT;
@@ -143,8 +144,6 @@ extern UINT8 DATA_Packet_Contro_buf; //2015.3.24����
 extern u8 Flag_FREQ_Scan;
 extern u8 Radio_Date_Type;
 extern u8 Radio_Date_Type_bak;
-
-
 
 void DELAY_30U(void);
 
@@ -179,6 +178,5 @@ void ADF7030_Change_Channel(void);
 
 void APP_TX_PACKET(void);
 void ADF7030_RECEIVING_FROM_POWEROFF_testMode(void);
-
 
 #endif

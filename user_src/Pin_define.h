@@ -138,10 +138,12 @@ extern u8 LED_Cache;
 #define Receiver_test_direc PC_DDR_DDR0//PB_DDR_DDR0 // Input 受信机测试脚  高电平有效
 #define Receiver_test_CR1 PC_CR1_C10 //PB_CR1_C10    // Input 受信机测试脚  高电平有效
 
+/*
 #define TP3 PA_IDR_IDR4
 #define TP3_DDR PA_DDR_DDR4
 #define TP3_CR1 PA_CR1_C14
 #define TP3_CR2 PA_CR2_C24
+*/
 
 #define TP4 PC_IDR_IDR1//PA_IDR_IDR5
 #define TP4_DDR PC_DDR_DDR1//PA_DDR_DDR5
@@ -200,7 +202,7 @@ extern u8 LED_Cache;
 #define SW_2   PE_IDR_IDR3
 #define SW_3   PE_IDR_IDR4
 #define SW_4   PE_IDR_IDR5
-#define SW_CODE   (SW2_4 <<3 | SW2_3 << 2 | SW2_2 << 1 | SW2_1)
+#define SW_CODE   (SW2_4 << 3 | SW2_3 << 2 | SW2_2 << 1 | SW2_1)
 
 #define Abnormal_Signal_DDR     PE_DDR_DDR0
 #define Abnormal_Signal_CR1     PE_CR1_C10

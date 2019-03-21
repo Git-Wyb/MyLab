@@ -70,7 +70,7 @@ void main(void)
   TIME_power_led = 500;
   ClearWDT(); // Service the WDT
   RF_test_mode();
-  FLAG_APP_RX = 1;
+//  FLAG_APP_RX = 1;
   FG_Receiver_LED_RX = 0;
   TIME_EMC = 10;
   FLAG_testNo91 = 0;
