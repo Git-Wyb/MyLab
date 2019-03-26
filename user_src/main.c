@@ -75,6 +75,7 @@ void main(void)
   TIME_EMC = 10;
   FLAG_testNo91 = 0;
   FLAG_testBEEP = 0;
+
   while (1)
   {
     ClearWDT(); // Service the WDT

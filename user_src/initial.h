@@ -59,4 +59,6 @@ void RF_BRE_Check(void);
 void BerExtiInit(void);
 void BerExtiUnInit(void);
 void DIP_SW_Init(void);
+u8 DIP_SW_Code(void);
+void DIP_SW_Test(void);
 #endif

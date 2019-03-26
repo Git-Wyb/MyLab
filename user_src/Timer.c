@@ -43,19 +43,21 @@ void TIM4_UPD_OVF(void)
     { // 10mS FLAG
         TIME_10ms = 10;
         FG_10ms = 1;
+
     }
     if (U1AckTimer)
         U1AckTimer--;
     if (Time_APP_RXstart)
-      --Time_APP_RXstart;	
+      --Time_APP_RXstart;
     if(Time_APP_blank_TX)
-       --Time_APP_blank_TX;  	
+       --Time_APP_blank_TX;
     if (Flag_RSSI_Read_Timer)
         Flag_RSSI_Read_Timer--;
     if (X_ERRTimer)
         X_ERRTimer--;
 	if (TIME_ID_SCX1801_Login)
 		--TIME_ID_SCX1801_Login;
+    if(time_sw)   --time_sw;
 
     TIM4_SR1_bit.UIF = 0; // 清除中断标记
 }

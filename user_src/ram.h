@@ -219,6 +219,6 @@ extern u8 ERROR_Read_sendTX_count;
 extern u8 ERROR_Read_sendTX_packet;
 extern u8 Flag_ERROR_Read_once_again;
 
-
+ extern u16 time_sw;
 
 #endif

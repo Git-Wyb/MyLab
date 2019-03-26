@@ -60,20 +60,20 @@ typedef union {
 }uni_i;
 
 
-typedef struct body    //¶¨Òå½á¹¹Ìå  
-{  
-	union  
-	{  
-		u8 byte;  
-		struct	
-		{  
-			unsigned char type :5;  
-			unsigned char fno :3;   		 
-		} UN;  
-	}Fno_Type; 
-	
-    uni_i data[4];  //ÎÞÏßdata      
-}Wireless_Body;  //½á¹¹Ìå
+typedef struct body    //¶¨Òå½á¹¹Ìå
+{
+	union
+	{
+		u8 byte;
+		struct
+		{
+			unsigned char type :5;
+			unsigned char fno :3;
+		} UN;
+	}Fno_Type;
+
+    uni_i data[4];  //æ— çº¿data
+}Wireless_Body;  //ç»“æž„ä½“
 
 
 #define TRANSITION_STATUS_TRANSITION 0

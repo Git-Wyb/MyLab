@@ -661,7 +661,7 @@ void RX_ANALYSIS(void)
                                   (u32)SPI_RECEIVE_BUFF[i * 4 + 5] << 16 |
                                   (u32)SPI_RECEIVE_BUFF[i * 4 + 6] << 24;
     }
-	if(Flag_ERROR_Read==0)//ÔÚÒì³£ÂÄÀú¶ÁÈ¡ºÍÎÞÏßÁ¬Ðø¼¸°ü·¢ÉäÊ±£¬²»ÔÊÐí½ÓÊÕ¡¢½âÂë¡£
+	if(Flag_ERROR_Read==0)  //åœ¨å¼‚å¸¸å±¥åŽ†è¯»å–å’Œæ— çº¿è¿žç»­å‡ åŒ…å‘å°„æ—¶ï¼Œä¸å…è®¸æŽ¥æ”¶ã€è§£ç 
 	{
        FLAG_Receiver_IDCheck = 1;
        ID_Decode_IDCheck();
@@ -1270,7 +1270,7 @@ void Select_TX_frequency(void)
       }
       if((Flag_FREQ_Scan==0)&&((PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH1_FREQ_32bit_429LowSpeed)||(PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH2_FREQ_32bit_429LowSpeed))&&
 	  	   ((FLAG_APP_TX_fromUART_err_read==1)&&(Flag_ERROR_Read==1)&&(Time_error_read_gap==0)&&((FLAG_APP_RX==1)||(FLAG_APP_RXstart==1))&&(Radio_Date_Type_bak==2))
-	  	   )
+	  	   )   ////
       {
          for(j=0;j<8;j++)Last_Uart_Struct_DATA_Packet_Contro.data[j/2].uc[j%2]=0x00;
 
@@ -1304,7 +1304,7 @@ void Select_TX_frequency(void)
 	  else if((Flag_FREQ_Scan==0)&&((PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH1_FREQ_32bit_429LowSpeed)||(PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH2_FREQ_32bit_429LowSpeed))&&
 	  	  (((FLAG_APP_TX_fromOUT==1)&&(TIME_APP_TX_fromOUT==0))||(FLAG_Key_TP3==1)||
 	  	   //((FLAG_APP_TX_fromUART==1)&&(((TIME_APP_TX_fromOUT==0)&&(Radio_Date_Type_bak==2))||((TIMER300ms==0)&&(Radio_Date_Type_bak==1)))&&(Uart_Struct_DATA_Packet_Contro.data[0].ui!=Last_Uart_Struct_DATA_Packet_Contro.data[0].ui))
-	  	   ((FLAG_APP_TX_fromUART==1)&&(((TIME_APP_TX_fromOUT==0)&&(Radio_Date_Type_bak==2))||((TIMER300ms==0)&&(Radio_Date_Type_bak==1))))
+	  	   (((TIME_APP_TX_fromOUT==0)&&(Radio_Date_Type_bak==2))||((TIMER300ms==0)&&(Radio_Date_Type_bak==1)))
 		  )
 	  	)
 	  {

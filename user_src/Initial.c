@@ -430,8 +430,10 @@ void RF_test_mode(void)
 		 Receiver_LED_OUT = !Receiver_LED_OUT;
 	 }
     Receiver_LED_OUT = 0; */
+
     while (Receiver_test == 0)
     {
+        DIP_SW_Test();
         ClearWDT();   // Service the WDT
         if((TP4 == 0)&&(Flag_TP4==0))   //不使用TP3，因为测试模式TP3与工作模式换气输出有冲突，冲突为三极管导致TP3的高电平只有0.8V
         {
@@ -467,7 +469,7 @@ void RF_test_mode(void)
             FG_test_tx_off = 0;
             if (Tx_Rx_mode == 0) //发载波，无调制信�?
             {
-                Receiver_LED_OUT = 1;
+//                Receiver_LED_OUT = 1;
                 FG_test_mode = 0;
                 FG_test_tx_1010 = 0;
                 if (FG_test_tx_on == 0)
@@ -483,7 +485,7 @@ void RF_test_mode(void)
                 if (TIMER1s == 0)
                 {
                     TIMER1s = 500;
-                    Receiver_LED_OUT = !Receiver_LED_OUT;
+ //                   Receiver_LED_OUT = !Receiver_LED_OUT;
                 }
                 FG_test_mode = 1;
                 FG_test_tx_on = 0;
@@ -502,7 +504,7 @@ void RF_test_mode(void)
         {
             CG2214M6_USE_R;
             FG_test_rx = 1;
-            Receiver_LED_OUT = 0;
+//            Receiver_LED_OUT = 0;
             FG_test_mode = 0;
             FG_test_tx_on = 0;
             FG_test_tx_1010 = 0;
@@ -545,3 +547,131 @@ void RF_test_mode(void)
     TIME_Fine_Calibration = 900;
     TIME_EMC = 10;
 }
+
+
+//返回拨码开关编码
+u8 DIP_SW_Code(void)
+{
+    u8 sw1 = 0,sw2 = 0,sw3 = 0,sw4 = 0;
+    sw1 = SW_1;
+    sw2 = SW_2;
+    sw3 = SW_3;
+    sw4 = SW_4;
+    return (sw4 << 3 | sw3 << 2 | sw2 << 1 | sw1);
+}
+
+//开关测试
+void DIP_SW_Test(void)
+{
+    u8 i=0;
+    static u8 code_x = 0;
+    time_sw = 200;
+    while(time_sw);
+
+    i = DIP_SW_Code();
+    if(code_x != i)
+    {
+        code_x = i;
+        switch(code_x)
+        {
+            case 0x00:
+            break;
+            case SW_CODE_1:
+                Receiver_LED_OUT = 1;
+                time_sw = 500;
+                while(time_sw);
+                Receiver_LED_OUT = 0;
+            break;
+            case SW_CODE_2:
+            for(i=0;i<2;i++)
+            {
+                Receiver_LED_OUT = 1;
+                time_sw = 500;
+                while(time_sw);
+                Receiver_LED_OUT = 0;
+                time_sw = 500;
+                while(time_sw);
+            }
+            break;
+            case SW_CODE_3:
+            for(i=0;i<3;i++)
+            {
+                Receiver_LED_OUT = 1;
+                time_sw = 500;
+                while(time_sw);
+                Receiver_LED_OUT = 0;
+                time_sw = 500;
+                while(time_sw);
+            }
+            break;
+            case SW_CODE_4:
+            for(i=0;i<4;i++)
+            {
+                Receiver_LED_OUT = 1;
+                time_sw = 500;
+                while(time_sw);
+                Receiver_LED_OUT = 0;
+                time_sw = 500;
+                while(time_sw);
+            }
+            break;
+            case SW_CODE_5:
+            for(i=0;i<5;i++)
+            {
+                Receiver_LED_OUT = 1;
+                time_sw = 500;
+                while(time_sw);
+                Receiver_LED_OUT = 0;
+                time_sw = 500;
+                while(time_sw);
+            }
+            break;
+            case SW_CODE_6:
+            for(i=0;i<6;i++)
+            {
+                Receiver_LED_OUT = 1;
+                time_sw = 500;
+                while(time_sw);
+                Receiver_LED_OUT = 0;
+                time_sw = 500;
+                while(time_sw);
+            }
+            break;
+            case SW_CODE_7:
+            for(i=0;i<7;i++)
+            {
+                Receiver_LED_OUT = 1;
+                time_sw = 500;
+                while(time_sw);
+                Receiver_LED_OUT = 0;
+                time_sw = 500;
+                while(time_sw);
+            }
+            break;
+            case SW_CODE_8:
+            for(i=0;i<8;i++)
+            {
+                Receiver_LED_OUT = 1;
+                time_sw = 500;
+                while(time_sw);
+                Receiver_LED_OUT = 0;
+                time_sw = 500;
+                while(time_sw);
+            }
+            break;
+            case SW_CODE_9:
+            for(i=0;i<9;i++)
+            {
+                Receiver_LED_OUT = 1;
+                time_sw = 500;
+                while(time_sw);
+                Receiver_LED_OUT = 0;
+                time_sw = 500;
+                while(time_sw);
+            }
+            break;
+            default:break;
+        }
+    }
+}
+

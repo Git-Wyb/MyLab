@@ -1,6 +1,6 @@
 [DebugChecksum]
 <<<<<<< HEAD
-Checksum=1904532093
+Checksum=253005421
 =======
 Checksum=773928336
 >>>>>>> f03119bb9d9418453f7da9e2e3549a267f3e0d0b
@@ -21,29 +21,6 @@ UseTrigger=1
 TriggerName=main
 LimitSize=0
 ByteLimit=50
-[CallStackLog]
-Enabled=0
-[DriverProfiling]
-Enabled=0
-Mode=1
-Graph=0
-Symbiont=0
-[InterruptLog]
-LogEnabled=0
-SumEnabled=0
-GraphEnabled=0
-ShowTimeLog=1
-ShowTimeSum=1
-SumSortOrder=0
-[Interrupts]
-Enabled=1
-[MemoryMap]
-Enabled=0
-Base=0
-UseAuto=0
-TypeViolation=1
-UnspecRange=1
-ActionState=1
 [TraceHelper]
 Enabled=0
 ShowSource=1
@@ -61,6 +38,45 @@ ByteLimit=50
 ShowArgs=0
 [Disassembly]
 MixedMode=1
+[DriverProfiling]
+Enabled=0
+Mode=1
+Graph=0
+Symbiont=0
+Exclusions=
+[CallStackLog]
+Enabled=0
+[CallStackStripe]
+ShowTiming=1
+[InterruptLog]
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+SumEnabled=0
+ShowTimeSum=1
+SumSortOrder=0
+[DataLog]
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+SumEnabled=0
+ShowTimeSum=1
+[Breakpoints2]
+Count=0
+[Interrupts]
+Enabled=1
+[MemoryMap]
+Enabled=0
+Base=0
+UseAuto=0
+TypeViolation=1
+UnspecRange=1
+ActionState=1
+[Trace1]
+Enabled=0
+ShowSource=1
+[Simulator]
+Freq=16000000
 [struct_types]
 Fmt0=ADF70XX_REG_T-whole_reg	1	0
 Fmt1=uFLAG-BYTE	4	0
@@ -89,7 +105,7 @@ LogEnabled=0
 GraphEnabled=0
 ShowTimeLog=1
 [Breakpoints]
-Bp0=_ "STD_CODE" "{$PROJ_DIR$\user_src\main.c}.88.7" 1 0 0 0 "" 0 ""
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\user_src\eeprom.c}.314.9" 1 0 0 0 "" 0 ""
 Count=1
 [Log file]
 LoggingEnabled=_ 0

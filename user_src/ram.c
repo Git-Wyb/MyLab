@@ -9,7 +9,7 @@
 
 u8 DEF_APP_TX_freq=3;
 
-
+u16 time_sw = 0;
 
 
 uFLAG FLAG_test1;
@@ -171,6 +171,8 @@ u16 Time_error_read_timeout=0;
 u8 ERROR_Read_sendTX_count=0;
 u8 ERROR_Read_sendTX_packet=0;
 u8 Flag_ERROR_Read_once_again=0;
+
+
 
 
 

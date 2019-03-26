@@ -181,28 +181,39 @@ extern u8 LED_Cache;
 // #define Inverters_OUT_CR1 PA_CR1_C12    // 输入   继电器输出信号反向   低电平有效
 
 
-//拨码开关
-#define SW_1_DDR PA_DDR_DDR2
-#define SW_1_CR1 PA_CR1_C12
-#define SW_1_CR2 PA_CR2_C22
+/* 拨码开关 <自动选择器从关闭到关闭信号的时间设置功能> */
+#define SW_1_DDR PE_DDR_DDR2
+#define SW_1_CR1 PE_CR1_C12
+#define SW_1_CR2 PE_CR2_C22
 
-#define SW_2_DDR PA_DDR_DDR3
-#define SW_2_CR1 PA_CR1_C13
-#define SW_2_CR2 PA_CR2_C23
+#define SW_2_DDR PE_DDR_DDR3
+#define SW_2_CR1 PE_CR1_C13
+#define SW_2_CR2 PE_CR2_C23
 
-#define SW_3_DDR PA_DDR_DDR4
-#define SW_3_CR1 PA_CR1_C14
-#define SW_3_CR2 PA_CR2_C24
+#define SW_3_DDR PE_DDR_DDR4
+#define SW_3_CR1 PE_CR1_C14
+#define SW_3_CR2 PE_CR2_C24
 
-#define SW_4_DDR PA_DDR_DDR5
-#define SW_4_CR1 PA_CR1_C15
-#define SW_4_CR2 PA_CR2_C25
+#define SW_4_DDR PE_DDR_DDR5
+#define SW_4_CR1 PE_CR1_C15
+#define SW_4_CR2 PE_CR2_C25
 
 #define SW_1   PE_IDR_IDR2
 #define SW_2   PE_IDR_IDR3
 #define SW_3   PE_IDR_IDR4
 #define SW_4   PE_IDR_IDR5
-#define SW_CODE   (SW2_4 << 3 | SW2_3 << 2 | SW2_2 << 1 | SW2_1)
+//开关编码
+#define SW_CODE_0   0x00   /* 10s */
+#define SW_CODE_1   0x0E   /* 20s */
+#define SW_CODE_2   0x0D   /* 30s */
+#define SW_CODE_3   0x0C   /* 40s */
+#define SW_CODE_4   0x0B   /* 50s */
+#define SW_CODE_5   0x0A   /* 60s */
+#define SW_CODE_6   0x09   /* 70s */
+#define SW_CODE_7   0x08   /* 80s */
+#define SW_CODE_8   0x07   /* 90s */
+#define SW_CODE_9   0x06   /* 100s */
+
 
 #define Abnormal_Signal_DDR     PE_DDR_DDR0
 #define Abnormal_Signal_CR1     PE_CR1_C10
