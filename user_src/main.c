@@ -51,7 +51,7 @@ void main(void)
 {
   _DI();             // 关全�?中断
   RAM_clean();       // 清除RAM
-  WDT_init();        //看门�?
+
   VHF_GPIO_INIT();   //IO初始�?
   SysClock_Init();   //系统时钟初始�?
   InitialFlashReg(); //flash EEPROM
@@ -70,6 +70,7 @@ void main(void)
   TIME_power_led = 500;
   ClearWDT(); // Service the WDT
   RF_test_mode();
+  WDT_init();        //看门狿
 //  FLAG_APP_RX = 1;
   FG_Receiver_LED_RX = 0;
   TIME_EMC = 10;
@@ -85,7 +86,8 @@ void main(void)
     if (time_Login_exit_256 == 0)
       ID_Decode_OUT();
     ID_learn();
-    if ((ID_SCX1801_DATA != 0) && (Receiver_426MHz_mode == 0))
+    //if ((ID_SCX1801_DATA != 0) && (Receiver_426MHz_mode == 0))
+    if(ID_SCX1801_DATA != 0 && Receiver_429MHz_mode == 0)
       APP_TX_PACKET();
     if (FLAG_APP_RX == 1)
     {

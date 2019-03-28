@@ -1089,16 +1089,40 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 	{
 		if ((FLAG_ID_Erase_Login == 1) || (FLAG_ID_Login == 1) ||(FLAG_ID_SCX1801_Login==1)||(Receiver_426MHz_mode==1))
 		{
-				PROFILE_CH_FREQ_32bit_200002EC = 426075000;
-			PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005A;
-		PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
-		//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x80041018;//0x0000100C;
-		Radio_Date_Type=1;
-		Channels=1;
-		if(Flag_TX_ID_load==0)
-		    ADF7030Cfg_pointer=ADF7030Cfg;
-		else ADF7030Cfg_pointer=ADF7030Cfg_load;
-		}
+            switch(Channels)
+            {
+                case 1:
+                    PROFILE_CH_FREQ_32bit_200002EC = 426075000;
+                    PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005A;
+                    PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
+                    //PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x80041018;//0x0000100C;
+                    Radio_Date_Type=1;
+                    Channels=3;
+                    if(Flag_TX_ID_load==0)
+                        ADF7030Cfg_pointer=ADF7030Cfg;
+                    else ADF7030Cfg_pointer=ADF7030Cfg_load;
+                break;
+                case 3:
+                    PROFILE_CH_FREQ_32bit_200002EC = PROFILE_CH1_FREQ_32bit_429LowSpeed;
+                    PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005B;
+                    PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
+                    //PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
+                    Radio_Date_Type=1;
+                    Channels=4;
+                    ADF7030Cfg_pointer=ADF7030Cfg;
+               break;
+               case 4:
+                    PROFILE_CH_FREQ_32bit_200002EC = PROFILE_CH2_FREQ_32bit_429LowSpeed;
+                    PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005B;
+                    PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
+                    //PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
+                    Radio_Date_Type=1;
+                    Channels=1;
+                    ADF7030Cfg_pointer=ADF7030Cfg;
+                break;
+            }
+
+            }
 		else {
 
 			switch (Channels)
@@ -1129,13 +1153,14 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
 					//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x80041018;//0x0000100C;
 					Radio_Date_Type=1;
-					if(ID_SCX1801_DATA==0) Channels=1;
-					else Channels=3; //2;
+					/*if(ID_SCX1801_DATA==0) Channels=1;
+					else Channels=3;*/ //2;
+                    Channels=3;
 					if(Flag_TX_ID_load==0)
 					   ADF7030Cfg_pointer=ADF7030Cfg;
 					else ADF7030Cfg_pointer=ADF7030Cfg_load;
 				   break;
-			  case 2:
+/*			  case 2:
 				  PROFILE_CH_FREQ_32bit_200002EC = 426075000;
 				  PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005A;
 					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
@@ -1147,7 +1172,7 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 					else ADF7030Cfg_pointer=ADF7030Cfg_load;
 
 				   break;
-			 /* case 3:
+			  case 3:
 				   PROFILE_CH_FREQ_32bit_200002EC = PROFILE_CH1_FREQ_32bit_429HighSpeed;
 				   PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005B;
 					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x64000030;
@@ -1180,10 +1205,10 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
 					//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
 					Radio_Date_Type=1;
-					Channels=5;
+					Channels=1;
 					ADF7030Cfg_pointer=ADF7030Cfg;
 				   break;
-			  case 5:
+/*			  case 5:
 				   PROFILE_CH_FREQ_32bit_200002EC = 426075000;
 				   PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005A;
 					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
@@ -1193,7 +1218,7 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 					if(Flag_TX_ID_load==0)
 					   ADF7030Cfg_pointer=ADF7030Cfg;
 					else ADF7030Cfg_pointer=ADF7030Cfg_load;
-				   break;
+				   break;  */
 			  default:
 				   break;
 		   }
@@ -1307,7 +1332,8 @@ void Select_TX_frequency(void)
 	  	   (((TIME_APP_TX_fromOUT==0)&&(Radio_Date_Type_bak==2))||((TIMER300ms==0)&&(Radio_Date_Type_bak==1)))
 		  )
 	  	)
-	  {
+//	  if(Receiver_Login == 0)
+      {
 					  FLAG_APP_TX_fromUART=0;
 					  FLAG_Key_TP3=0;
 					  Last_Uart_Struct_DATA_Packet_Contro=Uart_Struct_DATA_Packet_Contro;
@@ -1333,14 +1359,17 @@ void Select_TX_frequency(void)
 	       if(TX_Scan_step==1)
            {
                TX_Scan_step=2;
-               Select_TX_frequency();
+//               Select_TX_frequency();
            }
 		   if(TX_Scan_step==2)
 		   {
 				if(APP_TX_freq==0)
 				{
 				    Receiver_LED_TX = 1;
-					TX_DataLoad_HighSpeed(ID_SCX1801_DATA,Last_Uart_Struct_DATA_Packet_Contro, &CONST_TXPACKET_DATA_20000AF0[0]);
+                    Struct_DATA_Packet_Contro_fno = 0xD8;
+                    ID_SCX1801_DATA = 13475049;
+                    TX_DataLoad(ID_SCX1801_DATA,Struct_DATA_Packet_Contro_fno, &CONST_TXPACKET_DATA_20000AF0[0]);
+					//TX_DataLoad_HighSpeed(ID_SCX1801_DATA,Last_Uart_Struct_DATA_Packet_Contro, &CONST_TXPACKET_DATA_20000AF0[0]);
 					ADF7030_TRANSMITTING_FROM_POWEROFF();
 					Time_APP_blank_TX=2;
 					APP_TX_freq=1; //1

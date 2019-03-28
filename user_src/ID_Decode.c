@@ -87,10 +87,10 @@ void ID_Decode_IDCheck(void)
                 if ((FLAG_ID_Login_OK == 0) && (DATA_Packet_Contro_buf != 0x40) && (DATA_Packet_ID != 0)&&(Radio_Date_Type_bak==1)) //2015.4.1修正 在登录模式下 不允许自动�?�信登录，只允许手动送信登录
                 {
                     if ((FLAG_ID_Erase_Login == 1) || (((FLAG_ID_Login == 1) ||(FLAG_ID_SCX1801_Login==1))&&(DATA_Packet_ID != 0xFFFFFE)))
-                    	{
-	                    FLAG_ID_Login_OK = 1;
+                    {
+                        FLAG_ID_Login_OK = 1;
 	                    ID_Receiver_Login = DATA_Packet_ID;
-                    	}
+                    }
                 }
             }
             else if ((FLAG_IDCheck_OK == 1) || (DATA_Packet_ID == 0xFFFFFE))
@@ -140,7 +140,42 @@ void ID_Decode_IDCheck(void)
 		                    if ((DATA_Packet_Control == 0x40) && (Manual_override_TIMER == 0))
 		                    {
 		                        FG_auto_manual_mode = 1;
-		                        TIME_auto_out = 890; // 900
+                                switch(DIP_SW_Code())
+                                {
+                                    case SW_CODE_0:
+                                         TIME_auto_out = 890;
+                                    break;
+                                    case SW_CODE_1:
+                                         TIME_auto_out = 890 * 2;
+                                    break;
+                                    case SW_CODE_2:
+                                         TIME_auto_out = 890 * 3;
+                                    break;
+                                    case SW_CODE_3:
+                                         TIME_auto_out = 890 * 4;
+                                    break;
+                                    case SW_CODE_4:
+                                         TIME_auto_out = 890 * 5;
+                                    break;
+                                    case SW_CODE_5:
+                                         TIME_auto_out = 890 * 6;
+                                    break;
+                                    case SW_CODE_6:
+                                         TIME_auto_out = 890 * 7;
+                                    break;
+                                    case SW_CODE_7:
+                                         TIME_auto_out = 890 * 8;
+                                    break;
+                                    case SW_CODE_8:
+                                         TIME_auto_out = 890 * 9;
+                                    break;
+                                    case SW_CODE_9:
+                                         TIME_auto_out = 890 * 10;
+                                    break;
+                                    default:
+                                    break;
+                                }
+		                        //TIME_auto_out = 890; // 900
 		                        if (FG_First_auto == 0)
 		                        {
 		                            FG_First_auto = 1;
