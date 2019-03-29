@@ -175,7 +175,7 @@ void ID_Decode_IDCheck(void)
                                     default:
                                     break;
                                 }
-		                        //TIME_auto_out = 890; // 900
+		                        TIME_auto_out = 890; // 900
 		                        if (FG_First_auto == 0)
 		                        {
 		                            FG_First_auto = 1;

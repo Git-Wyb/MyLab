@@ -433,21 +433,6 @@ void RF_test_mode(void)
 
     while (Receiver_test == 0)
     {
-        DIP_SW_Test();
-        if(Abnormal_Signal == 0)
-        {
-            Receiver_LED_OUT = 1;
-            time_sw = 200;
-            while(time_sw);
-            Receiver_LED_OUT = 0;
-        }
-        if(Lower_Limit_Signal == 0)
-        {
-            Receiver_LED_OUT = 1;
-            time_sw = 200;
-            while(time_sw);
-            Receiver_LED_OUT = 0;
-        }
         ClearWDT();   // Service the WDT
         if((TP4 == 0)&&(Flag_TP4==0))   //不使用TP3，因为测试模式TP3与工作模式换气输出有冲突，冲突为三极管导致TP3的高电平只有0.8V
         {
@@ -547,6 +532,28 @@ void RF_test_mode(void)
         //           FG_test1=1;
         //        }
         //       if(ADF7021_DATA_CLK==0)FG_test1=0;
+        if(Abnormal_Signal == 0 && Lower_Limit_Signal != 0)
+        {
+            Receiver_LED_OUT = 1;
+            time_sw = 150;
+            while(time_sw);
+            Receiver_LED_OUT = 0;
+        }
+        else if(Lower_Limit_Signal == 0 && Abnormal_Signal != 0)
+        {
+             Receiver_LED_OUT = 1;
+            time_sw = 150;
+            while(time_sw);
+            Receiver_LED_OUT = 0;
+        }
+        else if(Lower_Limit_Signal == 0 && Abnormal_Signal == 0)
+        {
+             Receiver_LED_OUT = 1;
+        }
+        if(TIME_power_led == 0)
+        {
+            DIP_SW_Test();
+        }
     }
     OUT_VENT_Init();
     BerExtiUnInit();
@@ -578,113 +585,45 @@ u8 DIP_SW_Code(void)
 void DIP_SW_Test(void)
 {
     u8 i=0;
-    static u8 code_x = 0;
-    time_sw = 200;
-    while(time_sw);
+    static u8 code_x = SW_CODE_0;
 
-    if(code_x != DIP_SW_Code())
+    i = DIP_SW_Code();
+    if(code_x != i)
     {
-        code_x = DIP_SW_Code();
-        switch(code_x)
+        time_sw = 50;
+        while(time_sw);
+        if(i == DIP_SW_Code())
         {
-            case SW_CODE_0:
-            break;
-            case SW_CODE_1:
-                Receiver_LED_OUT = 1;
-                time_sw = 150;
-                while(time_sw);
-                Receiver_LED_OUT = 0;
-            break;
-            case SW_CODE_2:
-            for(i=0;i<2;i++)
+            if(code_x==i-1 || code_x==i+1)
             {
-                Receiver_LED_OUT = 1;
-                time_sw = 150;
-                while(time_sw);
-                Receiver_LED_OUT = 0;
-                time_sw = 150;
-                while(time_sw);
+                code_x = i;
+                if(code_x % 2 == 0)
+                {
+                    Receiver_LED_OUT = 1;
+                    time_sw = 150;
+                    while(time_sw);
+                    Receiver_LED_OUT = 0;
+                }
+                else
+                {
+                    for(i=0;i<2;i++)
+                    {
+                        Receiver_LED_OUT = 1;
+                        time_sw = 150;
+                        while(time_sw);
+                        Receiver_LED_OUT = 0;
+                        time_sw = 150;
+                        while(time_sw);
+                    }
+                }
             }
-            break;
-            case SW_CODE_3:
-            for(i=0;i<3;i++)
+            else
             {
+                code_x = i;
                 Receiver_LED_OUT = 1;
-                time_sw = 150;
-                while(time_sw);
-                Receiver_LED_OUT = 0;
-                time_sw = 150;
-                while(time_sw);
             }
-            break;
-            case SW_CODE_4:
-            for(i=0;i<4;i++)
-            {
-                Receiver_LED_OUT = 1;
-                time_sw = 150;
-                while(time_sw);
-                Receiver_LED_OUT = 0;
-                time_sw = 150;
-                while(time_sw);
-            }
-            break;
-            case SW_CODE_5:
-            for(i=0;i<5;i++)
-            {
-                Receiver_LED_OUT = 1;
-                time_sw = 150;
-                while(time_sw);
-                Receiver_LED_OUT = 0;
-                time_sw = 150;
-                while(time_sw);
-            }
-            break;
-            case SW_CODE_6:
-            for(i=0;i<6;i++)
-            {
-                Receiver_LED_OUT = 1;
-                time_sw = 150;
-                while(time_sw);
-                Receiver_LED_OUT = 0;
-                time_sw = 150;
-                while(time_sw);
-            }
-            break;
-            case SW_CODE_7:
-            for(i=0;i<7;i++)
-            {
-                Receiver_LED_OUT = 1;
-                time_sw = 150;
-                while(time_sw);
-                Receiver_LED_OUT = 0;
-                time_sw = 150;
-                while(time_sw);
-            }
-            break;
-            case SW_CODE_8:
-            for(i=0;i<8;i++)
-            {
-                Receiver_LED_OUT = 1;
-                time_sw = 150;
-                while(time_sw);
-                Receiver_LED_OUT = 0;
-                time_sw = 150;
-                while(time_sw);
-            }
-            break;
-            case SW_CODE_9:
-            for(i=0;i<9;i++)
-            {
-                Receiver_LED_OUT = 1;
-                time_sw = 150;
-                while(time_sw);
-                Receiver_LED_OUT = 0;
-                time_sw = 150;
-                while(time_sw);
-            }
-            break;
-            default:break;
         }
     }
+    TIME_power_led = 500;
 }
 

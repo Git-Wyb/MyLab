@@ -67,9 +67,9 @@ void main(void)
   ADF7030Init(); //射频初始�?
   UART1_INIT();  // UART1 for PC Software
   _EI();         // 允许中断
-  TIME_power_led = 500;
   ClearWDT(); // Service the WDT
   RF_test_mode();
+  TIME_power_led = 500;
   WDT_init();        //看门狿
 //  FLAG_APP_RX = 1;
   FG_Receiver_LED_RX = 0;
@@ -87,8 +87,8 @@ void main(void)
       ID_Decode_OUT();
     ID_learn();
     //if ((ID_SCX1801_DATA != 0) && (Receiver_426MHz_mode == 0))
-    if(ID_SCX1801_DATA != 0 && Receiver_429MHz_mode == 0)
-      APP_TX_PACKET();
+//    if(TIMER1s != 0 && Receiver_429MHz_mode == 0)
+          APP_TX_PACKET();
     if (FLAG_APP_RX == 1)
     {
       Freq_Scanning();

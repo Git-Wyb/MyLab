@@ -203,7 +203,7 @@ extern u8 LED_Cache;
 #define SW_3   PE_IDR_IDR4
 #define SW_4   PE_IDR_IDR5
 //开关编码
-#define SW_CODE_0   0x00   /* 10s */
+#define SW_CODE_0   0x0F   /* 10s */
 #define SW_CODE_1   0x0E   /* 20s */
 #define SW_CODE_2   0x0D   /* 30s */
 #define SW_CODE_3   0x0C   /* 40s */

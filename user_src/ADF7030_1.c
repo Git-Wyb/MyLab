@@ -531,7 +531,7 @@ void ADF7030_TRANSMITTING_FROM_POWEROFF(void)
     ADF7030_WRITE_REGISTER_NOPOINTER_LONGADDR_OFFSET_MSB(ADF7030Cfg_pointer, CFG_SIZE(), ADDR_CHANNEL_FERQUENCY, 8, 4);
     WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�?
     DELAY_30U();
-	   Memory_Write_Block_Pointer_Short_Address(CONST_TXPACKET_DATA_20000AF0, PNTR_CUSTOM1_ADDR, 28);
+	Memory_Write_Block_Pointer_Short_Address(CONST_TXPACKET_DATA_20000AF0, PNTR_CUSTOM1_ADDR, 28);
     WaitForADF7030_FIXED_DATA(); //等待芯片空闲/可接受CMD状�?
     DELAY_30U();
     ADF7030_CHANGE_STATE(STATE_PHY_TX);
@@ -1326,33 +1326,35 @@ void Select_TX_frequency(void)
 		 First_TX_Scan=0;
 
 	  }
-	  else if((Flag_FREQ_Scan==0)&&((PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH1_FREQ_32bit_429LowSpeed)||(PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH2_FREQ_32bit_429LowSpeed))&&
+	  else if((TIMER1s != 0)&&(Flag_FREQ_Scan==0)&&((PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH1_FREQ_32bit_429LowSpeed)||(PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH2_FREQ_32bit_429LowSpeed))&&
 	  	  (((FLAG_APP_TX_fromOUT==1)&&(TIME_APP_TX_fromOUT==0))||(FLAG_Key_TP3==1)||
 	  	   //((FLAG_APP_TX_fromUART==1)&&(((TIME_APP_TX_fromOUT==0)&&(Radio_Date_Type_bak==2))||((TIMER300ms==0)&&(Radio_Date_Type_bak==1)))&&(Uart_Struct_DATA_Packet_Contro.data[0].ui!=Last_Uart_Struct_DATA_Packet_Contro.data[0].ui))
 	  	   (((TIME_APP_TX_fromOUT==0)&&(Radio_Date_Type_bak==2))||((TIMER300ms==0)&&(Radio_Date_Type_bak==1)))
 		  )
 	  	)
-//	  if(Receiver_Login == 0)
+	  //if(Receiver_LED_RX == 1)
+      //  if(time_sw == 0)
       {
-					  FLAG_APP_TX_fromUART=0;
-					  FLAG_Key_TP3=0;
-					  Last_Uart_Struct_DATA_Packet_Contro=Uart_Struct_DATA_Packet_Contro;
-					  Last_Uart_Struct_DATA_Packet_Contro.Fno_Type.UN.type=1;
-					  rssi=RAM_RSSI_AVG/128;
-					  rssi=-rssi;
-					  if(rssi>=127)rssi=127;
-					  if(Radio_Date_Type_bak==2)rssi= rssi | 0x80;
-					  Last_Uart_Struct_DATA_Packet_Contro.data[1].uc[0]= rssi;
-					  if(FLAG_APP_TX_fromOUT==1) Last_Uart_Struct_DATA_Packet_Contro.Fno_Type.UN.fno= Struct_DATA_Packet_Contro_fno;
-					  FLAG_APP_TX_fromOUT=0;
-					  TIME_APP_TX_fromOUT=0;
+        time_sw = 2500;
+        FLAG_APP_TX_fromUART=0;
+        FLAG_Key_TP3=0;
+        Last_Uart_Struct_DATA_Packet_Contro=Uart_Struct_DATA_Packet_Contro;
+        Last_Uart_Struct_DATA_Packet_Contro.Fno_Type.UN.type=1;
+        rssi=RAM_RSSI_AVG/128;
+        rssi=-rssi;
+        if(rssi>=127)rssi=127;
+        if(Radio_Date_Type_bak==2)rssi= rssi | 0x80;
+        Last_Uart_Struct_DATA_Packet_Contro.data[1].uc[0]= rssi;
+        if(FLAG_APP_TX_fromOUT==1) Last_Uart_Struct_DATA_Packet_Contro.Fno_Type.UN.fno= Struct_DATA_Packet_Contro_fno;
+        FLAG_APP_TX_fromOUT=0;
+        TIME_APP_TX_fromOUT=0;
 
-					  DEF_APP_TX_freq=3;
-					  FLAG_APP_TX=1;
-					  FLAG_APP_RX=0;
-					  APP_TX_freq=0;
-					  TX_Scan_step=1;
-					  First_TX_Scan=0;
+        DEF_APP_TX_freq=3;
+        FLAG_APP_TX=1;
+        FLAG_APP_RX=0;
+        APP_TX_freq=0;
+        TX_Scan_step=1;
+        First_TX_Scan=0;
 	  }
 	  if(FLAG_APP_TX==1)
 	  {
@@ -1366,11 +1368,11 @@ void Select_TX_frequency(void)
 				if(APP_TX_freq==0)
 				{
 				    Receiver_LED_TX = 1;
-                    Struct_DATA_Packet_Contro_fno = 0xD8;
+                    Struct_DATA_Packet_Contro_fno = 0xd8;
                     ID_SCX1801_DATA = 13475049;
                     TX_DataLoad(ID_SCX1801_DATA,Struct_DATA_Packet_Contro_fno, &CONST_TXPACKET_DATA_20000AF0[0]);
 					//TX_DataLoad_HighSpeed(ID_SCX1801_DATA,Last_Uart_Struct_DATA_Packet_Contro, &CONST_TXPACKET_DATA_20000AF0[0]);
-					ADF7030_TRANSMITTING_FROM_POWEROFF();
+                    ADF7030_TRANSMITTING_FROM_POWEROFF();
 					Time_APP_blank_TX=2;
 					APP_TX_freq=1; //1
 				}
