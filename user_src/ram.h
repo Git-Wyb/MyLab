@@ -6,6 +6,7 @@
 #include "initial.h" // 锟斤拷始锟斤�? 预锟斤拷锟斤�?
 
 
+#define ID_Max_PCS   255
 
 //#define DEF_test_MAX_32pcs
 extern u8 DEF_APP_TX_freq;

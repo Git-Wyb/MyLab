@@ -22,6 +22,7 @@ void eeprom_sys_load(void);
 void ALL_ID_EEPROM_Erase(void);
 void ID_EEPROM_write(void);
 void ID_SCX1801_EEPROM_write(u32 id);
+void Delete_GeneralID_EEPROM(u32 id);
 void ID_EEPROM_write_0x00(void);
 void ID_Login_EXIT_Initial(void);
 void ID_learn(void);
