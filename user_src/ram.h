@@ -182,6 +182,7 @@ extern const u32 PROFILE_CH1_FREQ_32bit_429HighSpeed;
 extern const u32 PROFILE_CH2_FREQ_32bit_429HighSpeed;
 extern const u32 PROFILE_CH1_FREQ_32bit_429LowSpeed;
 extern const u32 PROFILE_CH2_FREQ_32bit_429LowSpeed;
+extern u8 PROFILE_429LowSpeed_TYPE;
 extern u8 Channels;
 
 

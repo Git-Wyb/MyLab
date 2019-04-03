@@ -146,6 +146,7 @@ const u32 PROFILE_CH2_FREQ_32bit_429HighSpeed = 429550000;  //429550000;//429237
 
 const u32 PROFILE_CH1_FREQ_32bit_429LowSpeed = 429175000;
 const u32 PROFILE_CH2_FREQ_32bit_429LowSpeed = 429200000;
+u8 PROFILE_429LowSpeed_TYPE = 0;    //429低速接收标志
 
 u8 Channels=1;
 

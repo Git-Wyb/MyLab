@@ -98,7 +98,11 @@ void ID_Decode_IDCheck(void)
                 FLAG_IDCheck_OK = 0;
 			    if(Radio_Date_Type_bak==1)
 			    {
-		                if (DATA_Packet_ID == 0xFFFFFE)
+                    if(PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH1_FREQ_32bit_429LowSpeed || PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH2_FREQ_32bit_429LowSpeed)
+                    {
+                        PROFILE_429LowSpeed_TYPE = 1;    // 只有429低速才能发送
+                    }
+                        if (DATA_Packet_ID == 0xFFFFFE)
 		                    DATA_Packet_Control = DATA_Packet_Contro_buf; //2015.3.24修正 Control缓存�?ID判断是否学习过后才能使用
 
 		                if ((SPI_Receive_DataForC[1] & 0x0000FFFF) == 0x5556)
@@ -175,7 +179,7 @@ void ID_Decode_IDCheck(void)
                                     default:
                                     break;
                                 }
-		                        TIME_auto_out = 890; // 900
+		                        //TIME_auto_out = 890; // 900
 		                        if (FG_First_auto == 0)
 		                        {
 		                            FG_First_auto = 1;
@@ -488,6 +492,9 @@ void ID_Decode_OUT(void)
         {
             switch (Control_i)
             {
+                case 0x00:
+                    APP429M_Tx_State();
+                    break;
                 case 0x14: //stop+login
                     Receiver_LED_OUT = 1;
                     TIMER250ms_STOP = 250;
@@ -548,6 +555,7 @@ void ID_Decode_OUT(void)
                     Receiver_OUT_STOP = FG_NOT_allow_out;
                     Receiver_OUT_VENT = FG_NOT_allow_out;
                     Receiver_OUT_CLOSE = FG_allow_out;
+                    APP429M_Tx_State();
                 break;
                 case 0x04: //stop
                     Receiver_LED_OUT = 1;
@@ -555,6 +563,7 @@ void ID_Decode_OUT(void)
                     Receiver_OUT_CLOSE = FG_NOT_allow_out;
                     Receiver_OUT_VENT = FG_NOT_allow_out;
                     Receiver_OUT_STOP = FG_allow_out;
+                    APP429M_Tx_State();
                 break;
                 case 0x08: //open
                     Receiver_LED_OUT = 1;
@@ -562,6 +571,7 @@ void ID_Decode_OUT(void)
                     Receiver_OUT_CLOSE = FG_NOT_allow_out;
                     Receiver_OUT_VENT = FG_NOT_allow_out;
                     Receiver_OUT_OPEN = FG_allow_out;
+                    APP429M_Tx_State();
                 break;
                 case 0x0C: //open+stop
                     Receiver_LED_OUT = 1;

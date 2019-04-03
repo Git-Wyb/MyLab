@@ -225,6 +225,16 @@ extern u8 LED_Cache;
 #define Lower_Limit_Signal_CR2  PE_CR2_C21
 #define Lower_Limit_Signal      PE_IDR_IDR1     //下限信号，为0表示有下限信号
 
+/*APP操作时*/
+#define APP_Open_State      0xD1  /*open状态*/
+#define APP_Close_State     0xD2  /*close状态*/
+#define APP_Abnormal_State  0xD3  /*异常1状态*/
+
+/*STX0031送信操作时*/
+#define STX_Open_State      0xD5  /*open状态*/
+#define STX_Close_State     0xD6  /*close状态*/
+#define STX_Abnormal_State  0xD7  /*异常1状态*/
+
 
 /*********************************************************************************/
 

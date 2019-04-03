@@ -15,6 +15,8 @@
 #include "uart.h" // uart
 #include "Timer.h"
 uFLAG YellowLedFlag, RedLedFalg;
+Flag_State  SwitchState_Stu = {0};
+
 void RAM_clean(void)
 { // 清除RAM
     //  asm("ldw X,#0");
@@ -538,6 +540,8 @@ void RF_test_mode(void)
             time_sw = 150;
             while(time_sw);
             Receiver_LED_OUT = 0;
+            time_sw = 150;
+            while(time_sw);
         }
         else if(Lower_Limit_Signal == 0 && Abnormal_Signal != 0)
         {
@@ -545,6 +549,8 @@ void RF_test_mode(void)
             time_sw = 150;
             while(time_sw);
             Receiver_LED_OUT = 0;
+            time_sw = 150;
+            while(time_sw);
         }
         else if(Lower_Limit_Signal == 0 && Abnormal_Signal == 0)
         {
@@ -625,5 +631,31 @@ void DIP_SW_Test(void)
         }
     }
     TIME_power_led = 500;
+}
+
+
+void APP429M_Tx_State(void)
+{
+    if(PROFILE_429LowSpeed_TYPE)
+    {
+        PROFILE_429LowSpeed_TYPE = 0;
+
+        if(Abnormal_Signal == 0)
+        {
+            Struct_DATA_Packet_Contro_fno = APP_Abnormal_State;
+        }
+        else
+        {
+            if(Lower_Limit_Signal == 0)
+            {
+               Struct_DATA_Packet_Contro_fno = APP_Close_State;
+            }
+            else
+            {
+               Struct_DATA_Packet_Contro_fno = APP_Open_State;
+            }
+        }
+        time_sw = 1000;
+    }
 }
 

@@ -49,60 +49,102 @@
 
 void main(void)
 {
-  _DI();             // 关全�?中断
-  RAM_clean();       // 清除RAM
+    u8 Flag_Lower_Limit = 0;
+    u8 Flag_Abnormal = 0;
 
-  VHF_GPIO_INIT();   //IO初始�?
-  SysClock_Init();   //系统时钟初始�?
-  InitialFlashReg(); //flash EEPROM
-  eeprom_sys_load(); //ID载入
-  TIM4_Init();       // 定时�?
-  //beep_init();       // 蜂鸣�?
-  ClearWDT(); // Service the WDT
+    _DI();             // 关全�?中断
+    RAM_clean();       // 清除RAM
 
-  PROFILE_CH_FREQ_32bit_200002EC = 426075000;
-  PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005A;
-  PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
-  //PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
-  ADF7030Init(); //射频初始�?
-  UART1_INIT();  // UART1 for PC Software
-  _EI();         // 允许中断
-  ClearWDT(); // Service the WDT
-  RF_test_mode();
-  TIME_power_led = 500;
-  WDT_init();        //看门狿
-//  FLAG_APP_RX = 1;
-  FG_Receiver_LED_RX = 0;
-  TIME_EMC = 10;
-  FLAG_testNo91 = 0;
-  FLAG_testBEEP = 0;
-
-  while (1)
-  {
+    VHF_GPIO_INIT();   //IO初始�?
+    SysClock_Init();   //系统时钟初始�?
+    InitialFlashReg(); //flash EEPROM
+    eeprom_sys_load(); //ID载入
+    TIM4_Init();       // 定时�?
+    //beep_init();       // 蜂鸣�?
     ClearWDT(); // Service the WDT
-    if (FLAG_testBEEP != 0)
-      TEST_beep();
 
-    if (time_Login_exit_256 == 0)
-      ID_Decode_OUT();
-    ID_learn();
-    //if ((ID_SCX1801_DATA != 0) && (Receiver_426MHz_mode == 0))
-//    if(TIMER1s != 0 && Receiver_429MHz_mode == 0)
-          APP_TX_PACKET();
-    if (FLAG_APP_RX == 1)
+    PROFILE_CH_FREQ_32bit_200002EC = 426075000;
+    PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005A;
+    PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
+    //PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
+    ADF7030Init(); //射频初始�?
+    UART1_INIT();  // UART1 for PC Software
+    _EI();         // 允许中断
+    ClearWDT(); // Service the WDT
+    RF_test_mode();
+    TIME_power_led = 500;
+    WDT_init();        //看门狿
+    //  FLAG_APP_RX = 1;
+    FG_Receiver_LED_RX = 0;
+    TIME_EMC = 10;
+    FLAG_testNo91 = 0;
+    FLAG_testBEEP = 0;
+
+    if(Abnormal_Signal)    Flag_Abnormal = 1;
+    if(Lower_Limit_Signal)   Flag_Lower_Limit = 1;
+
+    while (1)
     {
-      Freq_Scanning();
-      //if(Scan_step==2)
-      SCAN_RECEIVE_PACKET(); //ɨ���������?
-    }
-    TranmissionACK();
+        ClearWDT(); // Service the WDT
+        if (FLAG_testBEEP != 0)
+            TEST_beep();
+
+        if (time_Login_exit_256 == 0)
+            ID_Decode_OUT();
+        ID_learn();
+    //if ((ID_SCX1801_DATA != 0) && (Receiver_426MHz_mode == 0))
+    //if((ID_SCX1801_DATA != 0) && Receiver_429MHz_mode == 0)
+        APP_TX_PACKET();
+
+        if (FLAG_APP_RX == 1)
+        {
+            Freq_Scanning();
+            //if(Scan_step==2)
+            SCAN_RECEIVE_PACKET(); //ɨ���������?
+        }
+        TranmissionACK();
     //        READ_RSSI_avg();
 
-    if (FG_Receiver_LED_RX == 1)
-      Receiver_LED_RX = 1;
-    else if (FG_Receiver_LED_RX == 0)
-      Receiver_LED_RX = 0;
-  }
+        if (FG_Receiver_LED_RX == 1)
+            Receiver_LED_RX = 1;
+        else if (FG_Receiver_LED_RX == 0)
+            Receiver_LED_RX = 0;
+
+    //异常、下限信号有变化时发送状态
+        if(Flag_Abnormal != Abnormal_Signal)
+        {
+            Flag_Abnormal = Abnormal_Signal;
+            if(Abnormal_Signal == 0)
+            {
+                Struct_DATA_Packet_Contro_fno = APP_Abnormal_State;
+            }
+            else
+            {
+                if(Lower_Limit_Signal == 0)
+                {
+                   Struct_DATA_Packet_Contro_fno = APP_Close_State;
+                }
+                else
+                {
+                   Struct_DATA_Packet_Contro_fno = APP_Open_State;
+                }
+            }
+            time_sw = 500; //开启发送
+        }
+        else if(Flag_Lower_Limit != Lower_Limit_Signal)
+        {
+            Flag_Lower_Limit = Lower_Limit_Signal;
+            if(Lower_Limit_Signal == 0)
+            {
+               Struct_DATA_Packet_Contro_fno = APP_Close_State;
+            }
+            else
+            {
+               Struct_DATA_Packet_Contro_fno = APP_Open_State;
+            }
+            time_sw = 500;
+        }
+    }
 }
 
 #ifdef USE_FULL_ASSERT

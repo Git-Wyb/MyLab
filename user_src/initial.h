@@ -42,6 +42,13 @@ typedef union { // ID No.
     UINT8 IDB[4];
 } uni_rom_id;
 
+typedef struct{
+    u8  Abnormal;
+    u8  Lower_Limit;
+}Flag_State;
+
+extern Flag_State  SwitchState_Stu;
+
 void LED_GPIO_Init(void); //初始化LED
 void CG2214M6_GPIO_Init(void);
 void ADF7030_GPIO_INIT(void); //ADF7030 IO(REST & GPIO3)
@@ -61,4 +68,5 @@ void BerExtiUnInit(void);
 void DIP_SW_Init(void);
 u8 DIP_SW_Code(void);
 void DIP_SW_Test(void);
+void APP429M_Tx_State(void);
 #endif
