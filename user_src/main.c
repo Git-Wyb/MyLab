@@ -51,6 +51,9 @@ void main(void)
 {
     u8 Flag_Lower_Limit = 0;
     u8 Flag_Abnormal = 0;
+    u8 Abnormal_cnt = 0;
+    u8 Lower_Limit_cnt = 0;
+    u8 time_tx = 0;
 
     _DI();             // 关全�?中断
     RAM_clean();       // 清除RAM
@@ -91,9 +94,13 @@ void main(void)
 
         if (time_Login_exit_256 == 0)
             ID_Decode_OUT();
-        ID_learn();
+        if (FG_10ms)
+        {
+            if(time_tx) --time_tx;
+            ID_learn();
+        }
     //if ((ID_SCX1801_DATA != 0) && (Receiver_426MHz_mode == 0))
-    //if((ID_SCX1801_DATA != 0) && Receiver_429MHz_mode == 0)
+        if((ID_SCX1801_DATA != 0) && Receiver_429MHz_mode == 0)
         APP_TX_PACKET();
 
         if (FLAG_APP_RX == 1)
@@ -110,39 +117,95 @@ void main(void)
         else if (FG_Receiver_LED_RX == 0)
             Receiver_LED_RX = 0;
 
-    //异常、下限信号有变化时发送状态
-        if(Flag_Abnormal != Abnormal_Signal)
+        /*必须有ID登录才进行异常、下限检测，异常、下限信号有变化时则计时1s之后再次判断，若有变化则发送状态
+          若通过APP操作的则以APP状态指令返回，遥控器操作则以遥控器状态指令返回*/
+        if(ID_SCX1801_DATA && Flag_Abnormal != Abnormal_Signal && time_tx == 0)
         {
-            Flag_Abnormal = Abnormal_Signal;
-            if(Abnormal_Signal == 0)
+            Abnormal_cnt ++;
+            time_tx = 100;
+            if(Abnormal_cnt == 2)  //有变化
             {
-                Struct_DATA_Packet_Contro_fno = APP_Abnormal_State;
-            }
-            else
-            {
-                if(Lower_Limit_Signal == 0)
+                Flag_Abnormal = Abnormal_Signal;
+                if(Abnormal_Signal == 0)
                 {
-                   Struct_DATA_Packet_Contro_fno = APP_Close_State;
+                    if(PROFILE_RxLowSpeed_TYPE == 1)
+                    {
+                        Struct_DATA_Packet_Contro_fno = APP_Abnormal_State;
+                    }
+                    else if(PROFILE_RxLowSpeed_TYPE == 2)
+                    {
+                        Struct_DATA_Packet_Contro_fno =  STX_Abnormal_State;
+                    }
                 }
                 else
                 {
-                   Struct_DATA_Packet_Contro_fno = APP_Open_State;
+                    if(Lower_Limit_Signal == 0)
+                    {
+                        if(PROFILE_RxLowSpeed_TYPE == 1)
+                        {
+                            Struct_DATA_Packet_Contro_fno = APP_Close_State;
+                        }
+                        else if(PROFILE_RxLowSpeed_TYPE == 2)
+                        {
+                            Struct_DATA_Packet_Contro_fno = STX_Close_State;
+                        }
+                    }
+                    else
+                    {
+                        if(PROFILE_RxLowSpeed_TYPE == 1)
+                        {
+                            Struct_DATA_Packet_Contro_fno = APP_Open_State;
+                        }
+                        else if(PROFILE_RxLowSpeed_TYPE == 2)
+                        {
+                            Struct_DATA_Packet_Contro_fno = STX_Open_State;
+                        }
+                    }
                 }
+                Abnormal_cnt = 0;
+                time_sw = 500;  //开启发送
             }
-            time_sw = 500; //开启发送
         }
-        else if(Flag_Lower_Limit != Lower_Limit_Signal)
+        else if(ID_SCX1801_DATA && Flag_Lower_Limit != Lower_Limit_Signal && time_tx == 0)
         {
-            Flag_Lower_Limit = Lower_Limit_Signal;
-            if(Lower_Limit_Signal == 0)
+            Lower_Limit_cnt ++;
+            time_tx = 100;
+            if(Lower_Limit_cnt == 2)
             {
-               Struct_DATA_Packet_Contro_fno = APP_Close_State;
+                Flag_Lower_Limit = Lower_Limit_Signal;
+                if(Lower_Limit_Signal == 0)
+                {
+                    if(PROFILE_RxLowSpeed_TYPE == 1)
+                    {
+                        Struct_DATA_Packet_Contro_fno = APP_Close_State;
+                    }
+                    else if(PROFILE_RxLowSpeed_TYPE == 2)
+                    {
+                        Struct_DATA_Packet_Contro_fno  = STX_Close_State;
+                    }
+                }
+                else
+                {
+                    if(PROFILE_RxLowSpeed_TYPE == 1)
+                    {
+                        Struct_DATA_Packet_Contro_fno = APP_Open_State;
+                    }
+                    else if(PROFILE_RxLowSpeed_TYPE == 2)
+                    {
+                        Struct_DATA_Packet_Contro_fno =  STX_Open_State;
+                    }
+                }
+                Lower_Limit_cnt = 0;
+                time_sw = 500;
             }
-            else
-            {
-               Struct_DATA_Packet_Contro_fno = APP_Open_State;
-            }
-            time_sw = 500;
+        }
+        if(Flag_Abnormal == Abnormal_Signal)
+        {
+            Abnormal_cnt = 0;
+        }
+        if(Flag_Lower_Limit == Lower_Limit_Signal)
+        {
+            Lower_Limit_cnt = 0;
         }
     }
 }

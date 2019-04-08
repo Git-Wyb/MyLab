@@ -98,9 +98,13 @@ void ID_Decode_IDCheck(void)
                 FLAG_IDCheck_OK = 0;
 			    if(Radio_Date_Type_bak==1)
 			    {
-                    if(PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH1_FREQ_32bit_429LowSpeed || PROFILE_CH_FREQ_32bit_200002EC == PROFILE_CH2_FREQ_32bit_429LowSpeed)
+                    if(PROFILE_CH_FREQ_32bit_200002EC == 429175000 || PROFILE_CH_FREQ_32bit_200002EC == 429200000)   // APP
                     {
-                        PROFILE_429LowSpeed_TYPE = 1;    // Âè?Êú?429‰ΩéÈÄüÊâçËÉΩÂèëÈÄ?
+                        PROFILE_RxLowSpeed_TYPE = 1;    // Âè?Êú?429‰ΩéÈÄüÊâçËÉΩÂèëÈÄ?
+                    }
+                    else if(PROFILE_CH_FREQ_32bit_200002EC == 426075000)   //STX
+                    {
+                        PROFILE_RxLowSpeed_TYPE = 2;
                     }
                         if (DATA_Packet_ID == 0xFFFFFE)
 		                    DATA_Packet_Control = DATA_Packet_Contro_buf; //2015.3.24‰ø?Ê≠? ControlÁºìÂ≠òËµ?IDÂà§Êñ≠Êò?Âê¶Â?¶‰π†ËøáÂêéÊâçËÉΩ‰ΩøÁî®
@@ -310,7 +314,7 @@ void eeprom_IDcheck(void)
 #ifndef DEF_test_MAX_32pcs
 		if(Radio_Date_Type_bak==1)
 		{
-				i = 0; 
+				i = 0;
                 do
 				{
 					if (ID_Receiver_DATA[i] == DATA_Packet_ID)
@@ -326,7 +330,7 @@ void eeprom_IDcheck(void)
                         i = ID_DATA_PCS;
                         FLAG_IDCheck_OK = 1;
                         DATA_Packet_Control = DATA_Packet_Contro_buf;
-                    }                    
+                    }
 					if ((FLAG_ID_Erase_Login == 1) && (FLAG_ID_Erase_Login_PCS == 1))
 					{
 						i = ID_DATA_PCS;

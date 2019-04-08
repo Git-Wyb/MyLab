@@ -636,10 +636,8 @@ void DIP_SW_Test(void)
 
 void APP429M_Tx_State(void)
 {
-    if(PROFILE_429LowSpeed_TYPE)
+    if(PROFILE_RxLowSpeed_TYPE == 1)   //APP操作的
     {
-        PROFILE_429LowSpeed_TYPE = 0;
-
         if(Abnormal_Signal == 0)
         {
             Struct_DATA_Packet_Contro_fno = APP_Abnormal_State;
@@ -655,7 +653,25 @@ void APP429M_Tx_State(void)
                Struct_DATA_Packet_Contro_fno = APP_Open_State;
             }
         }
-        time_sw = 1000;
     }
+    else if(PROFILE_RxLowSpeed_TYPE == 2)    //遥控器操作的
+    {
+        if(Abnormal_Signal == 0)
+        {
+            Struct_DATA_Packet_Contro_fno = STX_Abnormal_State;
+        }
+        else
+        {
+            if(Lower_Limit_Signal == 0)
+            {
+               Struct_DATA_Packet_Contro_fno = STX_Close_State;
+            }
+            else
+            {
+               Struct_DATA_Packet_Contro_fno = STX_Open_State;
+            }
+        }
+    }
+    time_sw = 1000;
 }
 

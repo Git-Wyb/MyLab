@@ -456,7 +456,7 @@ void ID_learn(void)
 {
     //    UINT16 i;
     // #if defined(__Product_PIC32MX2_Receiver__)
-    if (FG_10ms)
+    //if (FG_10ms)
     { //90==1锟�?
         FG_10ms = 0;
         if (TIME_TestNo91)
@@ -630,7 +630,7 @@ void ID_learn(void)
                                 ID_SCX1801_DATA = 0;
                                 ID_SCX1801_EEPROM_write(0x00);
                                     if (ID_Receiver_Login != 0xFFFFFE)
-                                        ID_SCX1801_EEPROM_write(ID_Receiver_Login);                                
+                                        ID_SCX1801_EEPROM_write(ID_Receiver_Login);
                             } //杩藉姞澶氾拷??ID鐧诲綍
                             else if (ID_Receiver_Login != 0xFFFFFE)
                                 ID_EEPROM_write();
