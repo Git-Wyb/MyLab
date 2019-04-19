@@ -147,7 +147,7 @@ const u32 PROFILE_CH2_FREQ_32bit_429HighSpeed = 429550000;  //429550000;//429237
 
 //const u32 PROFILE_CH1_FREQ_32bit_429LowSpeed = 429175000;
 //const u32 PROFILE_CH2_FREQ_32bit_429LowSpeed = 429200000;
-u8 PROFILE_RxLowSpeed_TYPE = 0;    //1：APP操作；2：遥控器操作(STX)
+u8 PROFILE_RxLowSpeed_TYPE = 1;    //1：APP操作；2：遥控器操作(STX)
 
 u8 Channels=1;
 

@@ -1153,7 +1153,7 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 					PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
 					//PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x80041018;//0x0000100C;
 					Radio_Date_Type=1;
-					if(ID_SCX1801_DATA == 0) Channels=1;
+					if(ID_SCX1801_DATA == 0) Channels=1; //无ID登录时不做429频段扫描，只426.075MHz信号接收
 					else Channels=3; //2;
 
 					if(Flag_TX_ID_load==0)
@@ -1343,7 +1343,7 @@ void Select_TX_frequency(void)
         if(Radio_Date_Type_bak==2)rssi= rssi | 0x80;
         Last_Uart_Struct_DATA_Packet_Contro.data[1].uc[0]= rssi;
         if(FLAG_APP_TX_fromOUT==1)
-            Last_Uart_Struct_DATA_Packet_Contro.Fno_Type.UN.fno= Struct_DATA_Packet_Contro_fno;
+            Last_Uart_Struct_DATA_Packet_Contro.Fno_Type.UN.fno = Struct_DATA_Packet_Contro_fno;
         FLAG_APP_TX_fromOUT=0;
         TIME_APP_TX_fromOUT=0;
 

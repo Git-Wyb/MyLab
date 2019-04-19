@@ -51,6 +51,7 @@ void main(void)
 {
     u8 Flag_Lower_Limit = 0;
     u8 Flag_Abnormal = 0;
+    u8 flag_abnormal_stats = 0;  //异常信号标志
     u8 Abnormal_cnt = 0;
     u8 Lower_Limit_cnt = 0;
     u8 time_tx = 0;
@@ -119,26 +120,29 @@ void main(void)
 
         /*必须有ID登录才进行异常、下限检测，异常、下限信号有变化时则计时1s之后再次判断，若有变化则发送状态
           若通过APP操作的则以APP状态指令返回，遥控器操作则以遥控器状态指令返回*/
-        if(ID_SCX1801_DATA && Flag_Abnormal != Abnormal_Signal && time_tx == 0)
+        if(ID_SCX1801_DATA && Flag_Abnormal != Abnormal_Signal && time_tx == 0)  //异常信号
         {
             Abnormal_cnt ++;
             time_tx = 100;
-            if(Abnormal_cnt == 2)  //有变化
+            if(Abnormal_cnt == 2)  //异常有变化
             {
-                Flag_Abnormal = Abnormal_Signal;
+                Flag_Abnormal = Abnormal_Signal;//保存变化状态
+
                 if(Abnormal_Signal == 0)
                 {
-                    if(PROFILE_RxLowSpeed_TYPE == 1)
+                    flag_abnormal_stats = 1;   //有异常
+                    if(PROFILE_RxLowSpeed_TYPE == 1)   //APP
                     {
                         Struct_DATA_Packet_Contro_fno = APP_Abnormal_State;
                     }
-                    else if(PROFILE_RxLowSpeed_TYPE == 2)
+                    else if(PROFILE_RxLowSpeed_TYPE == 2)  //遥控器
                     {
-                        Struct_DATA_Packet_Contro_fno =  STX_Abnormal_State;
+                        Struct_DATA_Packet_Contro_fno = STX_Abnormal_State;
                     }
                 }
                 else
                 {
+                    flag_abnormal_stats = 0;  //异常消失
                     if(Lower_Limit_Signal == 0)
                     {
                         if(PROFILE_RxLowSpeed_TYPE == 1)
@@ -166,14 +170,26 @@ void main(void)
                 time_sw = 500;  //开启发送
             }
         }
-        else if(ID_SCX1801_DATA && Flag_Lower_Limit != Lower_Limit_Signal && time_tx == 0)
+        else if(ID_SCX1801_DATA && Flag_Lower_Limit != Lower_Limit_Signal && time_tx == 0)  //下限信号
         {
             Lower_Limit_cnt ++;
             time_tx = 100;
-            if(Lower_Limit_cnt == 2)
+            if(Lower_Limit_cnt == 2)  //下限信号有变化
             {
                 Flag_Lower_Limit = Lower_Limit_Signal;
-                if(Lower_Limit_Signal == 0)
+
+                if(flag_abnormal_stats == 1)  //存在异常仍然返回异常
+                {
+                    if(PROFILE_RxLowSpeed_TYPE == 1)   //APP
+                    {
+                        Struct_DATA_Packet_Contro_fno = APP_Abnormal_State;
+                    }
+                    else if(PROFILE_RxLowSpeed_TYPE == 2)  //遥控器
+                    {
+                        Struct_DATA_Packet_Contro_fno = STX_Abnormal_State;
+                    }
+                }
+                else if(Lower_Limit_Signal == 0)
                 {
                     if(PROFILE_RxLowSpeed_TYPE == 1)
                     {

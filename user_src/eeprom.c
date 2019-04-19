@@ -331,6 +331,7 @@ void ID_SCX1801_EEPROM_write(u32 id)
     UnlockFlash(UNLOCK_EEPROM_TYPE);
     WriteByteToFLASH(addr_eeprom_sys + 0x3FB, xm[0]);
     WriteByteToFLASH(addr_eeprom_sys + 0x3FC, xm[1]);
+
     WriteByteToFLASH(addr_eeprom_sys + 0x3FD, xm[2]);
     LockFlash(UNLOCK_EEPROM_TYPE);
 }

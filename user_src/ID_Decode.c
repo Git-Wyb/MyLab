@@ -82,7 +82,7 @@ void ID_Decode_IDCheck(void)
         {
             Radio_Date_Type_bak=Radio_Date_Type;
             eeprom_IDcheck();
-            if ((FLAG_ID_Erase_Login == 1) || (FLAG_ID_Login == 1) ||(FLAG_ID_SCX1801_Login==1))
+            if ((FLAG_ID_Erase_Login == 1) || (FLAG_ID_Login == 1) || (FLAG_ID_SCX1801_Login==1))
             {
                 if ((FLAG_ID_Login_OK == 0) && (DATA_Packet_Contro_buf != 0x40) && (DATA_Packet_ID != 0)&&(Radio_Date_Type_bak==1)) //2015.4.1�?�? 在登录模式下 不允许自动�?�信登录，只允�?�手动送信登录
                 {
@@ -207,8 +207,8 @@ void ID_Decode_IDCheck(void)
 		                        FG_auto_out = 0;
 		                        TIME_auto_close = 0;
 		                        FG_auto_open_time = 0;
-		                        if (FG_auto_manual_mode == 1)      //Manual_override_TIMER=13500;   //2�?0秒自动无�?
-		                            Manual_override_TIMER = 24480; //4�?0秒自动无�?
+		                        if (FG_auto_manual_mode == 1)      //Manual_override_TIMER=13500;   //2分30秒内自动无效
+		                            Manual_override_TIMER = 24480; //4分30秒内自动无效
 		                        if ((DATA_Packet_Control & 0x14) == 0x14)
 		                        {
 		                            if (TIMER1s == 0)

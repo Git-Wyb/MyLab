@@ -419,6 +419,13 @@ void RF_test_mode(void)
 {
     u8 Flag_TP4 = 0;
     u8 test_time_Base10ms = 0;
+
+    u8 flag_odd_num = 0;
+    u8 flag_even_num = 0;
+    u8 sum_num = 0;
+    u8 i=0;
+    static u8 code_x = SW_CODE_0;
+
     //UINT8 Boot_i;
 	 //Receiver_LED_OUT = 1;
 	 /*for (Boot_i = 0; Boot_i < 4; Boot_i++)
@@ -534,23 +541,14 @@ void RF_test_mode(void)
         //           FG_test1=1;
         //        }
         //       if(ADF7021_DATA_CLK==0)FG_test1=0;
-        if(Abnormal_Signal == 0 && Lower_Limit_Signal != 0)
+
+        if((Abnormal_Signal == 0 && Lower_Limit_Signal != 0) || (Lower_Limit_Signal == 0 && Abnormal_Signal != 0))
         {
-            Receiver_LED_OUT = 1;
-            time_sw = 150;
-            while(time_sw);
-            Receiver_LED_OUT = 0;
-            time_sw = 150;
-            while(time_sw);
-        }
-        else if(Lower_Limit_Signal == 0 && Abnormal_Signal != 0)
-        {
-             Receiver_LED_OUT = 1;
-            time_sw = 150;
-            while(time_sw);
-            Receiver_LED_OUT = 0;
-            time_sw = 150;
-            while(time_sw);
+            if(time_sw == 0)
+            {
+
+                Receiver_LED_OUT = 1;
+            }
         }
         else if(Lower_Limit_Signal == 0 && Abnormal_Signal == 0)
         {
@@ -558,7 +556,50 @@ void RF_test_mode(void)
         }
         if(TIME_power_led == 0)
         {
-            DIP_SW_Test();
+            i = DIP_SW_Code();
+            if(code_x != i)
+            {
+                if(i == DIP_SW_Code())
+                {
+                    if(code_x==i-1 || code_x==i+1)
+                    {
+                        sum_num = 0;
+                        code_x = i;
+                        if(code_x % 2 == 0)
+                        {
+                            flag_odd_num = 1;       //奇数挡
+                        }
+                        else
+                        {
+                            flag_even_num = 3;      //偶数挡
+                        }
+                    }
+                    else
+                    {
+                        code_x = i;
+                        Receiver_LED_OUT = 1;
+                        sum_num = 1;
+                    }
+                }
+            }
+            else
+            {
+                if(sum_num != 1)
+                Receiver_LED_OUT = 0;
+            }
+            if(flag_odd_num == 1)
+            {
+                flag_odd_num = 0;
+                Receiver_LED_OUT = 1;
+            }
+            else if(flag_even_num != 0)
+            {
+                flag_even_num--;
+                if(flag_even_num != 1)
+                Receiver_LED_OUT = 1;
+            }
+            time_sw = 150;
+            TIME_power_led = 300;
         }
     }
     OUT_VENT_Init();
@@ -596,8 +637,8 @@ void DIP_SW_Test(void)
     i = DIP_SW_Code();
     if(code_x != i)
     {
-        time_sw = 50;
-        while(time_sw);
+//        time_sw = 50;
+//        while(time_sw);
         if(i == DIP_SW_Code())
         {
             if(code_x==i-1 || code_x==i+1)
@@ -672,6 +713,6 @@ void APP429M_Tx_State(void)
             }
         }
     }
-    time_sw = 1000;
+    time_sw = 1000;          //开启发送
 }
 
