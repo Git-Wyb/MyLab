@@ -181,8 +181,7 @@ extern u32 PROFILE_RADIO_DATA_RATE_32bit_200002FC;
 extern u32 PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500;
 extern const u32 PROFILE_CH1_FREQ_32bit_429HighSpeed;
 extern const u32 PROFILE_CH2_FREQ_32bit_429HighSpeed;
-//extern const u32 PROFILE_CH1_FREQ_32bit_429LowSpeed;
-//extern const u32 PROFILE_CH2_FREQ_32bit_429LowSpeed;
+
 extern u8 PROFILE_RxLowSpeed_TYPE;
 extern u8 Channels;
 
