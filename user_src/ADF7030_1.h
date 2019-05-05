@@ -172,12 +172,12 @@ u8 Memory_Read_Block_Pointer_Short_Address(ADI_ADF7030_1_RADIO_SPI_PNTR_TYPE PNT
 u8 Memory_Read_Block_Pointer_Long_Address(ADI_ADF7030_1_RADIO_SPI_PNTR_TYPE PNTR_ID, u8 num);
 u8 Memory_Write_Block_Pointer_Short_Address(const u8 *x_data, ADI_ADF7030_1_RADIO_SPI_PNTR_TYPE PNTR_ID, u8 num);
 void ADF7030ParameterInit(void);
-void ADF7030_TX(u8 mode,u32 PROFILE_CH);
+void ADF7030_TX(u8 mode);
 u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset);
 void ADF7030_Clear_IRQ(void);
 void ADF7030_Change_Channel(void);
 
 void APP_TX_PACKET(void);
-void ADF7030_RECEIVING_FROM_POWEROFF_testMode(u32 PROFILE_CH);
+void ADF7030_RECEIVING_FROM_POWEROFF_testMode(void);
 
 #endif

@@ -424,17 +424,7 @@ void RF_test_mode(void)
     u8 flag_even_num = 0;
     u8 sum_num = 0;
     u8 i=0;
-
-
-    u8 FLAG_TELEC_mode=0;
-    u8 FLAG_TELEC_CH=0;
-    u8 TIME_TELEC_mode=0;
-    u8 TIME_TELEC_CH=0;
-    u8 FLAG_TELEC_CH_dec=0;
-    u8 TIME_TELEC_CH_dec=0;
-    u8 TELEC_Frequency_CH=1;
-    u32 PROFILE_CH_FREQ_32bit_200002EC_TELEC = 426075000ul;
-    u32 PROFILE_CH_Save = 0;
+    static u8 code_x = SW_CODE_0;
 
     //UINT8 Boot_i;
 	 //Receiver_LED_OUT = 1;
@@ -453,91 +443,31 @@ void RF_test_mode(void)
     /*TELEC认证，429.175MHz - 429.7375MHz(以0.0125M递增)和426.075MHz共47个信道，发载波无调制、发载波有调制以及接收*/
     while (Receiver_test == 0)
     {
-        ClearWDT();   // Service the WDT
-
-        if(FG_10ms)
+       ClearWDT();   // Service the WDT
+        if((TP4 == 0)&&(Flag_TP4==0))   //不使用TP3，因为测试模式TP3与工作模式换气输出有冲突，冲突为三极管导致TP3的高电平只有0.8V
         {
-			FG_10ms = 0;
-			if(TIME_TELEC_CH)--TIME_TELEC_CH;
-			if(TIME_TELEC_mode)--TIME_TELEC_mode;
-			if(TIME_TELEC_CH_dec)--TIME_TELEC_CH_dec;
-        }
-		if((Receiver_Login==0)&&(FLAG_TELEC_mode==0)&&(TIME_TELEC_mode==0))
-        {
-			FLAG_TELEC_mode=1;
-			Tx_Rx_mode++;
-            if (Tx_Rx_mode == 2)
-                Tx_Rx_mode = 3; //屏蔽mode 2，mode 2暂时不使用
-           // if (Tx_Rx_mode == 3)
-            //    X_COUNT = 0;
-			if(Tx_Rx_mode>3)Tx_Rx_mode=0;
-		}
-		if(Receiver_Login==1)
-        {
-            FLAG_TELEC_mode=0;TIME_TELEC_mode=5;
-        }
-		if((Lower_Limit_Signal==0)&&(FLAG_TELEC_CH==0)&&(TIME_TELEC_CH==0))
-        {
-			FLAG_TELEC_CH=1;
-            TELEC_Frequency_CH++;
-
-			if(TELEC_Frequency_CH>47)TELEC_Frequency_CH=1;
-
-            // if(FG_test_rx==0)
-             {
-                if(TELEC_Frequency_CH == 1)
+            if (FG_10ms==1)
+            {
+                FG_10ms = 0;
+                test_time_Base10ms++;
+                if (test_time_Base10ms>5)
                 {
-                   PROFILE_CH_FREQ_32bit_200002EC_TELEC = 426075000;
+                    test_time_Base10ms = 5;
+                    Flag_TP4 = 1;
+                    Tx_Rx_mode++;
+                    if (Tx_Rx_mode == 2)
+                        Tx_Rx_mode = 3; //屏蔽mode 2，mode 2暂时不使用
+                    if (Tx_Rx_mode == 3)
+                        X_COUNT = 0;   //切换成mode3时，RX误码率有时会亮
+                    if (Tx_Rx_mode > 3)
+                        Tx_Rx_mode = 0;
                 }
-                else
-                {
-                    PROFILE_CH_FREQ_32bit_200002EC_TELEC = 429175000;
-                    for(i=2;i<TELEC_Frequency_CH;i++)
-                    {
-                       PROFILE_CH_FREQ_32bit_200002EC_TELEC += 12500;
-                    }
-                }
-				if (Tx_Rx_mode == 0) //发载波，无调制信号
-				   ADF7030_TX(TestTXCarrier,PROFILE_CH_FREQ_32bit_200002EC_TELEC);
-				else if(Tx_Rx_mode == 1) //发载波，有调制信号
-				   ADF7030_TX(TestTx_PreamblePattern,PROFILE_CH_FREQ_32bit_200002EC_TELEC);
             }
-
-		}
-		if(Lower_Limit_Signal==1)
-        {
-            FLAG_TELEC_CH=0;TIME_TELEC_CH=5;
         }
-        if((Abnormal_Signal==0)&&(FLAG_TELEC_CH_dec==0)&&(TIME_TELEC_CH_dec==0))
+        else if(TP4 == 1)
         {
-			FLAG_TELEC_CH_dec=1;
-			TELEC_Frequency_CH--;
-
-			if(TELEC_Frequency_CH < 1)   TELEC_Frequency_CH=47;
-
-            // if(FG_test_rx==0)
-             {
-                if(TELEC_Frequency_CH == 1)
-                {
-                   PROFILE_CH_FREQ_32bit_200002EC_TELEC = 426075000;
-                }
-                else
-                {
-                    PROFILE_CH_FREQ_32bit_200002EC_TELEC = 429175000;
-                    for(i=2;i<TELEC_Frequency_CH;i++)
-                    {
-                       PROFILE_CH_FREQ_32bit_200002EC_TELEC += 12500;
-                    }
-                }
-				if (Tx_Rx_mode == 0) //发载波，无调制信叿
-				   ADF7030_TX(TestTXCarrier,PROFILE_CH_FREQ_32bit_200002EC_TELEC);
-				else if(Tx_Rx_mode == 1) //发载波，有调制信叿
-				   ADF7030_TX(TestTx_PreamblePattern,PROFILE_CH_FREQ_32bit_200002EC_TELEC);
-            }
-		}
-		if(Abnormal_Signal==1)
-        {
-            FLAG_TELEC_CH_dec=0;TIME_TELEC_CH_dec=5;
+            Flag_TP4 = 0;
+            test_time_Base10ms = 0;
         }
 
         if ((Tx_Rx_mode == 0) || (Tx_Rx_mode == 1))
@@ -548,25 +478,13 @@ void RF_test_mode(void)
             FG_test_tx_off = 0;
             if (Tx_Rx_mode == 0) //发载波，无调制信�?
             {
-                Receiver_LED_OUT = 1;
+//                Receiver_LED_OUT = 1;
                 FG_test_mode = 0;
                 FG_test_tx_1010 = 0;
                 if (FG_test_tx_on == 0)
                 {
                     FG_test_tx_on = 1;
-                    if(TELEC_Frequency_CH == 1)
-                    {
-                        PROFILE_CH_FREQ_32bit_200002EC_TELEC = 426075000;
-                    }
-                    else
-                    {
-                        PROFILE_CH_FREQ_32bit_200002EC_TELEC = 429175000;
-                        for(i=0;i<TELEC_Frequency_CH-2;i++)
-                        {
-                           PROFILE_CH_FREQ_32bit_200002EC_TELEC += 12500;
-                        }
-                    }
-                    ADF7030_TX(TestTXCarrier,PROFILE_CH_FREQ_32bit_200002EC_TELEC);
+                    ADF7030_TX(TestTXCarrier);
                     //7021_DATA_ ADF7021_DATA_direc = Input;
                     //ttset dd_set_TX_mode_carrier();
                 }
@@ -576,26 +494,15 @@ void RF_test_mode(void)
                 if (TIMER1s == 0)
                 {
                     TIMER1s = 500;
-                    Receiver_LED_OUT = !Receiver_LED_OUT;
+ //                   Receiver_LED_OUT = !Receiver_LED_OUT;
                 }
                 FG_test_mode = 1;
                 FG_test_tx_on = 0;
                 if (FG_test_tx_1010 == 0)
                 {
+                    ADF7030_TX(TestTx_PreamblePattern);
                     FG_test_tx_1010 = 1;
-                    if(TELEC_Frequency_CH == 1)
-                    {
-                        PROFILE_CH_FREQ_32bit_200002EC_TELEC = 426075000;
-                    }
-                    else
-                    {
-                        PROFILE_CH_FREQ_32bit_200002EC_TELEC = 429175000;
-                        for(i=0;i<TELEC_Frequency_CH-2;i++)
-                        {
-                           PROFILE_CH_FREQ_32bit_200002EC_TELEC += 12500;
-                        }
-                    }
-                    ADF7030_TX(TestTx_PreamblePattern,PROFILE_CH_FREQ_32bit_200002EC_TELEC);
+
                     //7021_DATA_ ADF7021_DATA_direc = Output;
                     //ttset dd_set_TX_mode_1010pattern();
                 }
@@ -606,15 +513,13 @@ void RF_test_mode(void)
         {
             CG2214M6_USE_R;
             FG_test_rx = 1;
-            Receiver_LED_OUT = 0;
+//            Receiver_LED_OUT = 0;
             FG_test_mode = 0;
             FG_test_tx_on = 0;
             FG_test_tx_1010 = 0;
-            //if (FG_test_tx_off == 0)
-            if(PROFILE_CH_Save != PROFILE_CH_FREQ_32bit_200002EC_TELEC || FG_test_tx_off == 0)
+            if (FG_test_tx_off == 0)
             {
-                PROFILE_CH_Save = PROFILE_CH_FREQ_32bit_200002EC_TELEC;
-                ADF7030_RECEIVING_FROM_POWEROFF_testMode(PROFILE_CH_FREQ_32bit_200002EC_TELEC);
+                ADF7030_RECEIVING_FROM_POWEROFF_testMode();
                 FG_test_tx_off = 1;
             }
             if (Tx_Rx_mode == 2) //packet usart out put RSSI
@@ -638,6 +543,65 @@ void RF_test_mode(void)
         //        }
         //       if(ADF7021_DATA_CLK==0)FG_test1=0;
 
+        if((Abnormal_Signal == 0 && Lower_Limit_Signal != 0) || (Lower_Limit_Signal == 0 && Abnormal_Signal != 0))
+        {
+            if(time_sw == 0)
+            {
+
+                Receiver_LED_OUT = 1;
+            }
+        }
+        else if(Lower_Limit_Signal == 0 && Abnormal_Signal == 0)
+        {
+             Receiver_LED_OUT = 1;
+        }
+        if(TIME_power_led == 0)
+        {
+            i = DIP_SW_Code();
+            if(code_x != i) //开关有变化
+            {
+                if(i == DIP_SW_Code())
+                {
+                    if(code_x==i-1 || code_x==i+1 || i-code_x==0x09 || code_x-i==0x09) //正常变化(开关从0直接拨到9或者从9直接拨到0也视做正常变化)
+                    {
+                        sum_num = 0;
+                        code_x = i;
+                        if(code_x % 2 == 0)
+                        {
+                            flag_odd_num = 1;       //奇数挡
+                        }
+                        else
+                        {
+                            flag_even_num = 3;      //偶数挡
+                        }
+                    }
+                    else    //异常变化
+                    {
+                        code_x = i;
+                        Receiver_LED_OUT = 1;
+                        sum_num = 1;
+                    }
+                }
+            }
+            else
+            {
+                if(sum_num != 1)
+                Receiver_LED_OUT = 0;
+            }
+            if(flag_odd_num == 1)
+            {
+                flag_odd_num = 0;
+                Receiver_LED_OUT = 1;
+            }
+            else if(flag_even_num != 0)
+            {
+                flag_even_num--;
+                if(flag_even_num != 1)
+                Receiver_LED_OUT = 1;
+            }
+            time_sw = 150;
+            TIME_power_led = 300;
+        }
     }
     OUT_VENT_Init();
     BerExtiUnInit();
