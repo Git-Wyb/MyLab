@@ -80,7 +80,7 @@ void main(void)
     WDT_init();        //看门狿
     //  FLAG_APP_RX = 1;
     FG_Receiver_LED_RX = 0;
-    TIME_EMC = 10;
+    //TIME_EMC = 10;
     FLAG_testNo91 = 0;
     FLAG_testBEEP = 0;
 
@@ -90,8 +90,8 @@ void main(void)
     while (1)
     {
         ClearWDT(); // Service the WDT
-        if (FLAG_testBEEP != 0)
-            TEST_beep();
+        //if (FLAG_testBEEP != 0)
+        //    TEST_beep();
 
         if (time_Login_exit_256 == 0)
             ID_Decode_OUT();
@@ -110,7 +110,7 @@ void main(void)
             //if(Scan_step==2)
             SCAN_RECEIVE_PACKET(); //ɨ���������?
         }
-        TranmissionACK();
+     //   TranmissionACK();
     //        READ_RSSI_avg();
 
         if (FG_Receiver_LED_RX == 1)

@@ -11,7 +11,7 @@
 #include "Timer.h"
 //以下是IO定义
 /********************LED寄存器*****************************************/
-extern u8 LED_Cache;
+//extern u8 LED_Cache;
 #define LED_ON 1
 #define LED_OFF 0
 

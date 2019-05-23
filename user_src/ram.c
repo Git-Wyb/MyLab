@@ -25,10 +25,10 @@ u16 X_COUNT = 0;
 u16 X_ERR = 0; //记录错误的个�?
 u16 X_ERRTimer = 0;
 
-u8 SIO_cnt = 0;
-u8 SIO_buff[16] = {0};
-u8 SIO_DATA[16] = {0};
-u8 Tx_Rx_mode = 0;
+//u8 SIO_cnt = 0;
+//u8 SIO_buff[16] = {0};
+//u8 SIO_DATA[16] = {0};
+//u8 Tx_Rx_mode = 0;
 
 u8 TIME_10ms = 0;
 u16 TIMER1s = 0;
@@ -45,8 +45,8 @@ u32 DATA_Packet_ID = 0;
 u8 DATA_Packet_Control = 0;
 u8 DATA_Packet_Contro_buf = 0; //2015.3.24修正
 u32 ID_Receiver_Login = 0;
-u8 TIME_EMC = 0; //静电测试
-u8 LED_Cache = 0;
+//u8 TIME_EMC = 0; //静电测试
+//u8 LED_Cache = 0;
 
 u16 INquiry = 0;
 u16 TIME_Receiver_Login_restrict = 0;
@@ -64,8 +64,8 @@ u16 Manual_override_TIMER = 0;
 u16 time_Login_exit_256 = 0;
 u16 TIME_Fine_Calibration = 0; //窄带下中频滤波器100KHz精校
 
-u8 Count_key_SW3 = 0;
-u8 Display_key_SW3 = 0xff;
+//u8 Count_key_SW3 = 0;
+//u8 Display_key_SW3 = 0xff;
 
 u16 TIME_TestNo91=0;
 u16 TIME_power_led=0;
@@ -147,6 +147,7 @@ const u32 PROFILE_CH2_FREQ_32bit_429HighSpeed = 429550000;  //429550000;//429237
 
 
 u8 PROFILE_RxLowSpeed_TYPE = 1;    //1：APP操作；2：遥控器操作(STX)
+u8 Flag_429M_EndStop = 0;
 
 u8 Channels=1;
 

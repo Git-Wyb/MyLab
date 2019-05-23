@@ -472,8 +472,8 @@ void ID_learn(void)
             --Time_error_read_gap;
         if (TIME_APP_TX_fromOUT)
             --TIME_APP_TX_fromOUT;
-        if (TIME_EMC)
-            --TIME_EMC;
+ //       if (TIME_EMC)
+ //           --TIME_EMC;
         if (TIME_auto_out)
             --TIME_auto_out;
         if (TIME_auto_close)

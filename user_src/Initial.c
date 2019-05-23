@@ -380,7 +380,7 @@ void DIP_SW_Init(void)
 **/
 void RF_BRE_Check(void)
 {
-    char errbuff[10];
+    //char errbuff[10];
     ClearWDT(); // Service the WDT
     if (ADF7030_GPIO3 == 1)
     {
@@ -419,6 +419,7 @@ void RF_test_mode(void)
 {
     u8 Flag_TP4 = 0;
     u8 test_time_Base10ms = 0;
+    u8 Tx_Rx_mode = 0;
 
     u8 flag_odd_num = 0;
     u8 flag_even_num = 0;
@@ -555,7 +556,7 @@ void RF_test_mode(void)
         {
              Receiver_LED_OUT = 1;
         }
-        if(TIME_power_led == 0)
+        if(TIME_power_led == 0)   //拨码开关测试
         {
             i = DIP_SW_Code();
             if(code_x != i) //开关有变化
@@ -614,7 +615,7 @@ void RF_test_mode(void)
 
     FLAG_APP_RX = 1;
     TIME_Fine_Calibration = 900;
-    TIME_EMC = 10;
+    //TIME_EMC = 10;
 }
 
 
@@ -714,6 +715,6 @@ void APP429M_Tx_State(void)
             }
         }
     }
-    time_sw = 1000;          //开启发送
+    time_sw = 200;          //开启发送
 }
 

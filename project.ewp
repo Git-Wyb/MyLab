@@ -152,7 +152,7 @@
         <option>
           <name>IccOptStrategy</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IccOptLevelSlave</name>
@@ -489,7 +489,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>project.hex</state>
+          <state>SRX1931-100 Ver1.02.hex</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>

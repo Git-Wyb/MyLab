@@ -95,10 +95,10 @@ extern u16 X_COUNT;
 extern u16 X_ERR; //记录错误的个�?
 extern u16 X_ERRTimer;
 
-extern u8 SIO_cnt;
-extern u8 SIO_buff[16];
-extern u8 SIO_DATA[16];
-extern u8 Tx_Rx_mode;
+//extern u8 SIO_cnt;
+//extern u8 SIO_buff[16];
+//extern u8 SIO_DATA[16];
+//extern u8 Tx_Rx_mode;
 
 extern u8 TIME_10ms;
 extern u16 TIMER1s;
@@ -115,7 +115,7 @@ extern u32 DATA_Packet_ID;
 extern u8 DATA_Packet_Control;
 extern u8 DATA_Packet_Contro_buf; //2015.3.24�?�?
 extern u32 ID_Receiver_Login;
-extern u8 TIME_EMC;
+//extern u8 TIME_EMC;
 
 extern u16 INquiry;
 extern u16 TIME_Receiver_Login_restrict;
@@ -133,8 +133,8 @@ extern u16 Manual_override_TIMER;
 extern u16 time_Login_exit_256;
 extern u16 TIME_Fine_Calibration; //绐勫甫涓嬩腑棰戞护娉㈠櫒100KHz绮炬�?
 
-extern u8 Count_key_SW3;
-extern u8 Display_key_SW3;
+//extern u8 Count_key_SW3;
+//extern u8 Display_key_SW3;
 
 extern u16 TIME_TestNo91;
 extern u16 TIME_power_led;
@@ -183,6 +183,7 @@ extern const u32 PROFILE_CH1_FREQ_32bit_429HighSpeed;
 extern const u32 PROFILE_CH2_FREQ_32bit_429HighSpeed;
 
 extern u8 PROFILE_RxLowSpeed_TYPE;
+extern u8 Flag_429M_EndStop;
 extern u8 Channels;
 
 

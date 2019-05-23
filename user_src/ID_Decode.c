@@ -158,7 +158,7 @@ void ID_Decode_IDCheck(void)
 		                    if ((DATA_Packet_Control == 0x40) && (Manual_override_TIMER == 0))
 		                    {
 		                        FG_auto_manual_mode = 1;
-                                switch(DIP_SW_Code())
+                            /*    switch(DIP_SW_Code()) //取消拨码开关
                                 {
                                     case SW_CODE_0:
                                          TIME_auto_out = 890;
@@ -192,8 +192,8 @@ void ID_Decode_IDCheck(void)
                                     break;
                                     default:
                                     break;
-                                }
-		                        //TIME_auto_out = 890; // 900
+                                } */
+		                        TIME_auto_out = 890; // 900
 		                        if (FG_First_auto == 0)
 		                        {
 		                            FG_First_auto = 1;
@@ -215,7 +215,17 @@ void ID_Decode_IDCheck(void)
 		                                TIMER1s = 3800 - 30;
 		                        }
 		                        else if(FLAG_testNo91==1) TIMER1s = 600;
-		                        else TIMER1s = 1000;
+		                        else
+                                {
+                                    if(PROFILE_RxLowSpeed_TYPE == 1 && (((DATA_Packet_Control & 0xFF) == 0x02) || ((DATA_Packet_Control & 0xFF) == 0x08)))//429M
+                                    {
+                                        TIMER1s = 2500; //约2.5s
+                                    }
+                                    else
+                                    {
+                                        TIMER1s = 1000;
+                                    }
+                                }
 		                    }
 		                    TIMER300ms = 600;  //500
 		                    //Receiver_LED_RX=1;
@@ -233,7 +243,8 @@ void ID_Decode_IDCheck(void)
 						if((DATA_Packet_Control&0xDF)<0xC0)TIMER_Semi_open=(DATA_Packet_Control&0x1F)+4;
 						else TIMER_Semi_close=(DATA_Packet_Control&0x1F)+4;
 					}
-					else TIMER1s=1000;
+					else
+                        TIMER1s=1000;
 					FLAG_APP_TX_once=1;
                     TIMER300ms = 100;
 		            FG_Receiver_LED_RX = 1;
@@ -573,11 +584,32 @@ void ID_Decode_OUT(void)
                 break;
                 case 0x02: //close
                     Receiver_LED_OUT = 1;
-                    Receiver_OUT_OPEN = FG_NOT_allow_out;
-                    Receiver_OUT_STOP = FG_NOT_allow_out;
-                    Receiver_OUT_VENT = FG_NOT_allow_out;
-                    Receiver_OUT_CLOSE = FG_allow_out;
-                    APP429M_Tx_State();
+                    if(PROFILE_RxLowSpeed_TYPE == 2)   //426M
+                    {
+                        Receiver_OUT_OPEN = FG_NOT_allow_out;
+                        Receiver_OUT_STOP = FG_NOT_allow_out;
+                        Receiver_OUT_VENT = FG_NOT_allow_out;
+                        Receiver_OUT_CLOSE = FG_allow_out;
+                    }
+                    else if(PROFILE_RxLowSpeed_TYPE == 1)    //429M
+                    {
+                        switch(Flag_429M_EndStop)
+                        {
+                            case 0:
+                                Receiver_OUT_STOP = FG_allow_out;
+                                Receiver_OUT_CLOSE = FG_NOT_allow_out;
+                                Receiver_OUT_VENT = FG_NOT_allow_out;
+                                Receiver_OUT_OPEN = FG_NOT_allow_out;
+                                break;
+                            case 1:
+                                Receiver_OUT_STOP = FG_NOT_allow_out;
+                                break;
+                            case 2:
+                                Receiver_OUT_CLOSE = FG_allow_out;
+                                break;
+                        }
+                        APP429M_Tx_State();
+                    }
                 break;
                 case 0x04: //stop
                     Receiver_LED_OUT = 1;
@@ -589,11 +621,32 @@ void ID_Decode_OUT(void)
                 break;
                 case 0x08: //open
                     Receiver_LED_OUT = 1;
-                    Receiver_OUT_STOP = FG_NOT_allow_out;
-                    Receiver_OUT_CLOSE = FG_NOT_allow_out;
-                    Receiver_OUT_VENT = FG_NOT_allow_out;
-                    Receiver_OUT_OPEN = FG_allow_out;
-                    APP429M_Tx_State();
+                    if(PROFILE_RxLowSpeed_TYPE == 2)   //426M
+                    {
+                        Receiver_OUT_STOP = FG_NOT_allow_out;
+                        Receiver_OUT_CLOSE = FG_NOT_allow_out;
+                        Receiver_OUT_VENT = FG_NOT_allow_out;
+                        Receiver_OUT_OPEN = FG_allow_out;
+                    }
+                    else if(PROFILE_RxLowSpeed_TYPE == 1)    //429M
+                    {
+                        switch(Flag_429M_EndStop)
+                        {
+                            case 0:
+                                Receiver_OUT_STOP = FG_allow_out;
+                                Receiver_OUT_CLOSE = FG_NOT_allow_out;
+                                Receiver_OUT_VENT = FG_NOT_allow_out;
+                                Receiver_OUT_OPEN = FG_NOT_allow_out;
+                                break;
+                            case 1:
+                                Receiver_OUT_STOP = FG_NOT_allow_out;
+                                break;
+                            case 2:
+                                Receiver_OUT_OPEN = FG_allow_out;
+                                break;
+                        }
+                        APP429M_Tx_State();
+                    }
                 break;
                 case 0x0C: //open+stop
                     Receiver_LED_OUT = 1;
@@ -780,6 +833,8 @@ void ID_Decode_OUT(void)
             FG_OUT_OPEN_CLOSE = 0;
         }
         FLAG_testNo91SendUart=0;
+
+        Flag_429M_EndStop = 0;
     }
     if (TIMER300ms == 0)
         FG_Receiver_LED_RX = 0; //Receiver_LED_RX=0;

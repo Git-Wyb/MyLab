@@ -26,7 +26,20 @@ void TIM4_Init(void)
 void TIM4_UPD_OVF(void)
 { //725==1ç§?
     if (TIMER1s)
+    {
         --TIMER1s;
+        if(PROFILE_RxLowSpeed_TYPE == 1)    //429M
+        {
+            if(TIMER1s == 1600)       //1600
+            {
+                Flag_429M_EndStop = 1;
+            }
+            else if(TIMER1s == 1100)     //1100
+            {
+                Flag_429M_EndStop = 2;
+            }
+        }
+    }
 	if(TIME_TX_RSSI_Scan)
 		--TIME_TX_RSSI_Scan;
 	if(TIME_power_led)

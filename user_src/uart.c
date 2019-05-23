@@ -179,6 +179,7 @@ unsigned char asc_hex_2(unsigned char asc1, unsigned char asc0)
 }
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/*
 void PC_PRG(void) // 串口命令
 {
 	unsigned int i, j;
@@ -281,7 +282,7 @@ void PC_PRG(void) // 串口命令
 			break;
 		}
 	}
-}
+} */
 void ReceiveFrame(UINT8 Cache)
 {
 	switch (UartStatus)
@@ -292,7 +293,7 @@ void ReceiveFrame(UINT8 Cache)
 		UART_DATA_buffer[1] = UART_DATA_buffer[2];
 		UART_DATA_buffer[2] = Cache;
 		if ((UART_DATA_buffer[0] == FrameHead) &&
-			(UART_DATA_buffer[2] == FrameSingnalID))	
+			(UART_DATA_buffer[2] == FrameSingnalID))
 		{
 			U1Statues = ReceivingStatues;
 			UartStatus++;
@@ -321,11 +322,11 @@ void ReceiveFrame(UINT8 Cache)
 		UartCount = 0;
 		//        Receiver_LED_OUT_INV = !Receiver_LED_OUT_INV;
 		if((Databits_t.ID_No == 147)||(Databits_t.ID_No == 152)) U1Statues = IdelStatues;
-		else 
+		else
 		{
 			U1Statues = ReceiveDoneStatues;
 		    U1AckTimer = U1AckDelayTime;
-		    U1Busy_OUT = 1;			
+		    U1Busy_OUT = 1;
 		}
 
 	}
@@ -351,11 +352,11 @@ void OprationFrame(void)
 		switch (Databits_t.Mode)
 		{
 		case 3:
-		case 4:	
-		case 5:	
+		case 4:
+		case 5:
 		case 6:
-		case 7:	
-		case 8:			
+		case 7:
+		case 8:
 			break;
 		default:
 			ACKBack[2] = 1;
@@ -364,10 +365,10 @@ void OprationFrame(void)
 		}
 		switch (Databits_t.Statues)
 		{
-		case 1: 
-		case 2: 
+		case 1:
+		case 2:
 		case 3:
-		case 4: 
+		case 4:
 		case 5:
 		case 6:
 			break;
@@ -388,8 +389,8 @@ void OprationFrame(void)
 		case 0x49:
 		case 0x4A:
 		case 0x4B:
-		case 0x4C:	
-		case 0x4D:		
+		case 0x4C:
+		case 0x4D:
 			break;
 		default:
 			ACKBack[2] = 1;
@@ -406,7 +407,7 @@ void OprationFrame(void)
 		Time_error_read_timeout=(UART_DATA_ID98[1]+1)*7;
 		ERROR_Read_sendTX_count=0;
 		ERROR_Read_sendTX_packet=0;
-		Time_error_read_gap=38;	
+		Time_error_read_gap=38;
 	}
 	else if (Databits_t.ID_test_No91or93 == 145)  //0x91
 	{
@@ -419,25 +420,25 @@ void OprationFrame(void)
 			FLAG_testNo91SendUart=0;
 			TIME_TestNo91=1000;
 	    	}
-		else 
+		else
 			{
 			ACKBack[2] = 1;
 			FLAG_testNo91=2;
-			TIME_TestNo91=1000;	
+			TIME_TestNo91=1000;
 			FLAG_testBEEP=1;
 			}
-	}	
+	}
 	else if (Databits_t.ID_test_No91or93 == 147)  //0x93
 	{
 		switch (Databits_t.SWorOUT)
 		{
 		case 0x01:
 			DATA_Packet_Control=0x08;
-			TIMER1s = 1000;	
+			TIMER1s = 1000;
 			break;
 		case 0x02:
 			DATA_Packet_Control=0x04;
-			TIMER1s = 1000;		
+			TIMER1s = 1000;
 			break;
 		case 0x04:
 			DATA_Packet_Control=0x02;
@@ -449,14 +450,14 @@ void OprationFrame(void)
 		case 0xFB:
 			FLAG_testBEEP=2;
 			break;
-		case 0xFC:	
+		case 0xFC:
 			FLAG_testBEEP=3;
 			break;
 		default:
 			break;
 		}
 
-	}	
+	}
 	else
 	{
 		ACKBack[2] = 1;
@@ -483,5 +484,5 @@ void TranmissionACK(void)
 		Send_Data(Send_err_com, 7);
 		Flag_ERROR_Read_once_again=0;
 		TIME_ERROR_Read_once_again=0;
-	}			
+	}
 }
