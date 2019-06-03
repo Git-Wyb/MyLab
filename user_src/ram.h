@@ -184,6 +184,7 @@ extern const u32 PROFILE_CH2_FREQ_32bit_429HighSpeed;
 
 extern u8 PROFILE_RxLowSpeed_TYPE;
 extern u8 Flag_429M_EndStop;
+extern u8 Flag_ID_Login;
 extern u8 Channels;
 
 

@@ -106,9 +106,11 @@ void ID_Decode_IDCheck(void)
                     {
                         PROFILE_RxLowSpeed_TYPE = 2;
                     }
-                        if (DATA_Packet_ID == 0xFFFFFE)
-		                    DATA_Packet_Control = DATA_Packet_Contro_buf; //2015.3.24�?�? Control缓存�?ID判断�?否�?�习过后才能使用
-
+                    if (DATA_Packet_ID == 0xFFFFFE)
+                    {
+                        DATA_Packet_Control = DATA_Packet_Contro_buf; //2015.3.24�?�? Control缓存�?ID判断�?否�?�习过后才能使用
+                        Flag_ID_Login = 1;
+                    }
 		                if ((SPI_Receive_DataForC[1] & 0x0000FFFF) == 0x5556)
 		                {
 		                    PAYLOAD_SIZE = RX_PayLoadSizeLogin;
@@ -590,6 +592,7 @@ void ID_Decode_OUT(void)
                         Receiver_OUT_STOP = FG_NOT_allow_out;
                         Receiver_OUT_VENT = FG_NOT_allow_out;
                         Receiver_OUT_CLOSE = FG_allow_out;
+                        APP429M_Tx_State();
                     }
                     else if(PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
@@ -627,6 +630,7 @@ void ID_Decode_OUT(void)
                         Receiver_OUT_CLOSE = FG_NOT_allow_out;
                         Receiver_OUT_VENT = FG_NOT_allow_out;
                         Receiver_OUT_OPEN = FG_allow_out;
+                        APP429M_Tx_State();
                     }
                     else if(PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {

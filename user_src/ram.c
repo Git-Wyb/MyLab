@@ -148,7 +148,7 @@ const u32 PROFILE_CH2_FREQ_32bit_429HighSpeed = 429550000;  //429550000;//429237
 
 u8 PROFILE_RxLowSpeed_TYPE = 1;    //1：APP操作；2：遥控器操作(STX)
 u8 Flag_429M_EndStop = 0;
-
+u8 Flag_ID_Login = 0; //是否有ID登录标志，1有ID登录
 u8 Channels=1;
 
 

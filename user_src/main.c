@@ -55,6 +55,7 @@ void main(void)
     u8 Abnormal_cnt = 0;
     u8 Lower_Limit_cnt = 0;
     u8 time_tx = 0;
+    u8 time_IDLogin_beep = 0;
 
     _DI();             // 关全�?中断
     RAM_clean();       // 清除RAM
@@ -98,12 +99,19 @@ void main(void)
         if (FG_10ms)
         {
             if(time_tx) --time_tx;
+            if(time_IDLogin_beep)   --time_IDLogin_beep;
             ID_learn();
         }
     //if ((ID_SCX1801_DATA != 0) && (Receiver_426MHz_mode == 0))
         if((ID_SCX1801_DATA != 0) && Receiver_429MHz_mode == 0)
-        APP_TX_PACKET();
-
+        {
+            APP_TX_PACKET();
+        }
+        if(ID_SCX1801_DATA != 0 && Flag_ID_Login == 1 && time_IDLogin_beep == 0) //接收到特殊ID并且有ID登录就启动蜂鸣器
+        {
+            time_IDLogin_beep = 2;  //20ms
+            BEEP_Module(300,1);
+        }
         if (FLAG_APP_RX == 1)
         {
             Freq_Scanning();
