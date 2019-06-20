@@ -428,7 +428,7 @@ void RF_test_mode(void)
     static u8 code_x = SW_CODE_0;
 
     //UINT8 Boot_i;
-	 //Receiver_LED_OUT = 1;
+	 Receiver_LED_OUT = 1;
 	 /*for (Boot_i = 0; Boot_i < 4; Boot_i++)
 	 {
 		 for (time_3sec = 0; time_3sec < 6000; time_3sec++)
@@ -441,7 +441,7 @@ void RF_test_mode(void)
 	 }
     Receiver_LED_OUT = 0; */
 
-    /*TELEC认证，429.175MHz - 429.7375MHz(以0.0125M递增)和426.075MHz共47个信道，发载波无调制、发载波有调制以及接收*/
+
     while (Receiver_test == 0)
     {
        ClearWDT();   // Service the WDT

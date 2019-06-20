@@ -60,7 +60,7 @@ void main(void)
 
     _DI();             // 关全�?中断
     RAM_clean();       // 清除RAM
-
+    WDT_init();        //看门狿
     VHF_GPIO_INIT();   //IO初始�?
     SysClock_Init();   //系统时钟初始�?
     InitialFlashReg(); //flash EEPROM
@@ -79,7 +79,7 @@ void main(void)
     ClearWDT(); // Service the WDT
     RF_test_mode();
     TIME_power_led = 500;
-    WDT_init();        //看门狿
+
     //  FLAG_APP_RX = 1;
     FG_Receiver_LED_RX = 0;
     //TIME_EMC = 10;
@@ -120,7 +120,7 @@ void main(void)
                     Time_Beep_0ff = 10; //100ms
                     TIM3_init();
                 }
-                ClearWDT();   // Service the WDT
+
             }
             if(Time_Beep_0ff == 0)
             {
@@ -131,7 +131,7 @@ void main(void)
                     Time_Beep_0n = 5;   //50ms
                     Tone_OFF();
                 }
-                ClearWDT();   // Service the WDT
+
             }
         }
         if (FLAG_APP_RX == 1)
