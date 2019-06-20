@@ -630,6 +630,8 @@ void ID_learn(void)
                                 ALL_ID_EEPROM_Erase();
                                 ID_SCX1801_DATA = 0;
                                 ID_SCX1801_EEPROM_write(0x00);
+                                if(ID_Receiver_Login == 0xFFFFFE)
+                                Flag_ID_Login = 0;
                                     if (ID_Receiver_Login != 0xFFFFFE)
                                         ID_SCX1801_EEPROM_write(ID_Receiver_Login);
                             } //杩藉姞澶氾拷??ID鐧诲綍

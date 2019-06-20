@@ -109,6 +109,7 @@ void ID_Decode_IDCheck(void)
                     if (DATA_Packet_ID == 0xFFFFFE)
                     {
                         DATA_Packet_Control = DATA_Packet_Contro_buf; //2015.3.24�?�? Control缓存�?ID判断�?否�?�习过后才能使用
+                        if(ID_SCX1801_DATA != 0 || ID_DATA_PCS != 0)
                         Flag_ID_Login = 1;
                     }
 		                if ((SPI_Receive_DataForC[1] & 0x0000FFFF) == 0x5556)

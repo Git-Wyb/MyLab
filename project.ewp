@@ -489,7 +489,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>SRX1931-100 Ver1.03.hex</state>
+          <state>project.hex</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>

@@ -55,7 +55,8 @@ void main(void)
     u8 Abnormal_cnt = 0;
     u8 Lower_Limit_cnt = 0;
     u8 time_tx = 0;
-    u8 time_IDLogin_beep = 0;
+    u8 Time_Beep_0n = 0;
+    u8 Time_Beep_0ff = 0;
 
     _DI();             // 关全�?中断
     RAM_clean();       // 清除RAM
@@ -99,18 +100,39 @@ void main(void)
         if (FG_10ms)
         {
             if(time_tx) --time_tx;
-            if(time_IDLogin_beep)   --time_IDLogin_beep;
+            if(Time_Beep_0n)   --Time_Beep_0n;
+            if(Time_Beep_0ff)  --Time_Beep_0ff;
             ID_learn();
         }
     //if ((ID_SCX1801_DATA != 0) && (Receiver_426MHz_mode == 0))
-        if((ID_SCX1801_DATA != 0) && Receiver_429MHz_mode == 0)
+        if((ID_SCX1801_DATA != 0) && Receiver_429MHz_mode == 0 && Flag_ID_Login != 1)//有ID登录且不是万能码遥控就发送状态
         {
             APP_TX_PACKET();
         }
-        if(ID_SCX1801_DATA != 0 && Flag_ID_Login == 1 && time_IDLogin_beep == 0) //接收到特殊ID并且有ID登录就启动蜂鸣器
+        if(Flag_ID_Login == 1) //接收到特殊ID并且有ID登录就启动蜂鸣器
         {
-            time_IDLogin_beep = 2;  //20ms
-            BEEP_Module(300,1);
+            if(Time_Beep_0n == 0)
+            {
+                if (FG_beep_on == 0)
+                {
+                    FG_beep_on = 1;
+                    FG_beep_off = 0;
+                    Time_Beep_0ff = 10; //100ms
+                    TIM3_init();
+                }
+                ClearWDT();   // Service the WDT
+            }
+            if(Time_Beep_0ff == 0)
+            {
+                if (FG_beep_off == 0)
+                {
+                    FG_beep_off = 1;
+                    FG_beep_on = 0;
+                    Time_Beep_0n = 5;   //50ms
+                    Tone_OFF();
+                }
+                ClearWDT();   // Service the WDT
+            }
         }
         if (FLAG_APP_RX == 1)
         {
