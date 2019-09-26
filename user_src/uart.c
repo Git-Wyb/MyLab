@@ -31,7 +31,7 @@ unsigned int U1AckTimer = 0;
 
 UINT8 FLAG_testNo91=0;
 UINT8 FLAG_testBEEP=0;
-UINT8 FLAG_testNo91_step=0;
+//UINT8 FLAG_testNo91_step=0;
 UINT8 FLAG_testNo91SendUart=0;
 
 
@@ -415,16 +415,16 @@ void OprationFrame(void)
 	    	{
 			ACKBack[2] = 0;
 			FLAG_testNo91=1;
-				if(FLAG_testNo91_step<3)
-			       FLAG_testNo91_step++;
+				//if(FLAG_testNo91_step<3)
+			     //  FLAG_testNo91_step++;
 			FLAG_testNo91SendUart=0;
-			TIME_TestNo91=1000;
+			//TIME_TestNo91=1000;
 	    	}
 		else
 			{
 			ACKBack[2] = 1;
 			FLAG_testNo91=2;
-			TIME_TestNo91=1000;
+			//TIME_TestNo91=1000;
 			FLAG_testBEEP=1;
 			}
 	}

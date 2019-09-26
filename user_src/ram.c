@@ -37,7 +37,7 @@ u16 TIMER18ms = 0;
 u16 TIMER250ms_STOP = 0;
 u16 TIME_auto_out = 0;
 u16 TIME_auto_close = 0;
-u16 time_3sec = 0;
+//u16 time_3sec = 0;
 u32 ID_Receiver_DATA[256] = {0}; //写入EEPROM ID缓存
 u32 ID_SCX1801_DATA = 0;
 u16 ID_DATA_PCS = 0;
@@ -48,7 +48,7 @@ u32 ID_Receiver_Login = 0;
 //u8 TIME_EMC = 0; //静电测试
 //u8 LED_Cache = 0;
 
-u16 INquiry = 0;
+//u16 INquiry = 0;
 u16 TIME_Receiver_Login_restrict = 0;
 u8 COUNT_Receiver_Login = 0;
 u16 TIME_Receiver_Login = 0;
@@ -62,17 +62,17 @@ u16 TIME_Receiver_LED_OUT = 0;
 u16 TIME_Login_EXIT_Button = 0;
 u16 Manual_override_TIMER = 0;
 u16 time_Login_exit_256 = 0;
-u16 TIME_Fine_Calibration = 0; //窄带下中频滤波器100KHz精校
+//u16 TIME_Fine_Calibration = 0; //窄带下中频滤波器100KHz精校
 
 //u8 Count_key_SW3 = 0;
 //u8 Display_key_SW3 = 0xff;
 
-u16 TIME_TestNo91=0;
+//u16 TIME_TestNo91=0;
 u16 TIME_power_led=0;
 
 
 /*******LCD**************/
-uFLAG FlagLCDUpdate = {0xff};
+//uFLAG FlagLCDUpdate = {0xff};
 ///**********RSSI*********************/
 short RAM_RSSI_AVG = 0;
 long RAM_RSSI_SUM = 0;
@@ -113,8 +113,8 @@ u8 CONST_TXPACKET_DATA_20000AF0[28] = {
 	0X95, 0X55, 0X55, 0X55};
 
 u32 GENERIC_PKT_TEST_MODES0_32bit_20000548 = 0x00000000;
-const u8 TEST_MODES0_para[5] = {0, 1, 2, 4, 6};
-u32 RADIO_DIG_TX_CFG0_32bit_20000304 = 0xC838287E;
+//const u8 TEST_MODES0_para[5] = {0, 1, 2, 4, 6};
+//u32 RADIO_DIG_TX_CFG0_32bit_20000304 = 0xC838287E;
 u16 PA_POWER_OUT[2][18] = {
 	{0x0382, 0x02a3, 0x02f3, 0x0353, 0x02d4,
 	 0x0295, 0x02e5, 0x02b6, 0x0316, 0x0376,
@@ -124,9 +124,9 @@ u16 PA_POWER_OUT[2][18] = {
 	 0x0295, 0x02e5, 0x02b6, 0x02a7, 0x0298,
 	 0x02a9, 0x02aa, 0x031a, 0x037a, 0x040a,
 	 0x04aa, 0x057a, 0x069a}};
-const u8 CONST_AFC_Configuration_400041F8[4] = {
-	0x00, 0x00, 0x00, 0x00 /*20000304*/
-};
+//const u8 CONST_AFC_Configuration_400041F8[4] = {
+//	0x00, 0x00, 0x00, 0x00 /*20000304*/
+//};
 
 const u8 CONST_PROFILE_CCA_CFG_20000378[4] = {
 	0x43, 0x00, 0xC0, 0x06 /*20000304*/
@@ -145,20 +145,24 @@ u32 PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;//GENERIC_PKT_FRA
 const u32 PROFILE_CH1_FREQ_32bit_429HighSpeed = 429350000;  //429350000;//429225000;
 const u32 PROFILE_CH2_FREQ_32bit_429HighSpeed = 429550000;  //429550000;//429237500;
 
-
-u8 PROFILE_RxLowSpeed_TYPE = 1;    //1：APP操作；2：遥控器操作(STX)
+Basic_Un Status_Un = {0};
+Flag_Un StaFlag_Un = {0};
+u8 auto_over_time = 1;
+u16 Time_NoCheck_AutoSignal = 0;
+u16 Time_Check_AutoSignal = 0;
+u8 auto_receive_cnt = 0;
+u8 time_receive_auto = 0;
 u8 Flag_429M_EndStop = 0;
-u8 Flag_ID_Login = 0; //是否有ID登录标志，1有ID登录
-u8 Time_Beep_0n = 0;
-u8 Time_Beep_0ff = 0;
+u8 Time_StateDetection  = 0;
 u8 Channels=1;
+
 
 
 Wireless_Body Struct_DATA_Packet_Contro,Struct_DATA_Packet_Contro_buf;
 Wireless_Body Uart_Struct_DATA_Packet_Contro,Last_Uart_Struct_DATA_Packet_Contro;
 u8 Struct_DATA_Packet_Contro_fno=0;
-u16 TIMER_Semi_open;
-u16 TIMER_Semi_close;
+//u16 TIMER_Semi_open;
+//u16 TIMER_Semi_close;
 u8 FLAG__Semi_open_T=0;
 u8 FLAG__Semi_close_T=0;
 u16 TIME_APP_TX_fromOUT=0;

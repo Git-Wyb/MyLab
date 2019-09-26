@@ -49,15 +49,6 @@
 
 void main(void)
 {
-    u8 Flag_Lower_Limit = 0;
-    u8 Flag_Abnormal = 0;
-    u8 flag_abnormal_stats = 0;  //异常信号标志
-    u8 Abnormal_cnt = 0;
-    u8 Lower_Limit_cnt = 0;
-    u8 time_tx = 0;
-    u8 Time_Beep_0n = 0;
-    u8 Time_Beep_0ff = 0;
-
     _DI();             // 关全�?中断
     RAM_clean();       // 清除RAM
     WDT_init();        //看门狿
@@ -74,7 +65,7 @@ void main(void)
     PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
     //PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
     ADF7030Init(); //射频初始�?
-    UART1_INIT();  // UART1 for PC Software
+    //UART1_INIT();  // UART1 for PC Software
     _EI();         // 允许中断
     ClearWDT(); // Service the WDT
     RF_test_mode();
@@ -86,8 +77,9 @@ void main(void)
     FLAG_testNo91 = 0;
     FLAG_testBEEP = 0;
 
-    if(Abnormal_Signal)    Flag_Abnormal = 1;
-    if(Lower_Limit_Signal)   Flag_Lower_Limit = 1;
+    Status_Un.Flag_LowerLimit = Lower_Limit_Signal;
+    Status_Un.Flag_AbnormalSignal = Abnormal_Signal;
+    Status_Un.Flag_ActionSignal = Action_Signal;
 
     while (1)
     {
@@ -99,40 +91,16 @@ void main(void)
             ID_Decode_OUT();
         if (FG_10ms)
         {
-            if(time_tx) --time_tx;
-            if(Time_Beep_0n)   --Time_Beep_0n;
-            if(Time_Beep_0ff)  --Time_Beep_0ff;
             ID_learn();
         }
-    //if ((ID_SCX1801_DATA != 0) && (Receiver_426MHz_mode == 0))
-        if((ID_SCX1801_DATA != 0) && Receiver_429MHz_mode == 0 && Flag_ID_Login != 1)//有ID登录且不是万能码遥控就发送状态
+        if((ID_SCX1801_DATA != 0) && Receiver_429MHz_mode == 0 && Status_Un.Exist_ID != 1)//有ID登录且不是万能码遥控就发送状态
         {
             APP_TX_PACKET();
         }
-        if(Flag_ID_Login == 1) //接收到特殊ID并且有ID登录就启动蜂鸣器
+        //接收到特殊ID并且有ID登录或者接收到429MHz开闭指令有动作就启动蜂鸣器
+        if((Status_Un.Exist_ID == 1) || (Beep_Switch == 1 && FLAG_APP_TX == 0))
         {
-            if(Time_Beep_0n == 0)
-            {
-                if (FG_beep_on == 0)
-                {
-                    FG_beep_on = 1;
-                    FG_beep_off = 0;
-                    Time_Beep_0ff = 10; //100ms
-                    TIM3_init();
-                }
-
-            }
-            if(Time_Beep_0ff == 0)
-            {
-                if (FG_beep_off == 0)
-                {
-                    FG_beep_off = 1;
-                    FG_beep_on = 0;
-                    Time_Beep_0n = 5;   //50ms
-                    Tone_OFF();
-                }
-
-            }
+            BEEP_Module(300,1);
         }
         if (FLAG_APP_RX == 1)
         {
@@ -148,110 +116,12 @@ void main(void)
         else if (FG_Receiver_LED_RX == 0)
             Receiver_LED_RX = 0;
 
-        /*必须有ID登录才进行异常、下限检测，异常、下限信号有变化时则计时1s之后再次判断，若有变化则发送状态
-          若通过APP操作的则以APP状态指令返回，遥控器操作则以遥控器状态指令返回*/
-        if(ID_SCX1801_DATA && Flag_Abnormal != Abnormal_Signal && time_tx == 0)  //异常信号
+        /* 必须有ID登录才进行异常、下限检测，异常、下限信号有变化时则计时1s之后再次判断，若有变化则发送状态 */
+        if(ID_SCX1801_DATA && Time_StateDetection == 0)
         {
-            Abnormal_cnt ++;
-            time_tx = 100;
-            if(Abnormal_cnt == 2)  //异常有变化
-            {
-                Flag_Abnormal = Abnormal_Signal;//保存变化状态
-
-                if(Abnormal_Signal == 0)
-                {
-                    flag_abnormal_stats = 1;   //有异常
-                    if(PROFILE_RxLowSpeed_TYPE == 1)   //APP
-                    {
-                        Struct_DATA_Packet_Contro_fno = APP_Abnormal_State;
-                    }
-                    else if(PROFILE_RxLowSpeed_TYPE == 2)  //遥控器
-                    {
-                        Struct_DATA_Packet_Contro_fno = STX_Abnormal_State;
-                    }
-                }
-                else
-                {
-                    flag_abnormal_stats = 0;  //异常消失
-                    if(Lower_Limit_Signal == 0)
-                    {
-                        if(PROFILE_RxLowSpeed_TYPE == 1)
-                        {
-                            Struct_DATA_Packet_Contro_fno = APP_Close_State;
-                        }
-                        else if(PROFILE_RxLowSpeed_TYPE == 2)
-                        {
-                            Struct_DATA_Packet_Contro_fno = STX_Close_State;
-                        }
-                    }
-                    else
-                    {
-                        if(PROFILE_RxLowSpeed_TYPE == 1)
-                        {
-                            Struct_DATA_Packet_Contro_fno = APP_Open_State;
-                        }
-                        else if(PROFILE_RxLowSpeed_TYPE == 2)
-                        {
-                            Struct_DATA_Packet_Contro_fno = STX_Open_State;
-                        }
-                    }
-                }
-                Abnormal_cnt = 0;
-                time_sw = 500;  //开启发送
-            }
-        }
-        else if(ID_SCX1801_DATA && Flag_Lower_Limit != Lower_Limit_Signal && time_tx == 0)  //下限信号
-        {
-            Lower_Limit_cnt ++;
-            time_tx = 100;
-            if(Lower_Limit_cnt == 2)  //下限信号有变化
-            {
-                Flag_Lower_Limit = Lower_Limit_Signal;
-
-                if(flag_abnormal_stats == 1)  //存在异常仍然返回异常
-                {
-                    if(PROFILE_RxLowSpeed_TYPE == 1)   //APP
-                    {
-                        Struct_DATA_Packet_Contro_fno = APP_Abnormal_State;
-                    }
-                    else if(PROFILE_RxLowSpeed_TYPE == 2)  //遥控器
-                    {
-                        Struct_DATA_Packet_Contro_fno = STX_Abnormal_State;
-                    }
-                }
-                else if(Lower_Limit_Signal == 0)
-                {
-                    if(PROFILE_RxLowSpeed_TYPE == 1)
-                    {
-                        Struct_DATA_Packet_Contro_fno = APP_Close_State;
-                    }
-                    else if(PROFILE_RxLowSpeed_TYPE == 2)
-                    {
-                        Struct_DATA_Packet_Contro_fno  = STX_Close_State;
-                    }
-                }
-                else
-                {
-                    if(PROFILE_RxLowSpeed_TYPE == 1)
-                    {
-                        Struct_DATA_Packet_Contro_fno = APP_Open_State;
-                    }
-                    else if(PROFILE_RxLowSpeed_TYPE == 2)
-                    {
-                        Struct_DATA_Packet_Contro_fno =  STX_Open_State;
-                    }
-                }
-                Lower_Limit_cnt = 0;
-                time_sw = 500;
-            }
-        }
-        if(Flag_Abnormal == Abnormal_Signal)
-        {
-            Abnormal_cnt = 0;
-        }
-        if(Flag_Lower_Limit == Lower_Limit_Signal)
-        {
-            Lower_Limit_cnt = 0;
+            Action_Signal_Detection();
+            if(Status_Un.Buzzer_Switch == 0)
+                Beep_Switch = 0;
         }
     }
 }

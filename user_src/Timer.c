@@ -28,7 +28,7 @@ void TIM4_UPD_OVF(void)
     if (TIMER1s)
     {
         --TIMER1s;
-        if(PROFILE_RxLowSpeed_TYPE == 1)    //429M
+        if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
         {
             if(TIMER1s == 1600)       //1600
             {
@@ -56,7 +56,16 @@ void TIM4_UPD_OVF(void)
     { // 10mS FLAG
         TIME_10ms = 10;
         FG_10ms = 1;
-
+        if(Time_Check_AutoSignal)
+            --Time_Check_AutoSignal;
+        if(Time_NoCheck_AutoSignal)
+            --Time_NoCheck_AutoSignal;
+        else if (TIME_auto_out)
+            --TIME_auto_out;
+        if(time_receive_auto)
+            --time_receive_auto;
+        if(Time_StateDetection)
+            --Time_StateDetection;
     }
     if (U1AckTimer)
         U1AckTimer--;

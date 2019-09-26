@@ -1,6 +1,6 @@
 [DebugChecksum]
 <<<<<<< HEAD
-Checksum=1029817650
+Checksum=1600132170
 =======
 Checksum=773928336
 >>>>>>> f03119bb9d9418453f7da9e2e3549a267f3e0d0b
@@ -98,12 +98,17 @@ Fmt7={W}1:PREAMBLE_UNIT	3	0
 Fmt8={W}1:TRX_IRQ0_TYPE	3	0
 Fmt9={W}1:TRX_IRQ1_TYPE	3	0
 Fmt10={W}42:ADF7030_RESIGER_VALUE_READ	4	0
-Fmt11={W}42:Tx_Rx_mode	4	0
-Fmt12={W}42:cache	4	0
+Fmt11={W}42:Status_Un.Buzzer_Switch	4	0
+Fmt12={W}42:Time_StateDetection	3	0
+Fmt13={W}42:Tx_Rx_mode	4	0
+Fmt14={W}42:cache	4	0
+Fmt15={W}42:time_receive_auto	3	0
 [DataSample]
 LogEnabled=0
 GraphEnabled=0
 ShowTimeLog=1
+[Breakpoints]
+Count=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -111,8 +116,6 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
-[Breakpoints]
-Count=0
 [Aliases]
 A0=_ "" ""
 A1=_ "D:\MyCloud\Working\Windowshade\Windowshade7030\user_src\ADF7030_1.c" "F:\Source Code\bunka-s\Bunka STM8L151G6 RX_ADF7030 Source CRX1831DC\Windowshade7030\user_src\ADF7030_1.c"

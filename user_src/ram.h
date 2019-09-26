@@ -107,7 +107,7 @@ extern u16 TIMER18ms;
 extern u16 TIMER250ms_STOP;
 extern u16 TIME_auto_out;
 extern u16 TIME_auto_close;
-extern u16 time_3sec;
+//extern u16 time_3sec;
 extern u32 ID_Receiver_DATA[256]; //写入EEPROM ID缓存
 extern u32 ID_SCX1801_DATA;
 extern u16 ID_DATA_PCS;
@@ -117,7 +117,7 @@ extern u8 DATA_Packet_Contro_buf; //2015.3.24�?�?
 extern u32 ID_Receiver_Login;
 //extern u8 TIME_EMC;
 
-extern u16 INquiry;
+//extern u16 INquiry;
 extern u16 TIME_Receiver_Login_restrict;
 extern u8 COUNT_Receiver_Login;
 extern u16 TIME_Receiver_Login;
@@ -131,23 +131,23 @@ extern u16 TIME_Receiver_LED_OUT;
 extern u16 TIME_Login_EXIT_Button;
 extern u16 Manual_override_TIMER;
 extern u16 time_Login_exit_256;
-extern u16 TIME_Fine_Calibration; //绐勫甫涓嬩腑棰戞护娉㈠櫒100KHz绮炬�?
+//extern u16 TIME_Fine_Calibration; //绐勫甫涓嬩腑棰戞护娉㈠櫒100KHz绮炬�?
 
 //extern u8 Count_key_SW3;
 //extern u8 Display_key_SW3;
 
-extern u16 TIME_TestNo91;
+//extern u16 TIME_TestNo91;
 extern u16 TIME_power_led;
 
 
 extern ADF70XX_REG_T ROM_adf7030_value[16];
 extern const ADF70XX_REG_T Default_adf7030_value[16];
 /**********LCD******************/
-extern uFLAG FlagLCDUpdate;
+//extern uFLAG FlagLCDUpdate;
 
-#define LCDUpdateIDFlag FlagLCDUpdate.BIT.Bit0
-#define LCDUpdateRISSFlag FlagLCDUpdate.BIT.Bit1
-#define LCDFirstDisplayFlag FlagLCDUpdate.BIT.Bit2
+//#define LCDUpdateIDFlag FlagLCDUpdate.BIT.Bit0
+//#define LCDUpdateRISSFlag FlagLCDUpdate.BIT.Bit1
+//#define LCDFirstDisplayFlag FlagLCDUpdate.BIT.Bit2
 /**********RSSI*********************/
 extern short RAM_RSSI_AVG;
 extern long RAM_RSSI_SUM;
@@ -170,10 +170,10 @@ extern u8 CONST_TXPACKET_DATA_20000AF0[28];
 
 
 extern u32 GENERIC_PKT_TEST_MODES0_32bit_20000548;
-extern const u8 TEST_MODES0_para[5];
-extern u32 RADIO_DIG_TX_CFG0_32bit_20000304;
+//extern const u8 TEST_MODES0_para[5];
+//extern u32 RADIO_DIG_TX_CFG0_32bit_20000304;
 #define AFCCONFIG_LONG 4
-extern const u8 CONST_AFC_Configuration_400041F8[4];
+//extern const u8 CONST_AFC_Configuration_400041F8[4];
 extern u16 PA_POWER_OUT[2][18];
 extern u32 PROFILE_CH_FREQ_32bit_200002EC;
 extern u32 PROFILE_RADIO_AFC_CFG1_32bit_2000031C;
@@ -182,12 +182,20 @@ extern u32 PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500;
 extern const u32 PROFILE_CH1_FREQ_32bit_429HighSpeed;
 extern const u32 PROFILE_CH2_FREQ_32bit_429HighSpeed;
 
-extern u8 PROFILE_RxLowSpeed_TYPE;
 extern u8 Flag_429M_EndStop;
-extern u8 Flag_ID_Login;
 extern u8 Channels;
 
+extern Basic_Un Status_Un;
+extern Flag_Un StaFlag_Un;
+extern u8 auto_over_time;
+extern u16 Time_NoCheck_AutoSignal;
+extern u16 Time_Check_AutoSignal;
+extern u8 auto_receive_cnt;
+extern u8 time_receive_auto;
+extern u8 Time_StateDetection;
 
+#define Beep_Switch StaFlag_Un.FlagByte_bit0
+#define Allow_AutoOut_Flag  StaFlag_Un.FlagByte_bit1
 
 void SPI_INIT(void);
 u32 ADF7030_GET_MISC_FW(void); //??MISC_FW?????
@@ -199,13 +207,11 @@ u32 ConfigurationLen(void);
 
 
 
-
-
 extern Wireless_Body Struct_DATA_Packet_Contro,Struct_DATA_Packet_Contro_buf;
 extern Wireless_Body Uart_Struct_DATA_Packet_Contro,Last_Uart_Struct_DATA_Packet_Contro;
 extern u8 Struct_DATA_Packet_Contro_fno;
-extern u16 TIMER_Semi_open;
-extern u16 TIMER_Semi_close;
+//extern u16 TIMER_Semi_open;
+//extern u16 TIMER_Semi_close;
 extern u8 FLAG__Semi_open_T;
 extern u8 FLAG__Semi_close_T;
 extern u16 TIME_APP_TX_fromOUT;

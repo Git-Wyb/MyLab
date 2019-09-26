@@ -179,6 +179,12 @@ void eeprom_sys_load(void)
     UINT8 xm[3] = {0};
     uni_rom_id xn;
 
+    auto_over_time = ReadByteEEPROM(addr_eeprom_sys + AddrEeprom_AutoOverTime); //读取设定的自动下降时间
+    if(auto_over_time > 12) auto_over_time = 1;
+    i = ReadByteEEPROM(addr_eeprom_sys + AddrEeprom_BuzzerSwitch); //读取设定的蜂鸣器开关
+    if(i == 0 || i == 1)
+        Status_Un.Buzzer_Switch = i;
+
     xm[0] = ReadByteEEPROM(addr_eeprom_sys + 0x3FB);
     xm[1] = ReadByteEEPROM(addr_eeprom_sys + 0x3FC);
     xm[2] = ReadByteEEPROM(addr_eeprom_sys + 0x3FD);
@@ -460,9 +466,9 @@ void ID_learn(void)
     //if (FG_10ms)
     { //90==1锟�?
         FG_10ms = 0;
-        if (TIME_TestNo91)
-            --TIME_TestNo91;
-        else
+       // if (TIME_TestNo91)
+        //    --TIME_TestNo91;
+       // else
             FLAG_testNo91 = 0;
         if (TIME_ERROR_Read_once_again)
             --TIME_ERROR_Read_once_again;
@@ -474,8 +480,8 @@ void ID_learn(void)
             --TIME_APP_TX_fromOUT;
  //       if (TIME_EMC)
  //           --TIME_EMC;
-        if (TIME_auto_out)
-            --TIME_auto_out;
+
+
         if (TIME_auto_close)
             --TIME_auto_close;
         if (TIME_OUT_OPEN_CLOSE)
@@ -488,8 +494,8 @@ void ID_learn(void)
             --Manual_override_TIMER;
         if (time_Login_exit_256)
             --time_Login_exit_256;
-        if (TIME_Fine_Calibration)
-            --TIME_Fine_Calibration;
+        //if (TIME_Fine_Calibration)
+        //    --TIME_Fine_Calibration;
         if (TIME_Receiver_Login_restrict)
             --TIME_Receiver_Login_restrict;
         else if ((FLAG_ID_Erase_Login == 1) || (FLAG_ID_Login == 1) || (FLAG_ID_SCX1801_Login == 1))
@@ -631,7 +637,7 @@ void ID_learn(void)
                                 ID_SCX1801_DATA = 0;
                                 ID_SCX1801_EEPROM_write(0x00);
                                 if(ID_Receiver_Login == 0xFFFFFE)
-                                Flag_ID_Login = 0;
+                                Status_Un.Exist_ID = 0;
                                     if (ID_Receiver_Login != 0xFFFFFE)
                                         ID_SCX1801_EEPROM_write(ID_Receiver_Login);
                             } //杩藉姞澶氾拷??ID鐧诲綍
@@ -682,4 +688,13 @@ void ID_Login_EXIT_Initial(void)
     //     FLAG_ID_Erase_Login=0;
     //     WIFI_LED_RX=0;
     //#endif
+}
+
+
+
+void eeprom_write_byte(u16 addr,u8 data)
+{
+    UnlockFlash(UNLOCK_EEPROM_TYPE);
+    WriteByteToFLASH(addr_eeprom_sys + addr, data);
+    LockFlash(UNLOCK_EEPROM_TYPE);
 }

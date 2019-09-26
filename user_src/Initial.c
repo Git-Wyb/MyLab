@@ -15,7 +15,6 @@
 #include "uart.h" // uart
 #include "Timer.h"
 uFLAG YellowLedFlag, RedLedFalg;
-Flag_State  SwitchState_Stu = {0};
 
 void RAM_clean(void)
 { // 清除RAM
@@ -59,7 +58,7 @@ void VHF_GPIO_INIT(void) // CPU端口设置
     *           输入 Input�?=上拉�?=浮动�?
     ***************end************************************/
     KEY_GPIO_Init();             // 输入 test�?登录�?
-    DIP_SW_Init();            //拨码开关初始化
+    Input_Signal_Init();            //输入管脚初始化
 
     Receiver_vent_direc = Input; // Input   受信机换气联动ON/OFF
     Receiver_vent_CR1 = 1;
@@ -356,8 +355,11 @@ void DIP_SW_Init(void)
      SW_4_DDR = Input;
      SW_4_CR1 = Pull_up;
      SW_4_CR2 = InterruptDisable;
+}
 
-     //异常
+void Input_Signal_Init(void)
+{
+    //异常
      Abnormal_Signal_DDR = Input;
      Abnormal_Signal_CR1 = Pull_up;
      Abnormal_Signal_CR2 = InterruptDisable;
@@ -366,8 +368,12 @@ void DIP_SW_Init(void)
      Lower_Limit_Signal_DDR = Input;
      Lower_Limit_Signal_CR1 = Pull_up;
      Lower_Limit_Signal_CR2 = InterruptDisable;
-}
 
+     //动作
+     Action_Signal_DDR = Input;
+     Action_Signal_CR1 = Pull_up;
+     Action_Signal_CR2 = InterruptDisable;
+}
 
 /**
  ****************************************************************************
@@ -614,7 +620,7 @@ void RF_test_mode(void)
     //Receiver_LED_OUT = 0;
 
     FLAG_APP_RX = 1;
-    TIME_Fine_Calibration = 900;
+    //TIME_Fine_Calibration = 900;
     //TIME_EMC = 10;
 }
 
@@ -630,91 +636,8 @@ u8 DIP_SW_Code(void)
     return (sw4 << 3 | sw3 << 2 | sw2 << 1 | sw1);
 }
 
-//开关测试
-void DIP_SW_Test(void)
-{
-    u8 i=0;
-    static u8 code_x = SW_CODE_0;
-
-    i = DIP_SW_Code();
-    if(code_x != i)
-    {
-//        time_sw = 50;
-//        while(time_sw);
-        if(i == DIP_SW_Code())
-        {
-            if(code_x==i-1 || code_x==i+1)
-            {
-                code_x = i;
-                if(code_x % 2 == 0)
-                {
-                    Receiver_LED_OUT = 1;
-                    time_sw = 150;
-                    while(time_sw);
-                    Receiver_LED_OUT = 0;
-                }
-                else
-                {
-                    for(i=0;i<2;i++)
-                    {
-                        Receiver_LED_OUT = 1;
-                        time_sw = 150;
-                        while(time_sw);
-                        Receiver_LED_OUT = 0;
-                        time_sw = 150;
-                        while(time_sw);
-                    }
-                }
-            }
-            else
-            {
-                code_x = i;
-                Receiver_LED_OUT = 1;
-            }
-        }
-    }
-    TIME_power_led = 500;
-}
 
 
-void APP429M_Tx_State(void)
-{
-    if(PROFILE_RxLowSpeed_TYPE == 1)   //APP操作的
-    {
-        if(Abnormal_Signal == 0)
-        {
-            Struct_DATA_Packet_Contro_fno = APP_Abnormal_State;
-        }
-        else
-        {
-            if(Lower_Limit_Signal == 0)
-            {
-               Struct_DATA_Packet_Contro_fno = APP_Close_State;
-            }
-            else
-            {
-               Struct_DATA_Packet_Contro_fno = APP_Open_State;
-            }
-        }
-    }
-    else if(PROFILE_RxLowSpeed_TYPE == 2)    //遥控器操作的
-    {
-        if(Abnormal_Signal == 0)
-        {
-            Struct_DATA_Packet_Contro_fno = STX_Abnormal_State;
-        }
-        else
-        {
-            if(Lower_Limit_Signal == 0)
-            {
-               Struct_DATA_Packet_Contro_fno = STX_Close_State;
-            }
-            else
-            {
-               Struct_DATA_Packet_Contro_fno = STX_Open_State;
-            }
-        }
-    }
-    time_sw = 200;          //开启发送
-}
+
+
 

@@ -888,18 +888,18 @@ void TestFunV2(u8 KeyVel)
             {
             case 0:
             { //GFSK
-                RADIO_DIG_TX_CFG0_32bit_20000304 ^= 2;
-                Cache = (RADIO_DIG_TX_CFG0_32bit_20000304 & 0x02) >> 1;
+                //RADIO_DIG_TX_CFG0_32bit_20000304 ^= 2;
+                //Cache = (RADIO_DIG_TX_CFG0_32bit_20000304 & 0x02) >> 1;
                 //lcd                display_map_xy(52, 9, 5, 8, char_Small + (FilterChar[Cache][0] - ' ') * 5);
                 break;
             }
             case 1:
             { //PAx
-                RADIO_DIG_TX_CFG0_32bit_20000304 ^= 0x40000000;
-                Cache = (RADIO_DIG_TX_CFG0_32bit_20000304 >> 30) & 1;
+                //RADIO_DIG_TX_CFG0_32bit_20000304 ^= 0x40000000;
+                //Cache = (RADIO_DIG_TX_CFG0_32bit_20000304 >> 30) & 1;
                 //lcd                display_map_xy(52, 18, 5, 8, char_Small + ('1' - ' ' + Cache) * 5);
-                RADIO_DIG_TX_CFG0_32bit_20000304 &= 0xff000fff;
-                RADIO_DIG_TX_CFG0_32bit_20000304 |= ((u32)PA_POWER_OUT[Cache][PowerdBm] << 12);
+                //RADIO_DIG_TX_CFG0_32bit_20000304 &= 0xff000fff;
+                //RADIO_DIG_TX_CFG0_32bit_20000304 |= ((u32)PA_POWER_OUT[Cache][PowerdBm] << 12);
                 break;
             }
             case 2:
@@ -912,9 +912,9 @@ void TestFunV2(u8 KeyVel)
                 //lcd                display_map_xy(52, 27, 5, 8, char_Small + ('0' - ' ' + Cache) * 5);
                 Cache = PowerdBm % 10;
                 //lcd                display_map_xy(58, 27, 5, 8, char_Small + ('0' - ' ' + Cache) * 5);
-                Cache = (RADIO_DIG_TX_CFG0_32bit_20000304 >> 30) & 1;
-                RADIO_DIG_TX_CFG0_32bit_20000304 &= 0xff000fff;
-                RADIO_DIG_TX_CFG0_32bit_20000304 |= ((u32)PA_POWER_OUT[Cache][PowerdBm] << 12);
+                //Cache = (RADIO_DIG_TX_CFG0_32bit_20000304 >> 30) & 1;
+                //RADIO_DIG_TX_CFG0_32bit_20000304 &= 0xff000fff;
+                //RADIO_DIG_TX_CFG0_32bit_20000304 |= ((u32)PA_POWER_OUT[Cache][PowerdBm] << 12);
                 break;
             }
             case 3:
@@ -924,7 +924,7 @@ void TestFunV2(u8 KeyVel)
                 else
                     TestState++;
                 GENERIC_PKT_TEST_MODES0_32bit_20000548 &= 0xfff8ffff;
-                GENERIC_PKT_TEST_MODES0_32bit_20000548 |= ((u32)TEST_MODES0_para[TestState] << 16);
+                //GENERIC_PKT_TEST_MODES0_32bit_20000548 |= ((u32)TEST_MODES0_para[TestState] << 16);
                 //lcd                display_map_xy(52, 36, 5, 8, char_Small + (TestStatewords[TestState] - ' ') * 5);
                 break;
             }

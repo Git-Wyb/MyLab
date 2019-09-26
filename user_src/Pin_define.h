@@ -145,10 +145,10 @@
 #define TP3_CR2 PA_CR2_C24
 */
 
-#define TP4 PC_IDR_IDR1//PA_IDR_IDR5
-#define TP4_DDR PC_DDR_DDR1//PA_DDR_DDR5
-#define TP4_CR1 PC_CR1_C11//PA_CR1_C15
-#define TP4_CR2 PC_CR2_C21//PA_CR2_C25
+#define TP4     PC_IDR_IDR1 //PA_IDR_IDR5
+#define TP4_DDR PC_DDR_DDR1 //PA_DDR_DDR5
+#define TP4_CR1 PC_CR1_C11  //PA_CR1_C15
+#define TP4_CR2 PC_CR2_C21  //PA_CR2_C25
 
 /******************以下是data寄存器************************************/
 #define Receiver_vent   1 //Receiver_vent_Cache       // Input   受信机换气联动ON/OFF
@@ -224,6 +224,16 @@
 #define Lower_Limit_Signal_CR1  PE_CR1_C11
 #define Lower_Limit_Signal_CR2  PE_CR2_C21
 #define Lower_Limit_Signal      PE_IDR_IDR1     //下限信号，为0表示有下限信号
+/*
+#define Action_Signal_DDR       PE_DDR_DDR2
+#define Action_Signal_CR1       PE_CR1_C12
+#define Action_Signal_CR2       PE_CR2_C22
+#define Action_Signal           PE_IDR_IDR2     //动作中信号，为0表示动作信号 */
+//调试用
+#define Action_Signal_DDR       PC_DDR_DDR1
+#define Action_Signal_CR1       PC_CR1_C11
+#define Action_Signal_CR2       PC_CR2_C21
+#define Action_Signal           PC_IDR_IDR1     //动作中信号，为0表示动作信号
 
 /*APP操作时*/
 #define APP_Open_State      0xD1  /*open状态*/
@@ -235,6 +245,41 @@
 #define STX_Close_State     0xD6  /*close状态*/
 #define STX_Abnormal_State  0xD7  /*异常1状态*/
 
+/* 429MHz受信指令 */
+#define Status_Confirm_Command 0x00 //状态确认
+#define CLOSE_COMMAND       0x02  //闭
+#define STOP_COMMAND        0x04  //停
+#define OPEN_COMMAND        0x08  //开
+
+/* 自动下降时间设定 */
+#define CLOSE_AUTO_DECLINE  0x90  //不执行自动下降
+#define AUTO_TIME_10S       0x88  /* 10s */
+#define AUTO_TIME_20S       0x98  /* 20s */
+#define AUTO_TIME_30S       0x84  /* 30s */
+#define AUTO_TIME_40S       0x94  /* 40s */
+#define AUTO_TIME_50S       0x8C  /* 50s */
+#define AUTO_TIME_60S       0x9C  /* 60s */
+#define AUTO_TIME_70S       0x82  /* 70s */
+#define AUTO_TIME_80S       0x92  /* 80s */
+#define AUTO_TIME_90S       0x8A  /* 90s */
+#define AUTO_TIME_100S      0x9A  /* 100s */
+#define AUTO_TIME_110S      0x86  /* 110s */
+#define AUTO_TIME_120S      0x96  /* 120s */
+
+#define BUZZER_OFF_COMMAND  0xD0  /* 允许打开蜂鸣器 */
+#define BUZZER_ON_COMMAND   0xC8  /* 不允许打开蜂鸣器 */
+
+
+
+/* 429MHz送信数据 */
+#define Tx_Open_Status         0xD8  /* 开状态 */
+#define Tx_Close_Status        0xD4  /* 闭状态 */
+#define Tx_Open_Action_Status  0xDC  /* 开动作中状态 */
+#define Tx_Close_Action_Status 0xD2  /* 闭动作中状态 */
+#define Tx_Open_Action_Auto    0xDA  /* 开动作中状态(自动受信时) */
+#define Tx_Close_Action_Auto   0xD6  /* 闭动作中状态(自动受信时) */
+#define Tx_Abnormal_Status     0xDE  /* 异常1状态 */
+#define Tx_Setting_Status      0xD1  /* 时间设定和蜂鸣器ON/OFF设定时,送信 */
 
 /*********************************************************************************/
 

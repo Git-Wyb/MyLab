@@ -29,7 +29,7 @@ extern u8 u1InitCompleteFlag;
 extern UINT8 ACKBack[3];
 extern UINT8 FLAG_testNo91;
 extern UINT8 FLAG_testBEEP;
-extern UINT8 FLAG_testNo91_step;
+//extern UINT8 FLAG_testNo91_step;
 extern UINT8 FLAG_testNo91SendUart;
 
 
@@ -60,7 +60,7 @@ typedef union {
         unsigned char SWorOUT : 8;
         unsigned char prep1 : 8;
         unsigned char prep2 : 8;
-    };	
+    };
 
 } __Databits_t;
 typedef enum {
