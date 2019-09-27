@@ -427,11 +427,11 @@ void RF_test_mode(void)
     u8 test_time_Base10ms = 0;
     u8 Tx_Rx_mode = 0;
 
-    u8 flag_odd_num = 0;
-    u8 flag_even_num = 0;
-    u8 sum_num = 0;
+    //u8 flag_odd_num = 0;
+    //u8 flag_even_num = 0;
+    //u8 sum_num = 0;
     u8 i=0;
-    static u8 code_x = SW_CODE_0;
+    //static u8 code_x = SW_CODE_0;
 
     //UINT8 Boot_i;
 	 Receiver_LED_OUT = 1;
@@ -486,6 +486,7 @@ void RF_test_mode(void)
             if (Tx_Rx_mode == 0) //发载波，无调制信�?
             {
 //                Receiver_LED_OUT = 1;
+                Receiver_LED_TX = 1;
                 FG_test_mode = 0;
                 FG_test_tx_1010 = 0;
                 if (FG_test_tx_on == 0)
@@ -505,6 +506,7 @@ void RF_test_mode(void)
                 }
                 FG_test_mode = 1;
                 FG_test_tx_on = 0;
+                Receiver_LED_TX = 1;
                 if (FG_test_tx_1010 == 0)
                 {
                     ADF7030_TX(TestTx_PreamblePattern);
@@ -521,6 +523,7 @@ void RF_test_mode(void)
             CG2214M6_USE_R;
             FG_test_rx = 1;
 //            Receiver_LED_OUT = 0;
+            Receiver_LED_TX = 0;
             FG_test_mode = 0;
             FG_test_tx_on = 0;
             FG_test_tx_1010 = 0;
@@ -550,19 +553,33 @@ void RF_test_mode(void)
         //        }
         //       if(ADF7021_DATA_CLK==0)FG_test1=0;
 
-        if((Abnormal_Signal == 0 && Lower_Limit_Signal != 0) || (Lower_Limit_Signal == 0 && Abnormal_Signal != 0))
+        if(((Abnormal_Signal == 0) && (Lower_Limit_Signal != 0) && (Action_Signal != 0))
+           || ((Lower_Limit_Signal == 0) && (Abnormal_Signal != 0) && (Action_Signal != 0))
+           || ((Action_Signal == 0) && (Lower_Limit_Signal != 0) && (Abnormal_Signal != 0)))
         {
             if(time_sw == 0)
             {
-
                 Receiver_LED_OUT = 1;
+                time_sw = 300;
+                TIME_power_led = 150;
             }
+            if(TIME_power_led == 0)
+            {
+                 Receiver_LED_OUT = 0;
+            }
+            i = 0;
         }
-        else if(Lower_Limit_Signal == 0 && Abnormal_Signal == 0)
+        else if(Abnormal_Signal == 0 || Lower_Limit_Signal == 0 || Action_Signal == 0)
         {
              Receiver_LED_OUT = 1;
+             i = 1;
         }
-        if(TIME_power_led == 0)   //拨码开关测试
+        else    i = 0;
+        if(TIME_power_led == 0 && i == 0)
+        {
+             Receiver_LED_OUT = 0;
+        }
+    /*    if(TIME_power_led == 0)   //拨码开关测试
         {
             i = DIP_SW_Code();
             if(code_x != i) //开关有变化
@@ -608,7 +625,7 @@ void RF_test_mode(void)
             }
             time_sw = 150;
             TIME_power_led = 300;
-        }
+        }*/
     }
     OUT_VENT_Init();
     BerExtiUnInit();
@@ -618,7 +635,7 @@ void RF_test_mode(void)
     Receiver_LED_RX = 0;
     FG_Receiver_LED_RX = 0;
     //Receiver_LED_OUT = 0;
-
+    time_sw = 0;
     FLAG_APP_RX = 1;
     //TIME_Fine_Calibration = 900;
     //TIME_EMC = 10;

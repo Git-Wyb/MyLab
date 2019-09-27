@@ -224,16 +224,17 @@
 #define Lower_Limit_Signal_CR1  PE_CR1_C11
 #define Lower_Limit_Signal_CR2  PE_CR2_C21
 #define Lower_Limit_Signal      PE_IDR_IDR1     //下限信号，为0表示有下限信号
-/*
+
 #define Action_Signal_DDR       PE_DDR_DDR2
 #define Action_Signal_CR1       PE_CR1_C12
 #define Action_Signal_CR2       PE_CR2_C22
-#define Action_Signal           PE_IDR_IDR2     //动作中信号，为0表示动作信号 */
-//调试用
+#define Action_Signal           PE_IDR_IDR2     //动作中信号，为0表示动作信号
+/*
+//测试调试用
 #define Action_Signal_DDR       PC_DDR_DDR1
 #define Action_Signal_CR1       PC_CR1_C11
 #define Action_Signal_CR2       PC_CR2_C21
-#define Action_Signal           PC_IDR_IDR1     //动作中信号，为0表示动作信号
+#define Action_Signal           PC_IDR_IDR1     //动作中信号，为0表示动作信号 */
 
 /*APP操作时*/
 #define APP_Open_State      0xD1  /*open状态*/
@@ -266,8 +267,8 @@
 #define AUTO_TIME_110S      0x86  /* 110s */
 #define AUTO_TIME_120S      0x96  /* 120s */
 
-#define BUZZER_OFF_COMMAND  0xD0  /* 允许打开蜂鸣器 */
-#define BUZZER_ON_COMMAND   0xC8  /* 不允许打开蜂鸣器 */
+#define BUZZER_OFF_COMMAND  0xD0  /* 不允许打开蜂鸣器 */
+#define BUZZER_ON_COMMAND   0xC8  /* 允许打开蜂鸣器 */
 
 
 

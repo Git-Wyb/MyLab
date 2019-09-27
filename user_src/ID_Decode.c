@@ -162,7 +162,7 @@ void ID_Decode_IDCheck(void)
 							Flag_TX_ID_load=0;
 		                    if ((DATA_Packet_Control == 0x40) && (Manual_override_TIMER == 0))
 		                    {
-		                        TIME_auto_out = 900 * auto_over_time;
+		                        TIME_auto_out = 900 * (auto_over_time - 1);
 
                                 if((Time_Check_AutoSignal > 0) && (Time_Check_AutoSignal < 27000))
                                 {
@@ -558,7 +558,7 @@ void ID_Decode_OUT(void)
                         } //810
                         else
                         {
-                            if(auto_over_time != 0) //若设置了自动下降无效，则不执行关闭动作
+                            if(auto_over_time != 1) //若设置了自动下降无效，则不执行关闭动作
                                 FG_auto_open_time = 1;
                             Receiver_OUT_STOP = FG_NOT_allow_out;
                             Receiver_OUT_OPEN = FG_allow_out;
@@ -718,7 +718,7 @@ void ID_Decode_OUT(void)
                 case CLOSE_AUTO_DECLINE:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 0;
+                        auto_over_time = 1;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -727,7 +727,7 @@ void ID_Decode_OUT(void)
                 case AUTO_TIME_10S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 1;
+                        auto_over_time = 2;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);   //保存自动下降时间
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -736,7 +736,7 @@ void ID_Decode_OUT(void)
                 case AUTO_TIME_20S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 2;
+                        auto_over_time = 3;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -745,7 +745,7 @@ void ID_Decode_OUT(void)
                 case AUTO_TIME_30S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 3;
+                        auto_over_time = 4;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -754,7 +754,7 @@ void ID_Decode_OUT(void)
                 case AUTO_TIME_40S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 4;
+                        auto_over_time = 5;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -763,7 +763,7 @@ void ID_Decode_OUT(void)
                 case AUTO_TIME_50S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 5;
+                        auto_over_time = 6;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -772,7 +772,7 @@ void ID_Decode_OUT(void)
                 case AUTO_TIME_60S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 6;
+                        auto_over_time = 7;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -781,7 +781,7 @@ void ID_Decode_OUT(void)
                 case AUTO_TIME_70S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 7;
+                        auto_over_time = 8;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -790,7 +790,7 @@ void ID_Decode_OUT(void)
                 case AUTO_TIME_80S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 8;
+                        auto_over_time = 9;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -799,7 +799,7 @@ void ID_Decode_OUT(void)
                 case AUTO_TIME_90S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 9;
+                        auto_over_time = 10;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -808,7 +808,7 @@ void ID_Decode_OUT(void)
                 case AUTO_TIME_100S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 10;
+                        auto_over_time = 11;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -817,7 +817,7 @@ void ID_Decode_OUT(void)
                 case AUTO_TIME_110S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 11;
+                        auto_over_time = 12;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -826,7 +826,7 @@ void ID_Decode_OUT(void)
                 case AUTO_TIME_120S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
-                        auto_over_time = 12;
+                        auto_over_time = 13;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         time_sw = 100;
@@ -947,7 +947,7 @@ void ID_Decode_OUT(void)
         }
         if(Time_NoCheck_AutoSignal == 0)
             FG_First_auto = 0;
-        if(Time_NoCheck_AutoSignal==0 && auto_over_time==0)
+        if(Time_NoCheck_AutoSignal==0 && auto_over_time==1)
             FG_auto_manual_mode = 0;
 
         FLAG_Receiver_BEEP = 0;

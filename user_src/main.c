@@ -80,6 +80,7 @@ void main(void)
     Status_Un.Flag_LowerLimit = Lower_Limit_Signal;
     Status_Un.Flag_AbnormalSignal = Abnormal_Signal;
     Status_Un.Flag_ActionSignal = Action_Signal;
+    Status_Un.Receive_SignalType = 1;
 
     while (1)
     {

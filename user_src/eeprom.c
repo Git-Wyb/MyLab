@@ -179,9 +179,9 @@ void eeprom_sys_load(void)
     UINT8 xm[3] = {0};
     uni_rom_id xn;
 
-    auto_over_time = ReadByteEEPROM(addr_eeprom_sys + AddrEeprom_AutoOverTime); //读取设定的自动下降时间
-    if(auto_over_time > 12) auto_over_time = 1;
-    i = ReadByteEEPROM(addr_eeprom_sys + AddrEeprom_BuzzerSwitch); //读取设定的蜂鸣器开关
+    auto_over_time = (0xFF & ReadByteEEPROM(addr_eeprom_sys + AddrEeprom_AutoOverTime)); //读取设定的自动下降时间
+    if(auto_over_time < 1 || auto_over_time > 13) auto_over_time = 1;
+    i = (0xFF & ReadByteEEPROM(addr_eeprom_sys + AddrEeprom_BuzzerSwitch)); //读取设定的蜂鸣器开关
     if(i == 0 || i == 1)
         Status_Un.Buzzer_Switch = i;
 
