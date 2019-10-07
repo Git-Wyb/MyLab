@@ -485,7 +485,7 @@ void RF_test_mode(void)
             FG_test_tx_off = 0;
             if (Tx_Rx_mode == 0) //发载波，无调制信�?
             {
-//                Receiver_LED_OUT = 1;
+                //Receiver_LED_OUT = 1;
                 Receiver_LED_TX = 1;
                 FG_test_mode = 0;
                 FG_test_tx_1010 = 0;
@@ -503,10 +503,10 @@ void RF_test_mode(void)
                 {
                     TIMER1s = 500;
  //                   Receiver_LED_OUT = !Receiver_LED_OUT;
+                    Receiver_LED_TX = !Receiver_LED_TX;
                 }
                 FG_test_mode = 1;
                 FG_test_tx_on = 0;
-                Receiver_LED_TX = 1;
                 if (FG_test_tx_1010 == 0)
                 {
                     ADF7030_TX(TestTx_PreamblePattern);
