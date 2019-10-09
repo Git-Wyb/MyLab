@@ -99,7 +99,7 @@ void main(void)
             APP_TX_PACKET();
         }
         //接收到特殊ID并且有ID登录或者接收到429MHz开闭指令有动作就启动蜂鸣器
-        if((Status_Un.Exist_ID == 1) || (Beep_Switch == 1 && FLAG_APP_TX == 0))
+        if((Status_Un.Exist_ID == 1) || (ID_SCX1801_DATA != 0 && Beep_Switch == 1 && FLAG_APP_TX == 0))
         {
             BEEP_Module(300,1);
         }
@@ -117,12 +117,15 @@ void main(void)
         else if (FG_Receiver_LED_RX == 0)
             Receiver_LED_RX = 0;
 
-        /* 必须有ID登录才进行异常、下限检测，异常、下限信号有变化时则计时1s之后再次判断，若有变化则发送状态 */
-        if(ID_SCX1801_DATA && Time_StateDetection == 0)
+        /* 必须有ID登录才进行异常、下限、动作中信号检测，若有变化则发送状态 */
+        if(ID_SCX1801_DATA != 0 && Time_StateDetection == 0)
         {
-            Action_Signal_Detection();
+            Action_Signal_Detection(); //状态监测
             if(Status_Un.Buzzer_Switch == 0)
+            {
                 Beep_Switch = 0;
+                Allow_BeepOn_Flag = 0;
+            }
         }
     }
 }

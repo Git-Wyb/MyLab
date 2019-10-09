@@ -195,17 +195,21 @@ void ID_Decode_IDCheck(void)
 		                        ;
 		                    else
 		                    {
-                                auto_receive_cnt = 0;
-                                time_receive_auto = 0;
-                                Time_Check_AutoSignal = 0;
-                                Time_NoCheck_AutoSignal = 0;
+                                if(DATA_Packet_Control == 0x02 || DATA_Packet_Control == 0x04 || DATA_Packet_Control == 0x08)
+                                {
+                                    auto_receive_cnt = 0;
+                                    time_receive_auto = 0;
+                                    Time_Check_AutoSignal = 0;
+                                    Time_NoCheck_AutoSignal = 0;
 
-		                        FG_auto_out = 0;
-		                        TIME_auto_close = 0;
-		                        FG_auto_open_time = 0;
-		                        if (FG_auto_manual_mode == 1)      //Manual_override_TIMER=13500;   //2分30秒内自动无效
-		                            Manual_override_TIMER = 24480; //4分30秒内自动无效
-                                FG_auto_manual_mode = 0;
+                                    FG_auto_out = 0;
+                                    TIME_auto_close = 0;
+                                    FG_auto_open_time = 0;
+
+                                    if (FG_auto_manual_mode == 1)      //Manual_override_TIMER=13500;   //2分30秒内自动无效
+                                        Manual_override_TIMER = 24480; //4分30秒内自动无效
+                                    FG_auto_manual_mode = 0;
+                                }
 		                        if ((DATA_Packet_Control & 0x14) == 0x14)
 		                        {
 		                            if (TIMER1s == 0)
@@ -616,6 +620,8 @@ void ID_Decode_OUT(void)
                                 Status_Un.ActionOpenOrClose = 0;  //闭动作
                                 break;
                         }
+                        if(Status_Un.Buzzer_Switch == 1)    Allow_BeepOn_Flag = 1;
+                        else    Allow_BeepOn_Flag = 0;
                         APP429M_Tx_State();
                     }
                 break;
@@ -663,6 +669,8 @@ void ID_Decode_OUT(void)
                                 Status_Un.ActionOpenOrClose = 1; //开动作
                                 break;
                         }
+                        if(Status_Un.Buzzer_Switch == 1)    Allow_BeepOn_Flag = 1;
+                        else    Allow_BeepOn_Flag = 0;
                         APP429M_Tx_State();
                     }
                 break;
@@ -1072,12 +1080,13 @@ void Action_Signal_Detection(void)
             }
             else if(Status_Un.Flag_ActionSignal == 0)  //动作中
             {
-                if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
+                if(Allow_BeepOn_Flag == 1)
                 {
-                    if(Status_Un.Buzzer_Switch == 1)
-                        Beep_Switch = 1;//开启蜂鸣器
-                    else    Beep_Switch = 0;
+                    Allow_BeepOn_Flag = 0;
+                    Beep_Switch = 1;//开启蜂鸣器
                 }
+                else    Beep_Switch = 0;
+
                 if(Status_Un.Receive_SignalType == 0)  //自动受信
                 {
                     if(Status_Un.ActionOpenOrClose == 1)   //开动作中

@@ -194,8 +194,8 @@ extern u8 auto_receive_cnt;
 extern u8 time_receive_auto;
 extern u8 Time_StateDetection;
 
-#define Beep_Switch StaFlag_Un.FlagByte_bit0
-#define Allow_AutoOut_Flag  StaFlag_Un.FlagByte_bit1
+#define Beep_Switch StaFlag_Un.FlagByte_bit0    //1:用于标志有动作中信号输入时,打开蜂鸣器
+#define Allow_BeepOn_Flag  StaFlag_Un.FlagByte_bit1   //1:用于标志429M受信操作OPEN或者CLOSE.打开蜂鸣器
 
 void SPI_INIT(void);
 u32 ADF7030_GET_MISC_FW(void); //??MISC_FW?????

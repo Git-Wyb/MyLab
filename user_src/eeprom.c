@@ -584,6 +584,20 @@ void ID_learn(void)
 
         if ((FLAG_ID_Erase_Login == 1) || (FLAG_ID_Login == 1) || (FLAG_ID_SCX1801_Login == 1))
         {
+            //进入登录模式后,解除自动模式,停止时间监测,退出登录模式后受信机恢复到初始状态
+            TIMER1s = 0;
+		    FG_auto_out = 0;
+		    TIME_auto_close = 0;
+		    FG_auto_open_time = 0;
+            FG_auto_manual_mode = 0;
+            Manual_override_TIMER = 0;
+
+            auto_receive_cnt = 0;
+            Time_Check_AutoSignal = 0;
+            Time_NoCheck_AutoSignal = 0;
+            Beep_Switch = 0;
+            Allow_BeepOn_Flag = 0;
+
             TIME_Receiver_Login_led++;
             if (TIME_Receiver_Login_led >= 46)
             {
