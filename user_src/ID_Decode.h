@@ -23,6 +23,7 @@ void TIM3_init(void);
 void Tone_OFF(void);
 void Action_Signal_Detection(void);
 void APP429M_Tx_State(void);
+u32 ID_Receiver_DATA_READ(u8 *address);
 
 
 void Freq_Scanning(void);

@@ -108,7 +108,8 @@ extern u16 TIMER250ms_STOP;
 extern u16 TIME_auto_out;
 extern u16 TIME_auto_close;
 //extern u16 time_3sec;
-extern u32 ID_Receiver_DATA[256]; //写入EEPROM ID缓存
+//extern u32 ID_Receiver_DATA[256]; //写入EEPROM ID缓存
+extern u8 ID_Receiver_DATA[256][3]; //写入EEPROM ID缓存
 extern u32 ID_SCX1801_DATA;
 extern u16 ID_DATA_PCS;
 extern u32 DATA_Packet_ID;
