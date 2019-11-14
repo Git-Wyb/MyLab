@@ -272,15 +272,26 @@
 
 
 
+/* 状态定义错误
+#define Tx_Open_Status         0xD8   开状态
+#define Tx_Close_Status        0xD4  闭状态
+#define Tx_Open_Action_Status  0xDC   开动作中状态
+#define Tx_Close_Action_Status 0xD2   闭动作中状态
+#define Tx_Open_Action_Auto    0xDA   开动作中状态(自动受信时)
+#define Tx_Close_Action_Auto   0xD6   闭动作中状态(自动受信时)
+#define Tx_Abnormal_Status     0xDE   异常1状态
+#define Tx_Setting_Status      0xD1   时间设定和蜂鸣器ON/OFF设定时,送信
+*/
+
 /* 429MHz送信数据 */
-#define Tx_Open_Status         0xD8  /* 开状态 */
-#define Tx_Close_Status        0xD4  /* 闭状态 */
-#define Tx_Open_Action_Status  0xDC  /* 开动作中状态 */
-#define Tx_Close_Action_Status 0xD2  /* 闭动作中状态 */
-#define Tx_Open_Action_Auto    0xDA  /* 开动作中状态(自动受信时) */
+#define Tx_Open_Status         0xD1  /* 开状态 */
+#define Tx_Close_Status        0xD2  /* 闭状态 */
+#define Tx_Open_Action_Status  0xD3  /* 开动作中状态 */
+#define Tx_Close_Action_Status 0xD4  /* 闭动作中状态 */
+#define Tx_Open_Action_Auto    0xD5  /* 开动作中状态(自动受信时) */
 #define Tx_Close_Action_Auto   0xD6  /* 闭动作中状态(自动受信时) */
-#define Tx_Abnormal_Status     0xDE  /* 异常1状态 */
-#define Tx_Setting_Status      0xD1  /* 时间设定和蜂鸣器ON/OFF设定时,送信 */
+#define Tx_Abnormal_Status     0xD7  /* 异常1状态 */
+#define Tx_Setting_Status      0xD8  /* 时间设定和蜂鸣器ON/OFF设定时,送信 */
 
 /*********************************************************************************/
 

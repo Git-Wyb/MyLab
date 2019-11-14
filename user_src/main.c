@@ -81,7 +81,7 @@ void main(void)
     Status_Un.Flag_AbnormalSignal = Abnormal_Signal;
     Status_Un.Flag_ActionSignal = Action_Signal;
     Status_Un.Receive_SignalType = 1;
-
+    APP429M_Tx_State(); //上电发送一次状态
     while (1)
     {
         ClearWDT(); // Service the WDT
@@ -127,6 +127,7 @@ void main(void)
                 Allow_BeepOn_Flag = 0;
             }
         }
+        if(ID_SCX1801_DATA == 0)    app_tx_en = 0;
     }
 }
 

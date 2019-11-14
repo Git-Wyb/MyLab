@@ -7,7 +7,7 @@
 
 
 
-u8 DEF_APP_TX_freq=3;
+u8 DEF_APP_TX_freq=4;
 
 u16 time_sw = 0;
 

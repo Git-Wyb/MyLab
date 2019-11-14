@@ -1326,13 +1326,14 @@ void Select_TX_frequency(void)
 		 First_TX_Scan=0;
 
 	  }
-	  else if((time_sw)&&(Flag_FREQ_Scan==0)&&((PROFILE_CH_FREQ_32bit_200002EC == 429175000)||(PROFILE_CH_FREQ_32bit_200002EC == 429200000))&&
+	  else if((app_tx_en && TIMER1s==0)&&(Flag_FREQ_Scan==0)&&((PROFILE_CH_FREQ_32bit_200002EC == 429175000)||(PROFILE_CH_FREQ_32bit_200002EC == 429200000))&&
 	  	  (((FLAG_APP_TX_fromOUT==1)&&(TIME_APP_TX_fromOUT==0))||(FLAG_Key_TP3==1)||
 	  	   //((FLAG_APP_TX_fromUART==1)&&(((TIME_APP_TX_fromOUT==0)&&(Radio_Date_Type_bak==2))||((TIMER300ms==0)&&(Radio_Date_Type_bak==1)))&&(Uart_Struct_DATA_Packet_Contro.data[0].ui!=Last_Uart_Struct_DATA_Packet_Contro.data[0].ui))
 	  	   (((TIME_APP_TX_fromOUT==0)&&(Radio_Date_Type_bak==2))||((TIMER300ms==0)&&(Radio_Date_Type_bak==1)))
 		  )
 	  	)
       {
+          app_tx_en = 0;
         FLAG_APP_TX_fromUART=0;
         FLAG_Key_TP3=0;
         Last_Uart_Struct_DATA_Packet_Contro=Uart_Struct_DATA_Packet_Contro;
@@ -1369,13 +1370,13 @@ void Select_TX_frequency(void)
                     TX_DataLoad(ID_SCX1801_DATA,Struct_DATA_Packet_Contro_fno, &CONST_TXPACKET_DATA_20000AF0[0]);
 					//TX_DataLoad_HighSpeed(ID_SCX1801_DATA,Last_Uart_Struct_DATA_Packet_Contro, &CONST_TXPACKET_DATA_20000AF0[0]);
                     ADF7030_TRANSMITTING_FROM_POWEROFF();
-					Time_APP_blank_TX=2;
+					Time_APP_blank_TX=10;
 					APP_TX_freq=1; //1
 				}
 				else if((APP_TX_freq < DEF_APP_TX_freq)&&(ADF7030_GPIO3 == 0)&&(Time_APP_blank_TX==0))
 				{
 					 ADF7030_TRANSMITTING_FROM_POWEROFF();
-					 Time_APP_blank_TX=2;
+					 Time_APP_blank_TX=10;
 					APP_TX_freq++;
 				}
 				else if((APP_TX_freq==DEF_APP_TX_freq)&&(ADF7030_GPIO3 == 0)&&(Time_APP_blank_TX==0))

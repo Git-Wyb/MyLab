@@ -745,7 +745,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 1;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case AUTO_TIME_10S:
@@ -754,7 +754,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 2;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);   //保存自动下降时间
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case AUTO_TIME_20S:
@@ -763,7 +763,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 3;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case AUTO_TIME_30S:
@@ -772,7 +772,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 4;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case AUTO_TIME_40S:
@@ -781,7 +781,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 5;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case AUTO_TIME_50S:
@@ -790,7 +790,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 6;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case AUTO_TIME_60S:
@@ -799,7 +799,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 7;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case AUTO_TIME_70S:
@@ -808,7 +808,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 8;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case AUTO_TIME_80S:
@@ -817,7 +817,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 9;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case AUTO_TIME_90S:
@@ -826,7 +826,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 10;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case AUTO_TIME_100S:
@@ -835,7 +835,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 11;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case AUTO_TIME_110S:
@@ -844,7 +844,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 12;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case AUTO_TIME_120S:
@@ -853,7 +853,7 @@ void ID_Decode_OUT(void)
                         auto_over_time = 13;
                         eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case BUZZER_OFF_COMMAND:
@@ -862,7 +862,7 @@ void ID_Decode_OUT(void)
                         Status_Un.Buzzer_Switch = 0;
                         eeprom_write_byte(AddrEeprom_BuzzerSwitch,Status_Un.Buzzer_Switch);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 case BUZZER_ON_COMMAND:
@@ -871,7 +871,7 @@ void ID_Decode_OUT(void)
                         Status_Un.Buzzer_Switch = 1;
                         eeprom_write_byte(AddrEeprom_BuzzerSwitch,Status_Un.Buzzer_Switch);
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
-                        time_sw = 100;
+                        app_tx_en = 1;
                     }
                 break;
                 default:
@@ -1074,7 +1074,7 @@ void Action_Signal_Detection(void)
     if((Status_Un.Ststus_Sign & 0x07) != (local_sta.Ststus_Sign & 0x07))  //状态变化
     {
         sta_cnt ++;
-        Time_StateDetection = 80;
+        Time_StateDetection = 50;
         if(sta_cnt == 2)
         {
             sta_cnt = 0;
@@ -1108,14 +1108,14 @@ void Action_Signal_Detection(void)
                     if(Status_Un.ActionOpenOrClose == 1)   //开动作中
                     {
                         Struct_DATA_Packet_Contro_fno = Tx_Open_Action_Auto;
-                        Status_Un.ActionOpenOrClose = 0;
-                        //自动受信执行开之后至结束自动受信之前，若有动作中信号则返回手动闭动作中指令
-                        Status_Un.Receive_SignalType = 1;
+                        //Status_Un.ActionOpenOrClose = 0;
+
+                        //Status_Un.Receive_SignalType = 1;//自动受信执行开之后至结束自动受信之前，若有动作中信号则返回手动闭动作中指令
                     }
                     else  //闭动作中
                     {
                         Struct_DATA_Packet_Contro_fno = Tx_Close_Action_Auto;
-                        Status_Un.Receive_SignalType = 1;   //自动受信结束，默认为手动
+                        //Status_Un.Receive_SignalType = 1;   //自动受信结束，默认为手动
                     }
                 }
                 else //手动
@@ -1137,7 +1137,7 @@ void Action_Signal_Detection(void)
                 Beep_Switch = 0;
                 Tone_OFF();
             }
-            time_sw = 100; //开启发送
+            app_tx_en = 1; //开启发送
         }
     }
     else
@@ -1171,5 +1171,5 @@ void APP429M_Tx_State(void)
     {
         Struct_DATA_Packet_Contro_fno = Tx_Open_Status;
     }
-    time_sw = 100;          //开启发送
+    app_tx_en = 1;          //开启发送
 }

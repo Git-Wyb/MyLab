@@ -636,6 +636,7 @@ void RF_test_mode(void)
     FG_Receiver_LED_RX = 0;
     //Receiver_LED_OUT = 0;
     time_sw = 0;
+    app_tx_en = 0;
     FLAG_APP_RX = 1;
     //TIME_Fine_Calibration = 900;
     //TIME_EMC = 10;
