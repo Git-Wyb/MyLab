@@ -61,7 +61,13 @@ void TIM4_UPD_OVF(void)
         if(Time_NoCheck_AutoSignal)
             --Time_NoCheck_AutoSignal;
         else if (TIME_auto_out)
+        {
             --TIME_auto_out;
+            if(TIME_auto_out==180 || TIME_auto_out==90)
+            {
+                Beep_Switch = 1;
+            }
+        }
         if(time_receive_auto)
             --time_receive_auto;
         if(Time_StateDetection)

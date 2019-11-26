@@ -99,7 +99,7 @@ void main(void)
             APP_TX_PACKET();
         }
         //接收到特殊ID并且有ID登录或者接收到429MHz开闭指令有动作就启动蜂鸣器
-        if((Status_Un.Exist_ID == 1) || (ID_SCX1801_DATA != 0 && Beep_Switch == 1 && FLAG_APP_TX == 0))
+        if((Status_Un.Exist_ID == 1))
         {
             BEEP_Module(300,1);
         }
@@ -126,6 +126,12 @@ void main(void)
                 Beep_Switch = 0;
                 Allow_BeepOn_Flag = 0;
             }
+        }
+        if((Status_Un.Receive_SignalType != 0) || (auto_over_time == 1))   Beep_Switch = 0;
+        if((ID_SCX1801_DATA != 0) && (Status_Un.Receive_SignalType == 0) && (Allow_BeepOn_Flag == 1))
+        {
+            if(auto_over_time != 1)
+                Beep_Action_Open();
         }
         if(ID_SCX1801_DATA == 0)    app_tx_en = 0;
     }
