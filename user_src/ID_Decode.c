@@ -107,45 +107,47 @@ void ID_Decode_IDCheck(void)
                     {
                         Status_Un.PROFILE_RxLowSpeed_TYPE = 0;
                     }
-                    if (DATA_Packet_ID == 0xFFFFFE)
+                    if(Status_Un.PROFILE_RxLowSpeed_TYPE == 0)  //426
                     {
-                        DATA_Packet_Control = DATA_Packet_Contro_buf; //2015.3.24�?�? Control缓存�?ID判断�?否�?�习过后才能使用
-                        if(ID_SCX1801_DATA != 0 || ID_DATA_PCS != 0)
-                        Status_Un.Exist_ID = 1;
-                    }
-		                if ((SPI_Receive_DataForC[1] & 0x0000FFFF) == 0x5556)
-		                {
-		                    PAYLOAD_SIZE = RX_PayLoadSizeLogin;
-							Flag_TX_ID_load=1;
-		                    Signal_DATA_Decode(1);
-		                    if (FLAG_Signal_DATA_OK == 1)
-		                    {
-		                        eeprom_IDcheck();
-		                        if (DATA_Packet_Contro_buf == 0xFF)
-		                        { //2015.4.2�?�?  送信器旁边的登录�?追加登录不�??
-		                            if (FLAG_IDCheck_OK == 1)
-		                                FLAG_IDCheck_OK = 0;
-		                            else if (ID_DATA_PCS < ID_Max_PCS)
-		                            {
-		                                BEEP_and_LED();
-		                                ID_Receiver_Login = DATA_Packet_ID;
-		                                ID_EEPROM_write();
-		                            } //end else
-		                        }
-		                        else if (DATA_Packet_Control == 0x00)
-		                        {
-		                            if (FLAG_IDCheck_OK == 1)
-		                            {
-		                                FLAG_IDCheck_OK = 0;
-		                                BEEP_and_LED();
-										if(ID_SCX1801_DATA==DATA_Packet_ID)
+                        if (DATA_Packet_ID == 0xFFFFFE)
+                        {
+                            DATA_Packet_Control = DATA_Packet_Contro_buf; //2015.3.24�?�? Control缓存�?ID判断�?否�?�习过后才能使用
+                            if(ID_SCX1801_DATA != 0 || ID_DATA_PCS != 0)
+                            Status_Un.Exist_ID = 1;
+                        }
+                        if ((SPI_Receive_DataForC[1] & 0x0000FFFF) == 0x5556)
+                        {
+                             PAYLOAD_SIZE = RX_PayLoadSizeLogin;
+                             Flag_TX_ID_load=1;
+                             Signal_DATA_Decode(1);
+                             if (FLAG_Signal_DATA_OK == 1)
+                             {
+                                eeprom_IDcheck();
+                                if (DATA_Packet_Contro_buf == 0xFF)
+                                { //2015.4.2�?�?  送信器旁边的登录�?追加登录不�??
+                                    if (FLAG_IDCheck_OK == 1)
+                                         FLAG_IDCheck_OK = 0;
+                                    else if (ID_DATA_PCS < ID_Max_PCS)
+                                    {
+                                        BEEP_and_LED();
+                                        ID_Receiver_Login = DATA_Packet_ID;
+                                        ID_EEPROM_write();
+                                    } //end else
+                                }
+                                else if (DATA_Packet_Control == 0x00)
+                                {
+                                    if (FLAG_IDCheck_OK == 1)
+                                    {
+                                        FLAG_IDCheck_OK = 0;
+                                        BEEP_and_LED();
+                                        if(ID_SCX1801_DATA==DATA_Packet_ID)
                                         {
                                             ID_SCX1801_DATA = 0;
                                             ID_SCX1801_EEPROM_write(0x00);
-                                            //if (ID_Receiver_DATA[0] != 0)
+                                                //if (ID_Receiver_DATA[0] != 0)
                                             if (ID_Receiver_DATA_READ(ID_Receiver_DATA[0]) != 0)
                                             {
-                                                //ID_SCX1801_DATA = ID_Receiver_DATA[0];
+                                                    //ID_SCX1801_DATA = ID_Receiver_DATA[0];
                                                 ID_SCX1801_DATA = ID_Receiver_DATA_READ(ID_Receiver_DATA[0]);
                                                 ID_SCX1801_EEPROM_write(ID_SCX1801_DATA);
                                                 Delete_GeneralID_EEPROM(ID_SCX1801_DATA);
@@ -153,87 +155,109 @@ void ID_Decode_IDCheck(void)
                                         }
                                         else
                                             Delete_GeneralID_EEPROM(DATA_Packet_ID);
-		                            }
-		                        }
-		                    }
-		                }
-		                else
-		                {
-
-		                    PAYLOAD_SIZE = RX_PayLoadSizeNOLogin;
-							Flag_TX_ID_load=0;
-		                    if ((DATA_Packet_Control == 0x40) && (Manual_override_TIMER == 0))
-		                    {
-		                        TIME_auto_out = 900 * (auto_over_time - 1);
-
-                                if((Time_Check_AutoSignal > 0) && (Time_Check_AutoSignal < 27000))
-                                {
-                                    if(time_receive_auto == 0)
-                                    {
-                                        ++auto_receive_cnt;
-                                        time_receive_auto = 100;  //1s
+                                        }
                                     }
                                 }
+                            }
+                            else
+                            {
+
+                                PAYLOAD_SIZE = RX_PayLoadSizeNOLogin;
+                                Flag_TX_ID_load=0;
+                                if ((DATA_Packet_Control == 0x40) && (Manual_override_TIMER == 0))
+                                {
+                                    TIME_auto_out = 900 * (auto_over_time - 1);
+
+                                    if((Time_Check_AutoSignal > 0) && (Time_Check_AutoSignal < 27000))
+                                    {
+                                        if(time_receive_auto == 0)
+                                        {
+                                            ++auto_receive_cnt;
+                                            time_receive_auto = 100;  //1s
+                                        }
+                                    }
+                                    else
+                                    {
+                                        time_receive_auto = 0;
+                                        auto_receive_cnt = 0;
+                                    }
+                                    if((Time_Check_AutoSignal==0) || (Time_Check_AutoSignal>=27000) || ((Time_Check_AutoSignal<27000) && (auto_receive_cnt>=2)))
+                                    {
+                                        auto_receive_cnt = 0;
+                                        time_receive_auto = 0;
+                                        Time_Check_AutoSignal = 0;
+
+                                        FG_auto_manual_mode = 1;
+                                        if (FG_First_auto == 0)
+                                        {
+                                            FG_First_auto = 1;
+                                            TIMER1s = 3000; //2500
+                                        }
+                                    }
+                                }
+                                else if (DATA_Packet_Control == 0x40)
+                                    ;
                                 else
                                 {
-                                    time_receive_auto = 0;
-                                    auto_receive_cnt = 0;
-                                }
-                                if((Time_Check_AutoSignal==0) || (Time_Check_AutoSignal>=27000) || ((Time_Check_AutoSignal<27000) && (auto_receive_cnt>=2)))
-                                {
-                                    auto_receive_cnt = 0;
-                                    time_receive_auto = 0;
-                                    Time_Check_AutoSignal = 0;
-
-                                    FG_auto_manual_mode = 1;
-                                    if (FG_First_auto == 0)
+                                    if(DATA_Packet_Control == 0x02 || DATA_Packet_Control == 0x04 || DATA_Packet_Control == 0x08)
                                     {
-                                        FG_First_auto = 1;
-                                        TIMER1s = 3000; //2500
+                                        auto_receive_cnt = 0;
+                                        time_receive_auto = 0;
+                                        Time_Check_AutoSignal = 0;
+                                        Time_NoCheck_AutoSignal = 0;
+
+                                        FG_auto_out = 0;
+                                        TIME_auto_close = 0;
+                                        TIME_auto_out = 0;
+                                        FG_auto_open_time = 0;
+
+                                        if (FG_auto_manual_mode == 1)      //Manual_override_TIMER=13500;   //2分30秒内自动无效
+                                        {
+                                            Manual_override_TIMER = 27390; //约5分钟,5分钟内自动无效
+                                            APP429M_Tx_State();  //禁止进入自动模式区间，发送一次状态(无效)
+                                        }
+                                        FG_auto_manual_mode = 0;
                                     }
-                                }
-		                    }
-		                    else if (DATA_Packet_Control == 0x40)
-		                        ;
-		                    else
-		                    {
-                                if(DATA_Packet_Control == 0x02 || DATA_Packet_Control == 0x04 || DATA_Packet_Control == 0x08)
-                                {
-                                    auto_receive_cnt = 0;
-                                    time_receive_auto = 0;
-                                    Time_Check_AutoSignal = 0;
-                                    Time_NoCheck_AutoSignal = 0;
-
-                                    FG_auto_out = 0;
-                                    TIME_auto_close = 0;
-                                    FG_auto_open_time = 0;
-
-                                    if (FG_auto_manual_mode == 1)      //Manual_override_TIMER=13500;   //2分30秒内自动无效
-                                        Manual_override_TIMER = 24480; //4分30秒内自动无效
-                                    FG_auto_manual_mode = 0;
-                                }
-		                        if ((DATA_Packet_Control & 0x14) == 0x14)
-		                        {
-		                            if (TIMER1s == 0)
-		                                TIMER1s = 3800 - 30;
-		                        }
-		                        else if(FLAG_testNo91==1) TIMER1s = 600;
-		                        else
-                                {
-                                    if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1 && (((DATA_Packet_Control & 0xFF) == 0x02) || ((DATA_Packet_Control & 0xFF) == 0x08)))//429M
+                                    if ((DATA_Packet_Control & 0x14) == 0x14)
                                     {
-                                        TIMER1s = 2500; //约2.5s
+                                        if (TIMER1s == 0)
+                                            TIMER1s = 3800 - 30;
                                     }
+                                    else if(FLAG_testNo91==1) TIMER1s = 600;
                                     else
                                     {
                                         TIMER1s = 1000;
                                     }
                                 }
-		                    }
-		                    TIMER300ms = 600;  //500
-		                    //Receiver_LED_RX=1;
-                            FG_Receiver_LED_RX = 1;
-		                }
+                                TIMER300ms = 600;  //500
+                                //Receiver_LED_RX=1;
+                                FG_Receiver_LED_RX = 1;
+                            }
+                    }
+                    else if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)  //429低速
+                    {
+                        if(DATA_Packet_Control == 0x02 || DATA_Packet_Control == 0x04 || DATA_Packet_Control == 0x08)
+                        {
+                            auto_receive_cnt = 0;
+                            time_receive_auto = 0;
+                            Time_Check_AutoSignal = 0;
+                            Time_NoCheck_AutoSignal = 0;
+
+                            FG_auto_out = 0;
+                            TIME_auto_close = 0;
+                            TIME_auto_out = 0;
+                            FG_auto_open_time = 0;
+
+                            if (FG_auto_manual_mode == 1)      //Manual_override_TIMER=13500;   //2分30秒内自动无效
+                                Manual_override_TIMER = 27390; //约5分钟,5分钟内自动无效
+                            FG_auto_manual_mode = 0;
+                       }
+                       if(((DATA_Packet_Control & 0xFF) == 0x02) || ((DATA_Packet_Control & 0xFF) == 0x08))//429M
+                       {
+                            TIMER1s = 2500; //约2.5s
+                       }
+                       else TIMER1s = 1000;
+                    }
 			    }
 			/*	else if(Radio_Date_Type_bak==2)
 				{
@@ -408,14 +432,19 @@ void TIM3_init(void)
     TIM3_PSCR = 0x02;                // ?????=Fsystem/(2(PSC[2:0])????4MHz=16MHz/2/2
     //TIM3_EGR_bit.UG=1;
     //TIM2_CR1 = 0x01;					// ?????????????????
-    TIM3_CR1 = TIM3_CR1 | 0x01;
+    //TIM3_CR1 = TIM3_CR1 | 0x01;
     TIM3_BKR = 0x80;
+}
+
+void Tone_ON(void)
+{
+    TIM3_CR1_CEN = 1; // Timer 3 Disable
 }
 void Tone_OFF(void)
 {                     // ???Tone   2015.3.11????
     TIM3_CR1_CEN = 0; // Timer 3 Disable
-    TIM3_CCMR1 =  0x00;
-    TIM3_CCER1 =  0x00; //????PWM?????????????????I/O
+    //TIM3_CCMR1 =  0x00;
+    //TIM3_CCER1 =  0x00; //????PWM?????????????????I/O
     PIN_BEEP = 0;
 }
 /*
@@ -433,7 +462,8 @@ void BEEP_Module(UINT16 time_beepON, UINT16 time_beepOFF)
 			FG_beep_on = 1;
 			FG_beep_off = 0;
 			//BEEP_CSR2_BEEPEN = 1;
-            TIM3_init();
+            //TIM3_init();
+            Tone_ON();
         }
 		Delayus(250); //80us
 		Delayus(250); //80us
@@ -546,7 +576,6 @@ void ID_Decode_OUT(void)
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         APP429M_Tx_State();
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                     break;
                 case 0x14: //stop+login
@@ -562,10 +591,9 @@ void ID_Decode_OUT(void)
                     }
                 break;
                 case 0x40: //�?动送信//FG_auto_open_time = 0
-                    Status_Un.Receive_SignalType = 0; //受信于自动信号
                     if(Status_Un.Buzzer_Switch == 1)    Allow_BeepOn_Flag = 1;
                     else    Allow_BeepOn_Flag = 0;
-                    if ((FG_auto_out == 0)&&(Manual_override_TIMER == 0)&&(Radio_Date_Type_bak==1))
+                    if ((FG_auto_out == 0)&&(Manual_override_TIMER == 0)&&(Status_Un.PROFILE_RxLowSpeed_TYPE==0))//426
                     {
                         Receiver_LED_OUT = 1;
                         TIMER250ms_STOP = 0;
@@ -587,9 +615,11 @@ void ID_Decode_OUT(void)
                                 FG_auto_open_time = 1;
                             Receiver_OUT_STOP = FG_NOT_allow_out;
                             Receiver_OUT_OPEN = FG_allow_out;
+                            Status_Un.Receive_SignalType = 0; //受信于自动信号
                             Status_Un.ActionOpenOrClose = 1;  //开动作
-                            Time_NoCheck_AutoSignal = 2300;//25s
+                            Time_NoCheck_AutoSignal = 4600;//50s;//2300//25s
                             Time_Check_AutoSignal = 0;
+                            operat_action_flag = 1; //如果检测到动作中信号，此标志表示该动作中信号是正常操作引起的
                         }
                     }
                 break;
@@ -613,7 +643,7 @@ void ID_Decode_OUT(void)
                 case 0x02: //close
                     Receiver_LED_OUT = 1;
                     Status_Un.Receive_SignalType = 1; //受信于手动信号
-                    Tone_OFF();  //只要接收到指令就关闭蜂鸣器
+                    Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 0)   //426M
                     {
                         Receiver_OUT_OPEN = FG_NOT_allow_out;
@@ -621,6 +651,7 @@ void ID_Decode_OUT(void)
                         Receiver_OUT_VENT = FG_NOT_allow_out;
                         Receiver_OUT_CLOSE = FG_allow_out;
                         Status_Un.ActionOpenOrClose = 0;  //闭动作
+                        operat_action_flag = 1;
                         //APP429M_Tx_State();
                     }
                     else if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
@@ -639,6 +670,7 @@ void ID_Decode_OUT(void)
                             case 2:
                                 Receiver_OUT_CLOSE = FG_allow_out;
                                 Status_Un.ActionOpenOrClose = 0;  //闭动作
+                                operat_action_flag = 1;
                                 break;
                         }
                         APP429M_Tx_State();
@@ -651,7 +683,7 @@ void ID_Decode_OUT(void)
                     Receiver_OUT_CLOSE = FG_NOT_allow_out;
                     Receiver_OUT_VENT = FG_NOT_allow_out;
                     Receiver_OUT_STOP = FG_allow_out;
-                    Tone_OFF();  //只要接收到指令就关闭蜂鸣器
+                    Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         APP429M_Tx_State();
@@ -660,7 +692,7 @@ void ID_Decode_OUT(void)
                 case 0x08: //open
                     Receiver_LED_OUT = 1;
                     Status_Un.Receive_SignalType = 1;
-                    Tone_OFF();  //只要接收到指令就关闭蜂鸣器
+                    Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 0)   //426M
                     {
                         Receiver_OUT_STOP = FG_NOT_allow_out;
@@ -668,6 +700,7 @@ void ID_Decode_OUT(void)
                         Receiver_OUT_VENT = FG_NOT_allow_out;
                         Receiver_OUT_OPEN = FG_allow_out;
                         Status_Un.ActionOpenOrClose = 1; //开动作
+                        operat_action_flag = 1;
 
                         //APP429M_Tx_State();
                     }
@@ -687,12 +720,13 @@ void ID_Decode_OUT(void)
                             case 2:
                                 Receiver_OUT_OPEN = FG_allow_out;
                                 Status_Un.ActionOpenOrClose = 1; //开动作
+                                operat_action_flag = 1;
                                 break;
                         }
                         APP429M_Tx_State();
                     }
                 break;
-      /*        case 0x0C: //open+stop
+              case 0x0C: //open+stop
                     Receiver_LED_OUT = 1;
                     TIMER250ms_STOP = 250;
                     Receiver_OUT_CLOSE = FG_NOT_allow_out;
@@ -740,135 +774,122 @@ void ID_Decode_OUT(void)
                     Receiver_OUT_OPEN = FG_NOT_allow_out;
                     Receiver_OUT_CLOSE = FG_allow_out;
                     Receiver_OUT_VENT = FG_allow_out;
-                break;  */
+                break;
                 case CLOSE_AUTO_DECLINE:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 1;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case AUTO_TIME_10S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 2;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);   //保存自动下降时间
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case AUTO_TIME_20S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 3;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case AUTO_TIME_30S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 4;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case AUTO_TIME_40S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 5;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case AUTO_TIME_50S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 6;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case AUTO_TIME_60S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 7;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case AUTO_TIME_70S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 8;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case AUTO_TIME_80S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 9;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case AUTO_TIME_90S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 10;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case AUTO_TIME_100S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 11;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case AUTO_TIME_110S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 12;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case AUTO_TIME_120S:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         auto_over_time = 13;
-                        eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+                        save_fall_time_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 case BUZZER_OFF_COMMAND:
@@ -876,10 +897,10 @@ void ID_Decode_OUT(void)
                     {
                         Status_Un.Buzzer_Switch = 0;
                         Allow_BeepOn_Flag = 0;
-                        eeprom_write_byte(AddrEeprom_BuzzerSwitch,Status_Un.Buzzer_Switch);
+                        save_beep_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
+                        Tone_OFF();  //关闭蜂鸣器
                     }
                 break;
                 case BUZZER_ON_COMMAND:
@@ -887,10 +908,9 @@ void ID_Decode_OUT(void)
                     {
                         Status_Un.Buzzer_Switch = 1;
                         Allow_BeepOn_Flag = 1;
-                        eeprom_write_byte(AddrEeprom_BuzzerSwitch,Status_Un.Buzzer_Switch);
+                        save_beep_flag = 1;
                         Struct_DATA_Packet_Contro_fno = Tx_Setting_Status;
                         app_tx_en = 1;
-                        Tone_OFF();  //只要接收到指令就关闭蜂鸣器
                     }
                 break;
                 default:
@@ -974,11 +994,6 @@ void ID_Decode_OUT(void)
             {
                 Receiver_OUT_STOP = FG_NOT_allow_out;
                 Receiver_OUT_CLOSE = FG_NOT_allow_out;
-                if(stopcmd_beep == 0 && Allow_BeepOn_Flag == 1)
-                {
-                    TIM3_init(); //长音开启
-                    stopcmd_beep = 1;
-                }
             } //100
             else
             {
@@ -986,6 +1001,7 @@ void ID_Decode_OUT(void)
                 Receiver_OUT_CLOSE = FG_allow_out;
                 Status_Un.Receive_SignalType = 0;
                 Status_Un.ActionOpenOrClose = 0; //闭动作中
+                operat_action_flag = 1;
                 Time_Check_AutoSignal = 35100; //6分30秒
                 FG_auto_manual_mode = 0;
             }
@@ -993,16 +1009,22 @@ void ID_Decode_OUT(void)
         else
         {
             Receiver_OUT_CLOSE = FG_NOT_allow_out;
-            if(stopcmd_beep == 1)
-            {
-                stopcmd_beep = 0;
-                Tone_OFF(); //长音关闭
-            }
         }
         if(Time_NoCheck_AutoSignal == 0)
             FG_First_auto = 0;
         if(Time_NoCheck_AutoSignal==0 && auto_over_time==1)
             FG_auto_manual_mode = 0;
+
+        if(save_fall_time_flag)  //保存自动下降时间
+        {
+            save_fall_time_flag = 0;
+            eeprom_write_byte(AddrEeprom_AutoOverTime,auto_over_time);
+        }
+        if(save_beep_flag)      //保存蜂鸣器开/关
+        {
+            save_beep_flag = 0;
+            eeprom_write_byte(AddrEeprom_BuzzerSwitch,Status_Un.Buzzer_Switch);
+        }
 
         FLAG_Receiver_BEEP = 0;
 		Receiver_OUT_OPEN = FG_NOT_allow_out;
@@ -1092,7 +1114,7 @@ void Freq_Scanning(void)
 
 }
 
-
+//信号检测
 void Action_Signal_Detection(void)
 {
     static u8 sta_cnt = 0;
@@ -1101,7 +1123,7 @@ void Action_Signal_Detection(void)
     local_sta.Flag_AbnormalSignal = Abnormal_Signal;
     local_sta.Flag_ActionSignal = Action_Signal;
 
-    if((Status_Un.Ststus_Sign & 0x07) != (local_sta.Ststus_Sign & 0x07))  //状态变化
+    if((Status_Un.Ststus_Sign & 0x07) != (local_sta.Ststus_Sign & 0x07))  //信号变化
     {
         sta_cnt ++;
         Time_StateDetection = 50;
@@ -1114,22 +1136,38 @@ void Action_Signal_Detection(void)
 
             if(Status_Un.Flag_AbnormalSignal == 0)   //异常
             {
-                Struct_DATA_Packet_Contro_fno = Tx_Abnormal_Status;
+                if(Manual_override_TIMER)
+                    Struct_DATA_Packet_Contro_fno = Tx_Abnormal_StatusNG;
+                else
+                    Struct_DATA_Packet_Contro_fno = Tx_Abnormal_Status;
             }
             else if(Status_Un.Flag_LowerLimit == 0)  //下限
             {
-                Struct_DATA_Packet_Contro_fno = Tx_Close_Status;
+                if(Manual_override_TIMER)
+                    Struct_DATA_Packet_Contro_fno = Tx_Close_StatusNG;
+                else
+                    Struct_DATA_Packet_Contro_fno = Tx_Close_Status;
             }
             else if(Status_Un.Flag_ActionSignal == 0)  //动作中
             {
-                if(Status_Un.Receive_SignalType == 0)  //自动受信
+                if(operat_action_flag == 1)
+                {
+                    operat_action_flag = 0;
+                    operat_enter_flag = 1;  //标志正常操作进入动作中
+                }
+
+                if(Manual_override_TIMER)
+                {
+                    if(Status_Un.ActionOpenOrClose == 1)   //开动作中
+                        Struct_DATA_Packet_Contro_fno = Tx_Open_Action_StatusNG;
+                    else
+                        Struct_DATA_Packet_Contro_fno = Tx_Close_Action_StatusNG;
+                }
+                else if(Status_Un.Receive_SignalType == 0)  //自动受信
                 {
                     if(Status_Un.ActionOpenOrClose == 1)   //开动作中
                     {
                         Struct_DATA_Packet_Contro_fno = Tx_Open_Action_Auto;
-                        //Status_Un.ActionOpenOrClose = 0;
-
-                        //Status_Un.Receive_SignalType = 1;//自动受信执行开之后至结束自动受信之前，若有动作中信号则返回手动闭动作中指令
                     }
                     else  //闭动作中
                     {
@@ -1142,7 +1180,7 @@ void Action_Signal_Detection(void)
                     if(Status_Un.ActionOpenOrClose == 1)   //开动作中
                     {
                         Struct_DATA_Packet_Contro_fno = Tx_Open_Action_Status;
-                        Status_Un.ActionOpenOrClose = 0;   //没有受信时,若动作中信号变化,默认为闭动作中
+                        //Status_Un.ActionOpenOrClose = 0;   //没有受信时,若动作中信号变化,默认为闭动作中
                     }
                     else  //闭动作中
                     {
@@ -1152,9 +1190,23 @@ void Action_Signal_Detection(void)
             }
             else
             {
-                Struct_DATA_Packet_Contro_fno = Tx_Open_Status;
+                if(Manual_override_TIMER)
+                    Struct_DATA_Packet_Contro_fno = Tx_Open_StatusNG;
+                else
+                    Struct_DATA_Packet_Contro_fno = Tx_Open_Status;
             }
-            app_tx_en = 1; //开启发送
+            if(sta_change != Struct_DATA_Packet_Contro_fno)  //状态变化
+            {
+                app_tx_en = 1; //开启发送
+                sta_change = Struct_DATA_Packet_Contro_fno;
+            }
+            if(operat_enter_flag == 1 && Status_Un.Flag_ActionSignal != 0)  //正常操作动作结束
+            {
+                operat_enter_flag = 0;  //clear flag
+                //没有手动或者自动信号操作,如果检测到动作中信号(人为去强制开/关门),状态默认为手动闭动作中
+                Status_Un.Receive_SignalType = 1;
+                Status_Un.ActionOpenOrClose = 0;
+            }
         }
     }
     else
@@ -1163,7 +1215,91 @@ void Action_Signal_Detection(void)
     }
 }
 
+//判断,发送状态
 void APP429M_Tx_State(void)
+{
+    if(Abnormal_Signal == 0)
+    {
+        if(Manual_override_TIMER)
+            Struct_DATA_Packet_Contro_fno = Tx_Abnormal_StatusNG;
+        else
+            Struct_DATA_Packet_Contro_fno = Tx_Abnormal_Status;
+    }
+    else if(Lower_Limit_Signal == 0)
+    {
+        if(Manual_override_TIMER)
+            Struct_DATA_Packet_Contro_fno = Tx_Close_StatusNG;
+        else
+            Struct_DATA_Packet_Contro_fno = Tx_Close_Status;
+    }
+    else if(Action_Signal == 0)
+    {
+        if(Status_Un.ActionOpenOrClose == 1)   //开动作
+        {
+            if(Manual_override_TIMER)
+                Struct_DATA_Packet_Contro_fno = Tx_Open_Action_StatusNG;
+            else if(Status_Un.Receive_SignalType == 0)   //自动信号
+                Struct_DATA_Packet_Contro_fno = Tx_Open_Action_Auto;
+            else
+                Struct_DATA_Packet_Contro_fno = Tx_Open_Action_Status;
+        }
+        else
+        {
+            if(Manual_override_TIMER)
+                Struct_DATA_Packet_Contro_fno = Tx_Close_Action_StatusNG;
+            else if(Status_Un.Receive_SignalType == 0)   //自动信号
+                Struct_DATA_Packet_Contro_fno = Tx_Close_Action_Auto;
+            else
+                Struct_DATA_Packet_Contro_fno = Tx_Close_Action_Status;
+        }
+    }
+    else
+    {
+        if(Manual_override_TIMER)
+            Struct_DATA_Packet_Contro_fno = Tx_Open_StatusNG;
+        else
+            Struct_DATA_Packet_Contro_fno = Tx_Open_Status;
+    }
+    app_tx_en = 1;          //开启发送
+}
+
+
+void Beep_Action_Open(void)
+{
+    if(Beep_Switch == 1)//短音
+    {
+        Beep_Switch = 0;
+        BEEP_Module(300,1);
+    }
+}
+
+//获取初始状态
+void GetInitial_State(void)
+{
+    Status_Un.Flag_LowerLimit = Lower_Limit_Signal;
+    Status_Un.Flag_AbnormalSignal = Abnormal_Signal;
+    Status_Un.Flag_ActionSignal = Action_Signal;
+
+    if(Abnormal_Signal == 0)
+    {
+        sta_change = Tx_Abnormal_Status;
+    }
+    else if(Lower_Limit_Signal == 0)
+    {
+        sta_change = Tx_Close_Status;
+    }
+    else if(Action_Signal == 0)
+    {
+        sta_change = Tx_Close_Action_Status;
+    }
+    else
+    {
+        sta_change = Tx_Open_Status;
+    }
+}
+
+//用于禁止进入自动模式的时间计时结束后,发送一次状态(有效)
+void sendsta_once(void)
 {
     if(Abnormal_Signal == 0)
     {
@@ -1176,27 +1312,13 @@ void APP429M_Tx_State(void)
     else if(Action_Signal == 0)
     {
         if(Status_Un.ActionOpenOrClose == 1)   //开动作
-        {
             Struct_DATA_Packet_Contro_fno = Tx_Open_Action_Status;
-        }
         else
-        {
             Struct_DATA_Packet_Contro_fno = Tx_Close_Action_Status;
-        }
     }
     else
     {
         Struct_DATA_Packet_Contro_fno = Tx_Open_Status;
     }
-    app_tx_en = 1;          //开启发送
-}
-
-
-void Beep_Action_Open(void)
-{
-    if(Beep_Switch == 1)//短音2次
-    {
-        Beep_Switch = 0;
-        BEEP_Module(300,1);
-    }
+    app_tx_en = 1;
 }

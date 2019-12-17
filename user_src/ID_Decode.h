@@ -21,10 +21,13 @@ void TEST_beep(void);
 void BEEP_Module(UINT16 time_beepON, UINT16 time_beepOFF);
 void TIM3_init(void);
 void Tone_OFF(void);
+void Tone_ON(void);
 void Action_Signal_Detection(void);
 void APP429M_Tx_State(void);
 u32 ID_Receiver_DATA_READ(u8 *address);
 void Beep_Action_Open(void);
+void GetInitial_State(void);
+void sendsta_once(void);
 
 
 void Freq_Scanning(void);

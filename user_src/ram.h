@@ -194,11 +194,15 @@ extern u16 Time_Check_AutoSignal;
 extern u8 auto_receive_cnt;
 extern u8 time_receive_auto;
 extern u8 Time_StateDetection;
+extern u8 sta_change;
 
-#define Beep_Switch StaFlag_Un.FlagByte_bit0    //1:用于标志打开蜂鸣器
-#define Allow_BeepOn_Flag  StaFlag_Un.FlagByte_bit1   //1:用于标志.自动受信结束时执行动作,允许打开蜂鸣器
-#define app_tx_en   StaFlag_Un.FlagByte_bit2   //用于开启429MHz发送状态
-#define stopcmd_beep   StaFlag_Un.FlagByte_bit3   //用于标志自动受信结束执行stop动作时开启了蜂鸣器
+#define Beep_Switch         StaFlag_Un.FlagByte_bit0    //1:用于标志:打开蜂鸣器
+#define Allow_BeepOn_Flag   StaFlag_Un.FlagByte_bit1   //1:用于标志:自动受信结束时执行动作,允许打开蜂鸣器
+#define app_tx_en           StaFlag_Un.FlagByte_bit2   //用于开启429MHz发送状态
+#define save_fall_time_flag StaFlag_Un.FlagByte_bit3   //用于标志:1 设定了自动下降时间，需写入eeprom
+#define save_beep_flag      StaFlag_Un.FlagByte_bit4   //用于标志:1 设定了蜂鸣器开关，需写入eeprom
+#define operat_action_flag  StaFlag_Un.FlagByte_bit5   //用于标志:1 正常操作的
+#define operat_enter_flag   StaFlag_Un.FlagByte_bit6   //用于标志:1 进入正常操作的动作中.
 
 void SPI_INIT(void);
 u32 ADF7030_GET_MISC_FW(void); //??MISC_FW?????

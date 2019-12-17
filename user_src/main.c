@@ -57,6 +57,7 @@ void main(void)
     InitialFlashReg(); //flash EEPROM
     eeprom_sys_load(); //ID载入
     TIM4_Init();       // 定时�?
+    TIM3_init();
     //beep_init();       // 蜂鸣�?
     ClearWDT(); // Service the WDT
 
@@ -77,11 +78,10 @@ void main(void)
     FLAG_testNo91 = 0;
     FLAG_testBEEP = 0;
 
-    Status_Un.Flag_LowerLimit = Lower_Limit_Signal;
-    Status_Un.Flag_AbnormalSignal = Abnormal_Signal;
-    Status_Un.Flag_ActionSignal = Action_Signal;
+    GetInitial_State();
     Status_Un.Receive_SignalType = 1;
     APP429M_Tx_State(); //上电发送一次状态
+
     while (1)
     {
         ClearWDT(); // Service the WDT
@@ -90,10 +90,7 @@ void main(void)
 
         if (time_Login_exit_256 == 0)
             ID_Decode_OUT();
-        if (FG_10ms)
-        {
-            ID_learn();
-        }
+        ID_learn();
         if((ID_SCX1801_DATA != 0) && Receiver_429MHz_mode == 0 && Status_Un.Exist_ID != 1)//有ID登录且不是万能码遥控就发送状态
         {
             APP_TX_PACKET();
@@ -127,8 +124,8 @@ void main(void)
                 Allow_BeepOn_Flag = 0;
             }
         }
-        if((Status_Un.Receive_SignalType != 0) || (auto_over_time == 1))   Beep_Switch = 0;
-        if((ID_SCX1801_DATA != 0) && (Status_Un.Receive_SignalType == 0) && (Allow_BeepOn_Flag == 1))
+        if(auto_over_time == 1)   Beep_Switch = 0;
+        if((ID_SCX1801_DATA != 0) && (Allow_BeepOn_Flag == 1))
         {
             if(auto_over_time != 1)
                 Beep_Action_Open();

@@ -236,21 +236,6 @@
 #define Action_Signal_CR2       PC_CR2_C21
 #define Action_Signal           PC_IDR_IDR1     //动作中信号，为0表示动作信号 */
 
-/*APP操作时*/
-#define APP_Open_State      0xD1  /*open状态*/
-#define APP_Close_State     0xD2  /*close状态*/
-#define APP_Abnormal_State  0xD3  /*异常1状态*/
-
-/*STX0031送信操作时*/
-#define STX_Open_State      0xD5  /*open状态*/
-#define STX_Close_State     0xD6  /*close状态*/
-#define STX_Abnormal_State  0xD7  /*异常1状态*/
-
-/* 429MHz受信指令 */
-#define Status_Confirm_Command 0x00 //状态确认
-#define CLOSE_COMMAND       0x02  //闭
-#define STOP_COMMAND        0x04  //停
-#define OPEN_COMMAND        0x08  //开
 
 /* 自动下降时间设定 */
 #define CLOSE_AUTO_DECLINE  0x90  //不执行自动下降
@@ -272,17 +257,6 @@
 
 
 
-/* 状态定义错误
-#define Tx_Open_Status         0xD8   开状态
-#define Tx_Close_Status        0xD4  闭状态
-#define Tx_Open_Action_Status  0xDC   开动作中状态
-#define Tx_Close_Action_Status 0xD2   闭动作中状态
-#define Tx_Open_Action_Auto    0xDA   开动作中状态(自动受信时)
-#define Tx_Close_Action_Auto   0xD6   闭动作中状态(自动受信时)
-#define Tx_Abnormal_Status     0xDE   异常1状态
-#define Tx_Setting_Status      0xD1   时间设定和蜂鸣器ON/OFF设定时,送信
-*/
-
 /* 429MHz送信数据 */
 #define Tx_Open_Status         0xD1  /* 开状态 */
 #define Tx_Close_Status        0xD2  /* 闭状态 */
@@ -292,6 +266,11 @@
 #define Tx_Close_Action_Auto   0xD6  /* 闭动作中状态(自动受信时) */
 #define Tx_Abnormal_Status     0xD7  /* 异常1状态 */
 #define Tx_Setting_Status      0xD8  /* 时间设定和蜂鸣器ON/OFF设定时,送信 */
+#define Tx_Open_StatusNG       0xD9  /* 开状态(无效),自动信号无效的状态 */
+#define Tx_Close_StatusNG      0xDA  /* 闭状态(无效),自动信号无效的状态 */
+#define Tx_Open_Action_StatusNG     0xDB  /* 开动作中(无效),自动信号无效的状态 */
+#define Tx_Close_Action_StatusNG    0xDC  /* 闭动作中(无效),自动信号无效的状态 */
+#define Tx_Abnormal_StatusNG        0xDD  /* 异常1状态(无效),自动信号无效的状态*/
 
 /*********************************************************************************/
 

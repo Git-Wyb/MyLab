@@ -11,6 +11,7 @@
 #include "initial.h"      // 初始�? 预定�?
 #include "ram.h"          // RAM定义
 #include "uart.h"
+#include "ID_Decode.h"
 u16 ErrStateTimeer = 1;
 u16 StateReadTimer = 500;
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Timer 4 start   1ms
@@ -72,6 +73,24 @@ void TIM4_UPD_OVF(void)
             --time_receive_auto;
         if(Time_StateDetection)
             --Time_StateDetection;
+        if (TIME_auto_close)
+        {
+            --TIME_auto_close;
+            if(TIME_auto_close == 180 && Allow_BeepOn_Flag == 1)
+            {
+                Tone_ON(); //长音开启
+            }
+            else if(TIME_auto_close == 90 && Allow_BeepOn_Flag == 1)
+            {
+                Tone_OFF(); //长音关闭
+            }
+        }
+        if (Manual_override_TIMER)
+        {
+            --Manual_override_TIMER;
+            if(Manual_override_TIMER == 1)
+                sendsta_once();
+        }
     }
     if (U1AckTimer)
         U1AckTimer--;

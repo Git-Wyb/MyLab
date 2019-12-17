@@ -482,6 +482,7 @@ void ID_learn(void)
     //    UINT16 i;
     // #if defined(__Product_PIC32MX2_Receiver__)
     //if (FG_10ms)
+    if (FG_10ms)
     { //90==1锟�?
         FG_10ms = 0;
        // if (TIME_TestNo91)
@@ -500,16 +501,13 @@ void ID_learn(void)
  //           --TIME_EMC;
 
 
-        if (TIME_auto_close)
-            --TIME_auto_close;
         if (TIME_OUT_OPEN_CLOSE)
             --TIME_OUT_OPEN_CLOSE;
         if (TIME_Receiver_LED_OUT)
             --TIME_Receiver_LED_OUT;
         if (TIME_Login_EXIT_Button)
             --TIME_Login_EXIT_Button;
-        if (Manual_override_TIMER)
-            --Manual_override_TIMER;
+
         if (time_Login_exit_256)
             --time_Login_exit_256;
         //if (TIME_Fine_Calibration)
@@ -605,6 +603,7 @@ void ID_learn(void)
             //进入登录模式后,解除自动模式,停止时间监测,退出登录模式后受信机恢复到初始状态
             TIMER1s = 0;
 		    FG_auto_out = 0;
+            TIME_auto_out = 0;
 		    TIME_auto_close = 0;
 		    FG_auto_open_time = 0;
             FG_auto_manual_mode = 0;
@@ -669,7 +668,7 @@ void ID_learn(void)
                                 ID_SCX1801_DATA = 0;
                                 ID_SCX1801_EEPROM_write(0x00);
                                 if(ID_Receiver_Login == 0xFFFFFE)
-                                Status_Un.Exist_ID = 0;
+                                    Status_Un.Exist_ID = 0;
                                     if (ID_Receiver_Login != 0xFFFFFE)
                                         ID_SCX1801_EEPROM_write(ID_Receiver_Login);
                             } //杩藉姞澶氾拷??ID鐧诲綍

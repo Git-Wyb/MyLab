@@ -155,6 +155,7 @@ u8 auto_receive_cnt = 0;
 u8 time_receive_auto = 0;
 u8 Flag_429M_EndStop = 0;
 u8 Time_StateDetection  = 0;
+u8 sta_change = 0;
 u8 Channels=1;
 
 
