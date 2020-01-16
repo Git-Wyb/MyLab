@@ -432,7 +432,7 @@ void TIM3_init(void)
     TIM3_PSCR = 0x02;                // ?????=Fsystem/(2(PSC[2:0])????4MHz=16MHz/2/2
     //TIM3_EGR_bit.UG=1;
     //TIM2_CR1 = 0x01;					// ?????????????????
-    //TIM3_CR1 = TIM3_CR1 | 0x01;
+    TIM3_CR1 = TIM3_CR1 | 0x01;
     TIM3_BKR = 0x80;
 }
 
@@ -443,8 +443,8 @@ void Tone_ON(void)
 void Tone_OFF(void)
 {                     // ???Tone   2015.3.11????
     TIM3_CR1_CEN = 0; // Timer 3 Disable
-    //TIM3_CCMR1 =  0x00;
-    //TIM3_CCER1 =  0x00; //????PWM?????????????????I/O
+    TIM3_CCMR1 =  0x00;
+    TIM3_CCER1 =  0x00; //????PWM?????????????????I/O
     PIN_BEEP = 0;
 }
 /*
@@ -462,8 +462,7 @@ void BEEP_Module(UINT16 time_beepON, UINT16 time_beepOFF)
 			FG_beep_on = 1;
 			FG_beep_off = 0;
 			//BEEP_CSR2_BEEPEN = 1;
-            //TIM3_init();
-            Tone_ON();
+            TIM3_init();
         }
 		Delayus(250); //80us
 		Delayus(250); //80us
@@ -644,6 +643,8 @@ void ID_Decode_OUT(void)
                     Receiver_LED_OUT = 1;
                     Status_Un.Receive_SignalType = 1; //受信于手动信号
                     Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
+                    close_action_auto_beep_flag = 0;
+                    beep_num = 0;
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 0)   //426M
                     {
                         Receiver_OUT_OPEN = FG_NOT_allow_out;
@@ -684,6 +685,8 @@ void ID_Decode_OUT(void)
                     Receiver_OUT_VENT = FG_NOT_allow_out;
                     Receiver_OUT_STOP = FG_allow_out;
                     Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
+                    close_action_auto_beep_flag = 0;
+                    beep_num = 0;
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         APP429M_Tx_State();
@@ -693,6 +696,8 @@ void ID_Decode_OUT(void)
                     Receiver_LED_OUT = 1;
                     Status_Un.Receive_SignalType = 1;
                     Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
+                    close_action_auto_beep_flag = 0;
+                    beep_num = 0;
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 0)   //426M
                     {
                         Receiver_OUT_STOP = FG_NOT_allow_out;
@@ -1199,6 +1204,15 @@ void Action_Signal_Detection(void)
             {
                 app_tx_en = 1; //开启发送
                 sta_change = Struct_DATA_Packet_Contro_fno;
+                if(Struct_DATA_Packet_Contro_fno == Tx_Close_Action_Auto && Allow_BeepOn_Flag == 1)
+                {
+                    close_action_auto_beep_flag = 1;
+                }
+                else
+                {
+                    close_action_auto_beep_flag = 0;
+                    beep_num = 0;
+                }
             }
             if(operat_enter_flag == 1 && Status_Un.Flag_ActionSignal != 0)  //正常操作动作结束
             {
@@ -1269,6 +1283,20 @@ void Beep_Action_Open(void)
     if(Beep_Switch == 1)//短音
     {
         Beep_Switch = 0;
+        BEEP_Module(300,1);
+    }
+    if(time_close_auto_beep == 0 && close_action_auto_beep_flag == 1 && FLAG_APP_TX == 0 && app_tx_en == 0)
+    {
+        if(beep_num == 0)
+        {
+            beep_num = 1;
+            time_close_auto_beep = 10;
+        }
+        else if(beep_num == 1)
+        {
+            beep_num = 0;
+            time_close_auto_beep = 100;
+        }
         BEEP_Module(300,1);
     }
 }

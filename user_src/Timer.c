@@ -78,9 +78,9 @@ void TIM4_UPD_OVF(void)
             --TIME_auto_close;
             if(TIME_auto_close == 180 && Allow_BeepOn_Flag == 1)
             {
-                Tone_ON(); //长音开启
+                TIM3_init(); //长音开启
             }
-            else if(TIME_auto_close == 90 && Allow_BeepOn_Flag == 1)
+            else if(TIME_auto_close == 100 && Allow_BeepOn_Flag == 1)
             {
                 Tone_OFF(); //长音关闭
             }
@@ -91,9 +91,10 @@ void TIM4_UPD_OVF(void)
             if(Manual_override_TIMER == 1)
                 sendsta_once();
         }
+        if(time_close_auto_beep)    --time_close_auto_beep;
     }
-    if (U1AckTimer)
-        U1AckTimer--;
+    //if (U1AckTimer)
+       // U1AckTimer--;
     if (Time_APP_RXstart)
       --Time_APP_RXstart;
     if(Time_APP_blank_TX)

@@ -57,7 +57,6 @@ void main(void)
     InitialFlashReg(); //flash EEPROM
     eeprom_sys_load(); //ID载入
     TIM4_Init();       // 定时�?
-    TIM3_init();
     //beep_init();       // 蜂鸣�?
     ClearWDT(); // Service the WDT
 
