@@ -199,25 +199,23 @@ void ID_Decode_IDCheck(void)
                                     ;
                                 else
                                 {
-                                    if(DATA_Packet_Control == 0x02 || DATA_Packet_Control == 0x04 || DATA_Packet_Control == 0x08)
+                                    auto_receive_cnt = 0;
+                                    time_receive_auto = 0;
+                                    Time_Check_AutoSignal = 0;
+                                    Time_NoCheck_AutoSignal = 0;
+
+                                    FG_auto_out = 0;
+                                    TIME_auto_close = 0;
+                                    TIME_auto_out = 0;
+                                    FG_auto_open_time = 0;
+
+                                    if (FG_auto_manual_mode == 1)      //Manual_override_TIMER=13500;   //2分30秒内自动无效
                                     {
-                                        auto_receive_cnt = 0;
-                                        time_receive_auto = 0;
-                                        Time_Check_AutoSignal = 0;
-                                        Time_NoCheck_AutoSignal = 0;
-
-                                        FG_auto_out = 0;
-                                        TIME_auto_close = 0;
-                                        TIME_auto_out = 0;
-                                        FG_auto_open_time = 0;
-
-                                        if (FG_auto_manual_mode == 1)      //Manual_override_TIMER=13500;   //2分30秒内自动无效
-                                        {
-                                            Manual_override_TIMER = 27390; //约5分钟,5分钟内自动无效
-                                            APP429M_Tx_State();  //禁止进入自动模式区间，发送一次状态(无效)
-                                        }
-                                        FG_auto_manual_mode = 0;
+                                        Manual_override_TIMER = 27390; //约5分钟,5分钟内自动无效
+                                        APP429M_Tx_State();  //禁止进入自动模式区间，发送一次状态(无效)
                                     }
+                                    FG_auto_manual_mode = 0;
+
                                     if ((DATA_Packet_Control & 0x14) == 0x14)
                                     {
                                         if (TIMER1s == 0)
@@ -582,6 +580,11 @@ void ID_Decode_OUT(void)
                     TIMER250ms_STOP = 250;
                     Receiver_OUT_VENT = FG_NOT_allow_out;
                     Receiver_OUT_STOP = FG_allow_out;
+
+                    Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
+                    close_action_auto_beep_flag = 0;
+                    beep_num = 0;
+
                     if (TIMER1s < 3550)
                     {
                         Receiver_OUT_OPEN = FG_allow_out;
@@ -638,6 +641,10 @@ void ID_Decode_OUT(void)
                         Receiver_OUT_CLOSE = FG_NOT_allow_out;
                         Receiver_OUT_VENT = FG_allow_out;
                     }
+
+                    Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
+                    close_action_auto_beep_flag = 0;
+                    beep_num = 0;
                 break;
                 case 0x02: //close
                     Receiver_LED_OUT = 1;
@@ -737,6 +744,11 @@ void ID_Decode_OUT(void)
                     Receiver_OUT_CLOSE = FG_NOT_allow_out;
                     Receiver_OUT_VENT = FG_NOT_allow_out;
                     Receiver_OUT_STOP = FG_allow_out;
+
+                    Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
+                    close_action_auto_beep_flag = 0;
+                    beep_num = 0;
+
                     if (FG_OUT_OPEN_CLOSE == 0)
                     {
                         FG_OUT_OPEN_CLOSE = 1;
@@ -751,6 +763,11 @@ void ID_Decode_OUT(void)
                     Receiver_OUT_OPEN = FG_NOT_allow_out;
                     Receiver_OUT_VENT = FG_NOT_allow_out;
                     Receiver_OUT_STOP = FG_allow_out;
+
+                    Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
+                    close_action_auto_beep_flag = 0;
+                    beep_num = 0;
+
                     if (FG_OUT_OPEN_CLOSE == 0)
                     {
                         FG_OUT_OPEN_CLOSE = 1;
@@ -765,6 +782,10 @@ void ID_Decode_OUT(void)
                     Receiver_OUT_VENT = FG_NOT_allow_out;
                     Receiver_OUT_OPEN = FG_allow_out;
                     Receiver_OUT_CLOSE = FG_allow_out;
+
+                    Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
+                    close_action_auto_beep_flag = 0;
+                    beep_num = 0;
                 break;
                 case 0x09: //vent+OPEN
                     Receiver_LED_OUT = 1;
@@ -772,6 +793,11 @@ void ID_Decode_OUT(void)
                     Receiver_OUT_CLOSE = FG_NOT_allow_out;
                     Receiver_OUT_OPEN = FG_allow_out;
                     Receiver_OUT_VENT = FG_allow_out;
+
+                    Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
+                    close_action_auto_beep_flag = 0;
+                    beep_num = 0;
+
                 break;
                 case 0x03: //vent+close
                     Receiver_LED_OUT = 1;
@@ -779,6 +805,11 @@ void ID_Decode_OUT(void)
                     Receiver_OUT_OPEN = FG_NOT_allow_out;
                     Receiver_OUT_CLOSE = FG_allow_out;
                     Receiver_OUT_VENT = FG_allow_out;
+
+                    Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
+                    close_action_auto_beep_flag = 0;
+                    beep_num = 0;
+
                 break;
                 case CLOSE_AUTO_DECLINE:
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
