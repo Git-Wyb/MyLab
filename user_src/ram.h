@@ -188,6 +188,7 @@ extern u8 Channels;
 
 extern Basic_Un Status_Un;
 extern Flag_Un StaFlag_Un;
+extern Flag_Un flag1_Un;
 extern u8 auto_over_time;
 extern u16 Time_NoCheck_AutoSignal;
 extern u16 Time_Check_AutoSignal;
@@ -197,6 +198,11 @@ extern u8 Time_StateDetection;
 extern u8 sta_change;
 extern u8 time_close_auto_beep;
 extern u8 beep_num;
+extern u16 TIME_BEEP_on;
+extern u16 TIME_BEEP_off;
+extern u16 TIME_BEEP_freq;
+extern u16 BASE_TIME_BEEP_on;
+extern u16 BASE_TIME_BEEP_off;
 
 #define Beep_Switch         StaFlag_Un.FlagByte_bit0    //1:用于标志:打开蜂鸣器
 #define Allow_BeepOn_Flag   StaFlag_Un.FlagByte_bit1   //1:用于标志:自动受信结束时执行动作,允许打开蜂鸣器
@@ -206,6 +212,9 @@ extern u8 beep_num;
 #define operat_action_flag  StaFlag_Un.FlagByte_bit5   //用于标志:1 正常操作的
 #define operat_enter_flag   StaFlag_Un.FlagByte_bit6   //用于标志:1 进入正常操作的动作中.
 #define close_action_auto_beep_flag  StaFlag_Un.FlagByte_bit7   //用于标志:1 自动关闭动作中,开启蜂鸣器
+
+#define FG_beep_on_Motor    flag1_Un.FlagByte_bit0
+#define FG_beep_off_Motor   flag1_Un.FlagByte_bit1
 
 void SPI_INIT(void);
 u32 ADF7030_GET_MISC_FW(void); //??MISC_FW?????

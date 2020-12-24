@@ -1017,7 +1017,7 @@ void ID_Decode_OUT(void)
             FG_auto_out = 0;
             TIME_auto_close = 270;
             Receiver_LED_OUT = 1;
-            if(Allow_BeepOn_Flag == 1)  BEEP_Module(300,1); //短音第三次
+            if(Allow_BeepOn_Flag == 1)  _ReqBuzzer(144,1,1); //短音第三次
         } //300
         if (TIME_auto_close)
         {
@@ -1170,19 +1170,19 @@ void Action_Signal_Detection(void)
             Status_Un.Flag_AbnormalSignal = local_sta.Flag_AbnormalSignal;
             Status_Un.Flag_ActionSignal =  local_sta.Flag_ActionSignal;
 
-            if(Status_Un.Flag_AbnormalSignal == 0)   //异常
-            {
-                if(Manual_override_TIMER)
-                    Struct_DATA_Packet_Contro_fno = Tx_Abnormal_StatusNG;
-                else
-                    Struct_DATA_Packet_Contro_fno = Tx_Abnormal_Status;
-            }
-            else if(Status_Un.Flag_LowerLimit == 0)  //下限
+            if(Status_Un.Flag_LowerLimit == 0)  //下限
             {
                 if(Manual_override_TIMER)
                     Struct_DATA_Packet_Contro_fno = Tx_Close_StatusNG;
                 else
                     Struct_DATA_Packet_Contro_fno = Tx_Close_Status;
+            }
+            else if(Status_Un.Flag_AbnormalSignal == 0)   //异常
+            {
+                if(Manual_override_TIMER)
+                    Struct_DATA_Packet_Contro_fno = Tx_Abnormal_StatusNG;
+                else
+                    Struct_DATA_Packet_Contro_fno = Tx_Abnormal_Status;
             }
             else if(Status_Un.Flag_ActionSignal == 0)  //动作中
             {
@@ -1263,19 +1263,19 @@ void Action_Signal_Detection(void)
 //判断,发送状态
 void APP429M_Tx_State(void)
 {
-    if(Abnormal_Signal == 0)
-    {
-        if(Manual_override_TIMER)
-            Struct_DATA_Packet_Contro_fno = Tx_Abnormal_StatusNG;
-        else
-            Struct_DATA_Packet_Contro_fno = Tx_Abnormal_Status;
-    }
-    else if(Lower_Limit_Signal == 0)
+    if(Lower_Limit_Signal == 0)
     {
         if(Manual_override_TIMER)
             Struct_DATA_Packet_Contro_fno = Tx_Close_StatusNG;
         else
             Struct_DATA_Packet_Contro_fno = Tx_Close_Status;
+    }
+    else if(Abnormal_Signal == 0)
+    {
+        if(Manual_override_TIMER)
+            Struct_DATA_Packet_Contro_fno = Tx_Abnormal_StatusNG;
+        else
+            Struct_DATA_Packet_Contro_fno = Tx_Abnormal_Status;
     }
     else if(Action_Signal == 0)
     {
@@ -1314,21 +1314,21 @@ void Beep_Action_Open(void)
     if(Beep_Switch == 1)//短音
     {
         Beep_Switch = 0;
-        BEEP_Module(300,1);
+        _ReqBuzzer(144,1,1);
     }
     if(time_close_auto_beep == 0 && close_action_auto_beep_flag == 1 && FLAG_APP_TX == 0 && app_tx_en == 0)
     {
         if(beep_num == 0)
         {
             beep_num = 1;
-            time_close_auto_beep = 10;
+            time_close_auto_beep = 22;
         }
         else if(beep_num == 1)
         {
             beep_num = 0;
             time_close_auto_beep = 100;
         }
-        BEEP_Module(300,1);
+        _ReqBuzzer(144,1,1);
     }
 }
 
@@ -1339,13 +1339,13 @@ void GetInitial_State(void)
     Status_Un.Flag_AbnormalSignal = Abnormal_Signal;
     Status_Un.Flag_ActionSignal = Action_Signal;
 
-    if(Abnormal_Signal == 0)
-    {
-        sta_change = Tx_Abnormal_Status;
-    }
-    else if(Lower_Limit_Signal == 0)
+    if(Lower_Limit_Signal == 0)
     {
         sta_change = Tx_Close_Status;
+    }
+    else if(Abnormal_Signal == 0)
+    {
+        sta_change = Tx_Abnormal_Status;
     }
     else if(Action_Signal == 0)
     {
@@ -1360,13 +1360,13 @@ void GetInitial_State(void)
 //用于禁止进入自动模式的时间计时结束后,发送一次状态(有效)
 void sendsta_once(void)
 {
-    if(Abnormal_Signal == 0)
-    {
-        Struct_DATA_Packet_Contro_fno = Tx_Abnormal_Status;
-    }
-    else if(Lower_Limit_Signal == 0)
+    if(Lower_Limit_Signal == 0)
     {
         Struct_DATA_Packet_Contro_fno = Tx_Close_Status;
+    }
+    else if(Abnormal_Signal == 0)
+    {
+        Struct_DATA_Packet_Contro_fno = Tx_Abnormal_Status;
     }
     else if(Action_Signal == 0)
     {
@@ -1380,4 +1380,55 @@ void sendsta_once(void)
         Struct_DATA_Packet_Contro_fno = Tx_Open_Status;
     }
     app_tx_en = 1;
+}
+
+void BEEP_function(void)
+{
+    if(TIME_BEEP_on)
+    {
+        if(TIME_BEEP_on < 0xfff0)
+        {     //大于0xfff0表示一直叫
+            --TIME_BEEP_on;
+            if(FG_beep_on_Motor == 0)
+            {
+                FG_beep_on_Motor = 1;
+                FG_beep_off_Motor = 0;
+                TIM3_init();
+            }
+        }
+    }
+    else if(TIME_BEEP_off)
+    {
+        --TIME_BEEP_off;
+        if(FG_beep_off_Motor == 0)
+        {
+            FG_beep_off_Motor = 1;
+            FG_beep_on_Motor = 0;
+            Tone_OFF();
+        }
+    }
+    else if(TIME_BEEP_freq)
+    {
+        if(TIME_BEEP_freq < 0xfff0) //大于0xfff0表示一直循环叫
+        {
+            --TIME_BEEP_freq;
+        }
+        TIME_BEEP_on = BASE_TIME_BEEP_on;
+        TIME_BEEP_off = BASE_TIME_BEEP_off;
+        if(FG_beep_on_Motor == 0)
+        {
+            FG_beep_on_Motor = 1;
+            FG_beep_off_Motor = 0;
+            TIM3_init();
+        }
+    }
+}
+
+void _ReqBuzzer(u16 d_BEEP_on,u16 d_BEEP_off,u16 d_BEEP_freq)
+{
+    BASE_TIME_BEEP_on = d_BEEP_on;
+    BASE_TIME_BEEP_off = d_BEEP_off;
+    TIME_BEEP_on = BASE_TIME_BEEP_on;
+    TIME_BEEP_off = BASE_TIME_BEEP_off;
+    TIME_BEEP_freq = d_BEEP_freq - 1;
 }

@@ -28,6 +28,8 @@ u32 ID_Receiver_DATA_READ(u8 *address);
 void Beep_Action_Open(void);
 void GetInitial_State(void);
 void sendsta_once(void);
+void BEEP_function(void);
+void _ReqBuzzer(u16 d_BEEP_on,u16 d_BEEP_off,u16 d_BEEP_freq);
 
 
 void Freq_Scanning(void);

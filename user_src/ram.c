@@ -148,6 +148,7 @@ const u32 PROFILE_CH2_FREQ_32bit_429HighSpeed = 429550000;  //429550000;//429237
 
 Basic_Un Status_Un = {0};
 Flag_Un StaFlag_Un = {0};
+Flag_Un flag1_Un = {0};
 u8 auto_over_time = 2;  //自动下降时间，默认为10s
 u16 Time_NoCheck_AutoSignal = 0;
 u16 Time_Check_AutoSignal = 0;
@@ -160,6 +161,11 @@ u8 time_close_auto_beep = 0;
 u8 beep_num = 0;
 u8 Channels=1;
 
+u16 TIME_BEEP_on = 0;
+u16 TIME_BEEP_off = 0;
+u16 TIME_BEEP_freq = 0;
+u16 BASE_TIME_BEEP_on = 0;
+u16 BASE_TIME_BEEP_off = 0;
 
 
 Wireless_Body Struct_DATA_Packet_Contro,Struct_DATA_Packet_Contro_buf;

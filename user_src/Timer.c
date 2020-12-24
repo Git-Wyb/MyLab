@@ -93,6 +93,7 @@ void TIM4_UPD_OVF(void)
         }
         if(time_close_auto_beep)    --time_close_auto_beep;
     }
+    BEEP_function();
     //if (U1AckTimer)
        // U1AckTimer--;
     if (Time_APP_RXstart)
