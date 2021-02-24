@@ -215,6 +215,8 @@ extern u16 BASE_TIME_BEEP_off;
 
 #define FG_beep_on_Motor    flag1_Un.FlagByte_bit0
 #define FG_beep_off_Motor   flag1_Un.FlagByte_bit1
+#define recv_429code_flag   flag1_Un.FlagByte_bit2  //1：接收到429MHz的闭操作指令
+#define close_action_beep_flag   flag1_Un.FlagByte_bit3  //1：接收到429MHz的闭操作指令后动作中信号输入，开启蜂鸣器
 
 void SPI_INIT(void);
 u32 ADF7030_GET_MISC_FW(void); //??MISC_FW?????

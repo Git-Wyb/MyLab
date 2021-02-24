@@ -25,7 +25,7 @@ void Tone_ON(void);
 void Action_Signal_Detection(void);
 void APP429M_Tx_State(void);
 u32 ID_Receiver_DATA_READ(u8 *address);
-void Beep_Action_Open(void);
+void Beep_Action_On(void);
 void GetInitial_State(void);
 void sendsta_once(void);
 void BEEP_function(void);

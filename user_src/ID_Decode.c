@@ -583,8 +583,9 @@ void ID_Decode_OUT(void)
 
                     Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
                     close_action_auto_beep_flag = 0;
+                    close_action_beep_flag = 0;
                     beep_num = 0;
-
+                    recv_429code_flag = 0;
                     if (TIMER1s < 3550)
                     {
                         Receiver_OUT_OPEN = FG_allow_out;
@@ -601,6 +602,8 @@ void ID_Decode_OUT(void)
                         TIMER250ms_STOP = 0;
                         Receiver_OUT_VENT = FG_NOT_allow_out;
                         Receiver_OUT_CLOSE = FG_NOT_allow_out;
+                        close_action_beep_flag = 0;
+                        recv_429code_flag = 0;
                         if (TIMER1s > 2000)
                         {
                             Receiver_OUT_STOP = FG_allow_out;
@@ -644,7 +647,9 @@ void ID_Decode_OUT(void)
 
                     Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
                     close_action_auto_beep_flag = 0;
+                    close_action_beep_flag = 0;
                     beep_num = 0;
+                    recv_429code_flag = 0;
                 break;
                 case 0x02: //close
                     Receiver_LED_OUT = 1;
@@ -660,7 +665,8 @@ void ID_Decode_OUT(void)
                         Receiver_OUT_CLOSE = FG_allow_out;
                         Status_Un.ActionOpenOrClose = 0;  //闭动作
                         operat_action_flag = 1;
-                        //APP429M_Tx_State();
+                        close_action_beep_flag = 0;
+                        recv_429code_flag = 0;
                     }
                     else if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
@@ -679,6 +685,9 @@ void ID_Decode_OUT(void)
                                 Receiver_OUT_CLOSE = FG_allow_out;
                                 Status_Un.ActionOpenOrClose = 0;  //闭动作
                                 operat_action_flag = 1;
+                                recv_429code_flag = 1;
+                                if(Status_Un.Buzzer_Switch == 1)    Allow_BeepOn_Flag = 1;
+                                else    Allow_BeepOn_Flag = 0;
                                 break;
                         }
                         APP429M_Tx_State();
@@ -693,7 +702,9 @@ void ID_Decode_OUT(void)
                     Receiver_OUT_STOP = FG_allow_out;
                     Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
                     close_action_auto_beep_flag = 0;
+                    close_action_beep_flag = 0;
                     beep_num = 0;
+                    recv_429code_flag = 0;
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
                     {
                         APP429M_Tx_State();
@@ -704,7 +715,9 @@ void ID_Decode_OUT(void)
                     Status_Un.Receive_SignalType = 1;
                     Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
                     close_action_auto_beep_flag = 0;
+                    close_action_beep_flag = 0;
                     beep_num = 0;
+                    recv_429code_flag = 0;
                     if(Status_Un.PROFILE_RxLowSpeed_TYPE == 0)   //426M
                     {
                         Receiver_OUT_STOP = FG_NOT_allow_out;
@@ -747,6 +760,8 @@ void ID_Decode_OUT(void)
 
                     Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
                     close_action_auto_beep_flag = 0;
+                    close_action_beep_flag = 0;
+                    recv_429code_flag = 0;
                     beep_num = 0;
 
                     if (FG_OUT_OPEN_CLOSE == 0)
@@ -766,6 +781,8 @@ void ID_Decode_OUT(void)
 
                     Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
                     close_action_auto_beep_flag = 0;
+                    close_action_beep_flag = 0;
+                    recv_429code_flag = 0;
                     beep_num = 0;
 
                     if (FG_OUT_OPEN_CLOSE == 0)
@@ -785,6 +802,8 @@ void ID_Decode_OUT(void)
 
                     Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
                     close_action_auto_beep_flag = 0;
+                    close_action_beep_flag = 0;
+                    recv_429code_flag = 0;
                     beep_num = 0;
                 break;
                 case 0x09: //vent+OPEN
@@ -796,6 +815,8 @@ void ID_Decode_OUT(void)
 
                     Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
                     close_action_auto_beep_flag = 0;
+                    close_action_beep_flag = 0;
+                    recv_429code_flag = 0;
                     beep_num = 0;
 
                 break;
@@ -808,6 +829,8 @@ void ID_Decode_OUT(void)
 
                     Tone_OFF();  //只要接收到操作指令就关闭蜂鸣器
                     close_action_auto_beep_flag = 0;
+                    close_action_beep_flag = 0;
+                    recv_429code_flag = 0;
                     beep_num = 0;
 
                 break;
@@ -1195,9 +1218,13 @@ void Action_Signal_Detection(void)
                 if(Manual_override_TIMER)
                 {
                     if(Status_Un.ActionOpenOrClose == 1)   //开动作中
+                    {
                         Struct_DATA_Packet_Contro_fno = Tx_Open_Action_StatusNG;
+                    }
                     else
+                    {
                         Struct_DATA_Packet_Contro_fno = Tx_Close_Action_StatusNG;
+                    }
                 }
                 else if(Status_Un.Receive_SignalType == 0)  //自动受信
                 {
@@ -1238,10 +1265,18 @@ void Action_Signal_Detection(void)
                 if(Struct_DATA_Packet_Contro_fno == Tx_Close_Action_Auto && Allow_BeepOn_Flag == 1)
                 {
                     close_action_auto_beep_flag = 1;
+                    close_action_beep_flag = 0;
+                    recv_429code_flag = 0;
+                }
+                else if(recv_429code_flag == 1 && (Struct_DATA_Packet_Contro_fno == Tx_Close_Action_Status || Struct_DATA_Packet_Contro_fno == Tx_Close_Action_StatusNG))
+                {
+                    close_action_beep_flag = 1;
+                    close_action_auto_beep_flag = 0;
                 }
                 else
                 {
                     close_action_auto_beep_flag = 0;
+                    close_action_beep_flag = 0;
                     beep_num = 0;
                 }
             }
@@ -1251,6 +1286,7 @@ void Action_Signal_Detection(void)
                 //没有手动或者自动信号操作,如果检测到动作中信号(人为去强制开/关门),状态默认为手动闭动作中
                 Status_Un.Receive_SignalType = 1;
                 Status_Un.ActionOpenOrClose = 0;
+                recv_429code_flag = 0;
             }
         }
     }
@@ -1309,14 +1345,17 @@ void APP429M_Tx_State(void)
 }
 
 
-void Beep_Action_Open(void)
+void Beep_Action_On(void)
 {
-    if(Beep_Switch == 1)//短音
+    if(auto_over_time != 1)
     {
-        Beep_Switch = 0;
-        _ReqBuzzer(144,1,1);
+        if(Beep_Switch == 1)//短音
+        {
+            Beep_Switch = 0;
+            _ReqBuzzer(144,1,1);
+        }
     }
-    if(time_close_auto_beep == 0 && close_action_auto_beep_flag == 1 && FLAG_APP_TX == 0 && app_tx_en == 0)
+    if(time_close_auto_beep == 0 && FLAG_APP_TX == 0 && app_tx_en == 0 && ((auto_over_time!=1 && close_action_auto_beep_flag==1) || close_action_beep_flag==1))
     {
         if(beep_num == 0)
         {

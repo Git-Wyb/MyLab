@@ -1089,41 +1089,18 @@ u32 ADF7030_Read_RESIGER(u32 addr, u32 Para, u8 offset)
 	{
 		if ((FLAG_ID_Erase_Login == 1) || (FLAG_ID_Login == 1) ||(FLAG_ID_SCX1801_Login==1)||(Receiver_426MHz_mode==1))
 		{
-            switch(Channels)
-            {
-                case 1:
-                    PROFILE_CH_FREQ_32bit_200002EC = 426075000;
-                    PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005A;
-                    PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
-                    //PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x80041018;//0x0000100C;
-                    Radio_Date_Type=1;
-                    Channels=3;
-                    if(Flag_TX_ID_load==0)
-                        ADF7030Cfg_pointer=ADF7030Cfg;
-                    else ADF7030Cfg_pointer=ADF7030Cfg_load;
-                break;
-                case 3:
-                    PROFILE_CH_FREQ_32bit_200002EC = 429175000;
-                    PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005B;
-                    PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
-                    //PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
-                    Radio_Date_Type=1;
-                    Channels=4;
-                    ADF7030Cfg_pointer=ADF7030Cfg;
-               break;
-               case 4:
-                    PROFILE_CH_FREQ_32bit_200002EC = 429200000;
-                    PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005B;
-                    PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
-                    //PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x0000100C;
-                    Radio_Date_Type=1;
-                    Channels=1;
-                    ADF7030Cfg_pointer=ADF7030Cfg;
-                break;
-            }
-
-            }
-		else {
+            PROFILE_CH_FREQ_32bit_200002EC = 426075000;
+            PROFILE_RADIO_AFC_CFG1_32bit_2000031C = 0x0005005A;
+            PROFILE_RADIO_DATA_RATE_32bit_200002FC = 0x6400000C;
+            //PROFILE_GENERIC_PKT_FRAME_CFG1_32bit_20000500 = 0x80041018;//0x0000100C;
+            Radio_Date_Type=1;
+            Channels=1;
+            if(Flag_TX_ID_load==0)
+                ADF7030Cfg_pointer=ADF7030Cfg;
+            else ADF7030Cfg_pointer=ADF7030Cfg_load;
+        }
+		else
+        {
 
 			switch (Channels)
 			{

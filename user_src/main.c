@@ -126,8 +126,7 @@ void main(void)
         if(auto_over_time == 1)   Beep_Switch = 0;
         if((ID_SCX1801_DATA != 0) && (Allow_BeepOn_Flag == 1))
         {
-            if(auto_over_time != 1)
-                Beep_Action_Open();
+            Beep_Action_On();
         }
         if(ID_SCX1801_DATA == 0)    app_tx_en = 0;
     }
