@@ -1082,7 +1082,14 @@ void ID_Decode_OUT(void)
         if(save_beep_flag)      //保存蜂鸣器开/关
         {
             save_beep_flag = 0;
-            eeprom_write_byte(AddrEeprom_BuzzerSwitch,Status_Un.Buzzer_Switch);
+            if(Status_Un.Buzzer_Switch == 0)
+            {
+                eeprom_write_byte(AddrEeprom_BuzzerSwitch,Save_Disable_Beep);
+            }
+            else
+            {
+                eeprom_write_byte(AddrEeprom_BuzzerSwitch,0x01);
+            }
         }
 
         FLAG_Receiver_BEEP = 0;
