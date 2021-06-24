@@ -252,7 +252,7 @@ void ID_Decode_IDCheck(void)
                        }
                        if(((DATA_Packet_Control & 0xFF) == 0x02) || ((DATA_Packet_Control & 0xFF) == 0x08))//429M
                        {
-                            TIMER1s = 2500; //约2.5s
+                            TIMER1s = 3000; //约3.0s
                        }
                        else TIMER1s = 1000;
                     }

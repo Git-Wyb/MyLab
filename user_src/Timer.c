@@ -31,7 +31,7 @@ void TIM4_UPD_OVF(void)
         --TIMER1s;
         if(Status_Un.PROFILE_RxLowSpeed_TYPE == 1)    //429M
         {
-            if(TIMER1s == 1600)       //1600
+            if(TIMER1s == 2100)       //1600
             {
                 Flag_429M_EndStop = 1;
             }
