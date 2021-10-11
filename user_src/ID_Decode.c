@@ -360,7 +360,7 @@ void eeprom_IDcheck(void)
             DATA_Packet_Control = DATA_Packet_Contro_buf;
 		}
 #ifndef DEF_test_MAX_32pcs
-		if(Radio_Date_Type_bak==1)
+		if(PROFILE_CH_FREQ_32bit_200002EC==426075000)
 		{
 				i = 0;
                 do
@@ -389,10 +389,11 @@ void eeprom_IDcheck(void)
                     i++;
                 } while (i < ID_DATA_PCS);
 		}
-		else if((Radio_Date_Type_bak==2)&&(DATA_Packet_ID==ID_SCX1801_DATA))
+		else if((PROFILE_CH_FREQ_32bit_200002EC==429175000 || PROFILE_CH_FREQ_32bit_200002EC==429200000)&&(DATA_Packet_ID==ID_SCX1801_DATA))
 		{
 			FLAG_IDCheck_OK = 1;
-			Struct_DATA_Packet_Contro=Struct_DATA_Packet_Contro_buf;
+			//Struct_DATA_Packet_Contro=Struct_DATA_Packet_Contro_buf;
+            DATA_Packet_Control = DATA_Packet_Contro_buf;
 		}
 #else
 			for (i = 0; i < ID_DATA_PCS; i++)
